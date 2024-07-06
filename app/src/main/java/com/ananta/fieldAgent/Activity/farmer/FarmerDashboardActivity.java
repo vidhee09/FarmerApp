@@ -1,20 +1,16 @@
-package com.ananta.fieldAgent.Activity;
+package com.ananta.fieldAgent.Activity.farmer;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.FramerFragmentFarm;
 import com.ananta.fieldAgent.Fragments.ServiceFragmentFarm;
-import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDashboardBinding;
 
 public class FarmerDashboardActivity extends AppCompatActivity {
@@ -39,12 +35,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-               /* FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)mIndicator.getLayoutParams();
 
-                //Multiply positionOffset with indicatorWidth to get translation
-                float translationOffset =  (positionOffset+i) * indicatorWidth ;
-                params.leftMargin = (int) translationOffset;
-                mIndicator.setLayoutParams(params);*/
             }
 
             @Override
@@ -63,12 +54,11 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(FarmerDashboardActivity.this, AddRequestActivity.class);
+                Intent intent = new Intent(FarmerDashboardActivity.this, AddRequestFarmerActivity.class);
                 startActivity(intent);
 
             }
         });
-
 
 
     }

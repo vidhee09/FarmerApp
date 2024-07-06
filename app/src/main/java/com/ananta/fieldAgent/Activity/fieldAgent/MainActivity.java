@@ -1,4 +1,4 @@
-package com.ananta.fieldAgent.Activity;
+package com.ananta.fieldAgent.Activity.fieldAgent;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,6 +61,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this, AddRequestActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+        binding.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, FarmerDetailActivity.class);
                 startActivity(intent);
 
             }

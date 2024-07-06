@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ananta.fieldAgent.Activity.FarmerDetailActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.FarmerDetailActivity;
 import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.R;
 
@@ -25,6 +25,7 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
     public FarmerAdapter(Context context, ArrayList<FarmerModel> farmerList) {
         this.context = context;
         this.farmerList = farmerList;
+
     }
 
     @NonNull
@@ -39,12 +40,15 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
 
         FarmerModel model = farmerList.get(position);
         holder.tvFarmerName.setText(model.getName());
+//        holder.tvPumpName.setText(model.getName());
+//        holder.tvAddressName.setText(model.getName());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, FarmerDetailActivity.class);
-                context.startActivity(intent);
+              /*  Intent intent = new Intent(context, FarmerDetailActivity.class);
+                context.startActivity(intent);*/
             }
         });
 
@@ -68,8 +72,6 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
             tvPumpName = itemView.findViewById(R.id.tvPumpName);
             tvAddressName = itemView.findViewById(R.id.tvAddressName);
             ivFarmerImage = itemView.findViewById(R.id.ivFarmerImage);
-
-
 
 
         }

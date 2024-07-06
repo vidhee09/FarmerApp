@@ -37,6 +37,8 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
+//                    Intent intent = new Intent(LoginScreen.this, verifyOTPScreen.class);
+//                    startActivity(intent);
                     login();
 
                 }
@@ -68,12 +70,11 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
-                Log.d("success==", "==" + response.body());
-
                 assert response.body() != null;
                 if (response.body().getSuccess().equals("true")){
                     Intent intent = new Intent(LoginScreen.this, verifyOTPScreen.class);
                     intent.putExtra("OTP",response.body().getOtp());
+                    intent.putExtra("NUMBER",binding.edMobileNo.getText().toString());
                     startActivity(intent);
 
                 }else {
@@ -85,7 +86,6 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
                 Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
-
 
             }
         });

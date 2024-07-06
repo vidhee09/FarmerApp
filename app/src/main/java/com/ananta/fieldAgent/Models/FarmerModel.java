@@ -1,5 +1,7 @@
 package com.ananta.fieldAgent.Models;
 
+import java.util.ArrayList;
+
 public class FarmerModel {
 
     String name,success,message;
@@ -7,6 +9,8 @@ public class FarmerModel {
     public FarmerModel(String name) {
         this.name = name;
     }
+
+//    ArrayList<FarmerModel> farmer_data;
 
     public String getName() {
         return name;
@@ -31,5 +35,6 @@ public class FarmerModel {
     public void setMessage(String message) {
         this.message = message;
     }
+
 
 }

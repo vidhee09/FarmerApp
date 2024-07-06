@@ -1,4 +1,4 @@
-package com.ananta.fieldAgent.Activity;
+package com.ananta.fieldAgent.Activity.fieldAgent;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,7 +53,6 @@ public class FarmerDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
     }
 

@@ -13,38 +13,48 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.FarmerApp"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name="com.ananta.fieldAgent.Activity.AddRequestActivity"
+            android:name=".Activity.farmer.FarmerProfileActivity"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.JointReportActivity"
+            android:name=".Activity.farmer.AddRequestFarmerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FarmerApp" />
+        <activity
+            android:name=".Activity.farmer.FarmerDashboardActivity"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.ServiceReportActivity"
+            android:name=".Activity.fieldAgent.AddRequestActivity"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.DeliveryReportActivity"
+            android:name=".Activity.fieldAgent.JointReportActivity"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.SitInspectionReportActivity"
+            android:name=".Activity.fieldAgent.ServiceReportActivity"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.FarmerDetailActivity"
+            android:name=".Activity.fieldAgent.DeliveryReportActivity"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.LoginScreen"
+            android:name=".Activity.fieldAgent.SitInspectionReportActivity"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.verifyOTPScreen"
+            android:name=".Activity.fieldAgent.FarmerDetailActivity"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.MainActivity"
+            android:name=".Activity.LoginScreen"
             android:exported="false" />
         <activity
-            android:name="com.ananta.fieldAgent.Activity.SplashActivity"
+            android:name=".Activity.verifyOTPScreen"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.fieldAgent.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
