@@ -25,7 +25,7 @@ public class AddRequestActivity extends AppCompatActivity {
         categories.add("Solar Pump");
         categories.add("Surface Solar Pump");
         categories.add("Solar Pump");
-        categories.add("Surface Solar Pump");
+        categories.add("Surface Solar");
         categories.add("Solar Pump");
 
         ArrayAdapter dataAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
