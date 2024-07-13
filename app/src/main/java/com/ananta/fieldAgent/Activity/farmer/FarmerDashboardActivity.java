@@ -18,6 +18,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
     ActivityFarmerDashboardBinding binding;
 
     TabFragmentAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +27,8 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         setContentView(view);
 
         adapter = new TabFragmentAdapter(getSupportFragmentManager());
-        adapter.addFragment(FramerFragmentFarm.newInstance(), "Farmer");
-        adapter.addFragment(ServiceFragmentFarm.newInstance(), "Service");
+        adapter.addFragment(FramerFragmentFarm.newInstance(), "Current Request");
+        adapter.addFragment(ServiceFragmentFarm.newInstance(), "Past Request");
         binding.viewPager.setAdapter(adapter);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
 

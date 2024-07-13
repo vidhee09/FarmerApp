@@ -2,6 +2,7 @@ package com.ananta.fieldAgent.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.FarmerDetailActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.MainActivity;
 import com.ananta.fieldAgent.Models.FarmerModel;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
 
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
 
         FarmerModel model = farmerList.get(position);
         holder.tvFarmerName.setText(model.getName());
+        holder.tvAddressName.setText(model.getAddress());
 //        holder.tvPumpName.setText(model.getName());
 //        holder.tvAddressName.setText(model.getName());
 
@@ -47,8 +51,12 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
             @Override
             public void onClick(View v) {
 
-              /*  Intent intent = new Intent(context, FarmerDetailActivity.class);
-                context.startActivity(intent);*/
+                Intent intent = new Intent(context, FarmerDetailActivity.class);
+                intent.putExtra(Const.FARMER_ID,model.getId());
+                Log.d("farmer id===>","="+model.getId());
+                intent.putExtra("FarmerName",model.getName());
+                intent.putExtra("CompanyName",model.getAddress());
+                context.startActivity(intent);
             }
         });
 
@@ -64,7 +72,6 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
         TextView tvFarmerName,tvPumpName,tvAddressName;
         ImageView ivFarmerImage;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -72,7 +79,6 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
             tvPumpName = itemView.findViewById(R.id.tvPumpName);
             tvAddressName = itemView.findViewById(R.id.tvAddressName);
             ivFarmerImage = itemView.findViewById(R.id.ivFarmerImage);
-
 
         }
     }

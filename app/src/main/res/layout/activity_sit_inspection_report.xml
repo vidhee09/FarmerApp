@@ -60,17 +60,17 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Name of Surveyor" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tvSurveyorName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
+                    android:background="@drawable/fill_round_background"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
-                    android:hint="Surveyor Name"
+                    android:text="Surveyor Name"
                     android:inputType="text"
-                    android:maxLength="10"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
 
@@ -89,6 +89,7 @@
                     android:text="Present Person Name" />
 
                 <EditText
+                    android:id="@+id/edPresentPersonName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -98,7 +99,8 @@
                     android:gravity="center_vertical"
                     android:hint="Person Name"
                     android:inputType="text"
-                    android:maxLength="10"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
 
@@ -117,6 +119,7 @@
                     android:text="Inspection Officer Name" />
 
                 <EditText
+                    android:id="@+id/edInspectionOfficerName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -126,7 +129,8 @@
                     android:gravity="center_vertical"
                     android:hint="Officer Name"
                     android:inputType="text"
-                    android:maxLength="10"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
 
@@ -142,19 +146,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Address" />
+                    android:text="Lat , Long" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tvAddressSite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
+                    android:background="@drawable/fill_round_background"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
-                    android:hint="Enter Address"
-                    android:inputType="text"
-                    android:maxLength="10"
+                    android:text="Lat , Long"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
 
@@ -181,8 +186,9 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="@dimen/_10sdp">
                         <ImageView
-                            android:layout_width="@dimen/_70sdp"
-                            android:layout_height="@dimen/_70sdp"
+                            android:id="@+id/ivPumpPhoto"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="@dimen/_60sdp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/placeholder"/>
 
@@ -191,8 +197,9 @@
                 </FrameLayout>
 
                 <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:id="@+id/ivCameraPump"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:scaleType="centerCrop"
                     android:layout_marginStart="-10dp"
                     android:layout_gravity="end|bottom"
@@ -222,8 +229,9 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="@dimen/_10sdp">
                         <ImageView
-                            android:layout_width="@dimen/_70sdp"
-                            android:layout_height="@dimen/_70sdp"
+                            android:id="@+id/ivBenificiaryPhoto"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="@dimen/_60sdp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/placeholder"/>
 
@@ -232,8 +240,9 @@
                 </FrameLayout>
 
                 <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:id="@+id/ivBenificiaryCameraSite"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:scaleType="centerCrop"
                     android:layout_marginStart="-10dp"
                     android:layout_gravity="end|bottom"
@@ -243,7 +252,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_100sdp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="vertical">
@@ -263,6 +272,7 @@
                         android:text="Sign :"/>
 
                     <ImageView
+                        android:id="@+id/ivSignImage"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_margin="10dp"
@@ -274,20 +284,45 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_margin="@dimen/_2sdp"
                     android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_close"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginEnd="@dimen/_40sdp"
-                        android:background="@color/black"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:background="@color/white">
+
+                        <com.github.gcacace.signaturepad.views.SignaturePad
+                            android:id="@+id/signaturePad"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:background="@drawable/bg_signature_pad"
+                            app:penColor="@color/black"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnClear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:text="@string/clear"/>
+
+                    <Button
+                        android:id="@+id/btnCompleted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/complete"/>
 
                 </LinearLayout>
 
@@ -298,21 +333,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Date :" />
+                    android:text="Date : " />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvDateSiteReport"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="02-07-2024" />
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/fill_round_background"
+                    android:fontFamily="@font/poppins_bold"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:gravity="center_vertical"
+                    android:inputType="datetime"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Date"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llSiteSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:background="@drawable/round_fill_background"

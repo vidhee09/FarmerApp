@@ -6,6 +6,11 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.JointReportActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.MainActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.PumpInstallationActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.SitInspectionReportActivity;
 import com.ananta.fieldAgent.databinding.ActivitySplashBinding;
 
 
@@ -24,7 +29,9 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashActivity.this, LoginScreen.class);
+//              Intent intent = new Intent(SplashActivity.this, SitInspectionReportActivity.class);
                 startActivity(intent);
+                finish();
 
             }
         },5000);

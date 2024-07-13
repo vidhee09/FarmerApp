@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ananta.fieldAgent.Activity.fieldAgent.FarmerDetailActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.ServiceReportActivity;
 import com.ananta.fieldAgent.Models.ServiceModel;
 import com.ananta.fieldAgent.*;
 
@@ -35,8 +38,16 @@ public class ServiceAdapter  extends RecyclerView.Adapter<ServiceAdapter.ViewHol
     public void onBindViewHolder(@NonNull ServiceAdapter.ViewHolder holder, int position) {
 
         ServiceModel model = serviceList.get(position);
-        holder.tvFarmerName.setText(model.getName());
-//        Glide.with(context).load(model.getImage()).into(holder.ivServiceImage);
+        holder.tvFarmerName.setText(model.getService_request());
+        holder.tvAddressName.setText(model.getDescription());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, ServiceReportActivity.class);
+                context.startActivity(intent);
+            }
+        });
 
     }
 

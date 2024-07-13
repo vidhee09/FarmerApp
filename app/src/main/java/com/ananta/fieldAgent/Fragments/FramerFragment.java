@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.ananta.fieldAgent.Activity.LoginScreen;
 import com.ananta.fieldAgent.Adapters.FarmerAdapter;
 import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.databinding.FragmentFramerBinding;
 
 import java.util.ArrayList;
@@ -32,7 +34,6 @@ public class FramerFragment extends Fragment {
     FarmerAdapter farmerAdapter;
     ArrayList<FarmerModel> farmerModelArrayList = new ArrayList<>();
     ApiInterface apiInterface;
-    String id ;
 
     public static FramerFragment newInstance() {
         return new FramerFragment();
@@ -44,8 +45,7 @@ public class FramerFragment extends Fragment {
         binding = FragmentFramerBinding.inflate(inflater);
         View view =  binding.getRoot();
 
-        Toast.makeText(getActivity(), "id=="+Const.USER_ID, Toast.LENGTH_SHORT).show();
-        getFarmerData(Const.USER_ID);
+        getFarmerData(Const.AGENT_ID);
 
         return view;
     }
@@ -62,9 +62,9 @@ public class FramerFragment extends Fragment {
 
     }
 
-
     public void getFarmerData(String id){
 
+        Utils.showCustomProgressDialog(getActivity(),true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("id",id);
@@ -77,22 +77,26 @@ public class FramerFragment extends Fragment {
             public void onResponse(Call<FarmerModel> call, @NonNull Response<FarmerModel> response) {
 
                 if (response.body() != null){
-                    Log.d("id===>","="+response.body());
-                    Toast.makeText(getActivity(), "Data found true", Toast.LENGTH_SHORT).show();
-//                    farmerModelArrayList.addAll(response.body().getFarmer_data());
-                    farmerModelArrayList.add(new FarmerModel("nameeeee"));
-                    bindList();
+                    if (response.body().getSuccess().equals("true")){
+                        Utils.hideProgressDialog(getActivity());
+                        farmerModelArrayList.addAll(response.body().getFarmer_data());
+                        Log.d("id===>","="+response.body().getName());
+
+                        Const.FARMER_ID = response.body().getFarmer_data().get(0).getId();
+                        bindList();
+                    }else {
+                        Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
 
                 }else {
-                    Log.d("id===>","="+response.body());
-                    Toast.makeText(getActivity(), "Data not found null", Toast.LENGTH_SHORT).show();
+                    Utils.showCustomProgressDialog(getActivity(),true);
+                    Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
             public void onFailure(Call<FarmerModel> call, Throwable t) {
-                Toast.makeText(getActivity(), "Data not found-"+t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "No Internet Connection-", Toast.LENGTH_SHORT).show();
             }
         });
     }

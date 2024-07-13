@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
+import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.databinding.ActivityLoginScreenBinding;
 
 import java.util.HashMap;
@@ -37,9 +38,12 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
-//                    Intent intent = new Intent(LoginScreen.this, verifyOTPScreen.class);
-//                    startActivity(intent);
-                    login();
+                    if (Utils.isInternetConnected(LoginScreen.this)) {
+                        login();
+                    } else {
+                        Utils.showCustomProgressDialog(LoginScreen.this, true);
+                        Toast.makeText(LoginScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             }
@@ -52,12 +56,17 @@ public class LoginScreen extends AppCompatActivity {
         if (binding.edMobileNo.getText().toString().isEmpty()) {
             isValid = false;
             binding.edMobileNo.setError("Please Enter Mobile Number");
+        } else if (binding.edMobileNo.getText().toString().length() != 10) {
+            isValid = false;
+            binding.edMobileNo.setError("Please Enter valid Mobile Number");
         }
         return isValid;
 
     }
 
     public void login() {
+
+        Utils.showCustomProgressDialog(LoginScreen.this,true);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -70,14 +79,16 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
-                assert response.body() != null;
-                if (response.body().getSuccess().equals("true")){
+                if (response.body().getSuccess().equals("true")) {
+                    Utils.hideProgressDialog(LoginScreen.this);
                     Intent intent = new Intent(LoginScreen.this, verifyOTPScreen.class);
-                    intent.putExtra("OTP",response.body().getOtp());
-                    intent.putExtra("NUMBER",binding.edMobileNo.getText().toString());
+                    intent.putExtra("OTP", response.body().getOtp());
+                    intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
                     startActivity(intent);
+                    finish();
 
-                }else {
+                } else {
+                    Utils.showCustomProgressDialog(LoginScreen.this, true);
                     Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
                 }
 
@@ -85,6 +96,7 @@ public class LoginScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
+                Utils.showCustomProgressDialog(LoginScreen.this, true);
                 Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
 
             }

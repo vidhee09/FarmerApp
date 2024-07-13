@@ -31,7 +31,6 @@ public class FramerFragmentFarm extends Fragment {
         binding = FragmentFramerFarmBinding.inflate(inflater);
         View view = binding.getRoot();
 
-
         bindList();
         return view;
     }
@@ -49,7 +48,6 @@ public class FramerFragmentFarm extends Fragment {
 
         farmAdapter = new FarmAdapter(getActivity(), farmerModelArrayList);
         binding.rcvFarmView.setAdapter(farmAdapter);
-
 
     }
 }

@@ -2,6 +2,7 @@ package com.ananta.fieldAgent.Activity.fieldAgent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+
         adapter = new TabFragmentAdapter(getSupportFragmentManager());
         adapter.addFragment(FramerFragment.newInstance(), "Farmer");
         adapter.addFragment(ServiceFragment.newInstance(), "Service");
@@ -36,12 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-               /* FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)mIndicator.getLayoutParams();
 
-                //Multiply positionOffset with indicatorWidth to get translation
-                float translationOffset =  (positionOffset+i) * indicatorWidth ;
-                params.leftMargin = (int) translationOffset;
-                mIndicator.setLayoutParams(params);*/
             }
 
             @Override
@@ -71,11 +68,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this, FarmerDetailActivity.class);
+                Intent intent = new Intent(MainActivity.this, AgentProfileActivity.class);
                 startActivity(intent);
 
             }
         });
 
     }
+
 }

@@ -1,14 +1,13 @@
 package com.ananta.fieldAgent.Models;
 
+import java.util.ArrayList;
+
 public class ServiceModel {
 
-    String success,message,name,address,pumpName;
+    String success,message,description,service_request,incident_date,agent_id,created_at,updated_at;
 
     String image;
-    public ServiceModel(String name) {
-        this.name = name;
-
-    }
+    ArrayList<ServiceModel> service_data;
 
     public String getImage() {
         return image;
@@ -34,27 +33,59 @@ public class ServiceModel {
         this.message = message;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getAddress() {
-        return address;
+    public String getService_request() {
+        return service_request;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setService_request(String service_request) {
+        this.service_request = service_request;
     }
 
-    public String getPumpName() {
-        return pumpName;
+    public String getIncident_date() {
+        return incident_date;
     }
 
-    public void setPumpName(String pumpName) {
-        this.pumpName = pumpName;
+    public void setIncident_date(String incident_date) {
+        this.incident_date = incident_date;
+    }
+
+    public String getAgent_id() {
+        return agent_id;
+    }
+
+    public void setAgent_id(String agent_id) {
+        this.agent_id = agent_id;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public ArrayList<ServiceModel> getService_data() {
+        return service_data;
+    }
+
+    public void setService_data(ArrayList<ServiceModel> service_data) {
+        this.service_data = service_data;
     }
 }

@@ -3,6 +3,7 @@ package com.ananta.fieldAgent.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.databinding.ActivityVerifyOtpscreenBinding;
 import com.chaos.view.PinView;
 
@@ -69,6 +71,7 @@ public class verifyOTPScreen extends AppCompatActivity {
 
     private void loginWithOtp(String otp, PinView pinView) {
 
+        Utils.showCustomProgressDialog(verifyOTPScreen.this,true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -81,13 +84,19 @@ public class verifyOTPScreen extends AppCompatActivity {
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
                 if (response.body().getSuccess().equals("true")) {
+                    Utils.hideProgressDialog(verifyOTPScreen.this);
                     pinView.getText().clear();
 
                     if (response.body().getType().equals("agent")){
 
                         Intent intent = new Intent(verifyOTPScreen.this, MainActivity.class);
-                        Const.USER_ID = response.body().getUser_id();
+                        Const.AGENT_ID = response.body().getUser_id();
+                        Log.d("id===","="+Const.AGENT_ID);
+                        Const.AGENT_NAME = response.body().getUser_name();
+                        Const.COMPANY_NAME = response.body().getUser_companyname();
+                        Const.MOBILE_NUMBER = response.body().getMobile_number();
                         startActivity(intent);
+                        finish();
 
                     }else if (response.body().getType().equals("farmer")){
 
@@ -97,6 +106,7 @@ public class verifyOTPScreen extends AppCompatActivity {
 
 
                 } else {
+                    Utils.showCustomProgressDialog(verifyOTPScreen.this,true);
                     Toast.makeText(verifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
 
                 }
@@ -106,7 +116,7 @@ public class verifyOTPScreen extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
 
-                Toast.makeText(verifyOTPScreen.this, "failure", Toast.LENGTH_SHORT).show();
+                Toast.makeText(verifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
 

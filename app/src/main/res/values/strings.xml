@@ -12,7 +12,7 @@
     <string name="dashboard">Dashboard</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="AddRequest">Add Service Request</string>
+    <string name="AddRequest">Service Request</string>
     <string name="farmer_details">Farmer Details</string>
     <string name="site_inspection_report">Site inspection Report</string>
     <!-- Strings used for fragments for navigation -->
@@ -57,4 +57,12 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="add_description">Add Description</string>
+    <string name="farmer_name">Farmer Name</string>
+    <string name="GPSAlertDialogTitle">Get user Loaction</string>
+    <string name="GPSAlertDialogMessage">Please choose your current location</string>
+    <string name="action_settings">Use</string>
+    <string name="cancel">Cancel</string>
+    <string name="clear">Clear</string>
+    <string name="complete">Complete</string>
 </resources>

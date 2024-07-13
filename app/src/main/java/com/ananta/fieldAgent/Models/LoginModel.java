@@ -2,10 +2,18 @@ package com.ananta.fieldAgent.Models;
 
 public class LoginModel {
 
-
     String success;
     String message;
-    String otp;
+    String otp,user_name,user_companyname,mobile_number;
+
+    public String getMobile_number() {
+        return mobile_number;
+    }
+
+    public void setMobile_number(String mobile_number) {
+        this.mobile_number = mobile_number;
+    }
+
     String type,token,user_id;
 
     public String getType() {
@@ -55,5 +63,21 @@ public class LoginModel {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getUser_companyname() {
+        return user_companyname;
+    }
+
+    public void setUser_companyname(String user_companyname) {
+        this.user_companyname = user_companyname;
     }
 }

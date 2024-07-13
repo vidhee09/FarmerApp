@@ -61,12 +61,13 @@
                     android:text="Name of Surveyor" />
 
                 <TextView
+                    android:id="@+id/tvSurveyorNameJoint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
+                    android:background="@drawable/fill_round_background"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
                     android:inputType="text"
                     android:padding="@dimen/_10sdp"
@@ -87,17 +88,17 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Surveyor Date &amp; Time" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tvSurveyorDateTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
+                    android:background="@drawable/fill_round_background"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
-                    android:hint="04-07-2024 , 10:20AM"
+                    android:text="04-07-2024 , 10:20AM"
                     android:inputType="text"
-                    android:maxLength="10"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
 
@@ -116,12 +117,13 @@
                     android:text="Lat,Long" />
 
                 <TextView
+                    android:id="@+id/tvSurveyorAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
+                    android:background="@drawable/fill_round_background"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
                     android:inputType="text"
                     android:padding="@dimen/_10sdp"
@@ -143,6 +145,7 @@
                     android:text="Alternative Mobile Number" />
 
                 <EditText
+                    android:id="@+id/edSurveyorAlternativeNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -150,8 +153,8 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
-                    android:hint="99632299885"
-                    android:inputType="text"
+                    android:hint="9963229985"
+                    android:inputType="number"
                     android:maxLength="10"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
@@ -171,6 +174,7 @@
                     android:text="IMEI Id" />
 
                 <EditText
+                    android:id="@+id/edSurveyorIMEIId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -179,7 +183,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
                     android:hint="45632299885"
-                    android:inputType="text"
+                    android:inputType="textEmailAddress"
                     android:maxLength="10"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
@@ -194,7 +198,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvWhetherWater"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -212,16 +215,20 @@
                     android:orientation="horizontal">
 
                     <RadioGroup
+                        android:id="@+id/rgRadioWaterSource"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <RadioButton
+                            android:id="@+id/rbYesWaterBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Yes" />
 
                         <RadioButton
+                            android:id="@+id/rbNoWaterBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="No" />
@@ -248,18 +255,21 @@
                     android:text="Type of water source for" />
 
                 <CheckBox
+                    android:id="@+id/checkboxBoreWell"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Borewell"
                     android:textColor="@color/black" />
 
                 <CheckBox
+                    android:id="@+id/checkboxRiver"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="River"
                     android:textColor="@color/black" />
 
                 <CheckBox
+                    android:id="@+id/checkboxLake"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Lake"
@@ -280,6 +290,7 @@
                     android:text="Depth of water source" />
 
                 <EditText
+                    android:id="@+id/edDepthWaterSource"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -307,6 +318,7 @@
                     android:text="Constant water level" />
 
                 <EditText
+                    android:id="@+id/edConstantWaterLevel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -334,6 +346,7 @@
                     android:text="Water delivery point from water source" />
 
                 <EditText
+                    android:id="@+id/edWaterDeliveryPoint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -368,15 +381,25 @@
                         android:fontFamily="@font/poppins_bold"
                         android:text="Pump Type" />
 
-                    <CheckBox
+                    <RadioGroup
+                        android:id="@+id/rgPumpType"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Submarsible" />
+                        android:layout_height="wrap_content">
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Surface" />
+                        <RadioButton
+                            android:id="@+id/rbSubmarsible"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="Submarsible" />
+
+                        <RadioButton
+                            android:id="@+id/rbSurface"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Surface" />
+
+                    </RadioGroup>
 
                 </LinearLayout>
 
@@ -398,24 +421,28 @@
                     android:text="Pump head recommanded by surveyor" />
 
                 <CheckBox
+                    android:id="@+id/cbPumpHead1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="30"
                     android:textColor="@color/black" />
 
                 <CheckBox
+                    android:id="@+id/cbPumpHead2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="50"
                     android:textColor="@color/black" />
 
                 <CheckBox
+                    android:id="@+id/cbPumpHead3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="70"
                     android:textColor="@color/black" />
 
                 <CheckBox
+                    android:id="@+id/cbPumpHead4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="100"
@@ -439,24 +466,28 @@
                     android:text="Pump head recommanded by Baneficiary" />
 
                 <CheckBox
+                    android:id="@+id/cbPumpHeadBeneficiary1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="30"
                     android:textColor="@color/black" />
 
                 <CheckBox
+                    android:id="@+id/cbPumpHeadBeneficiary2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="50"
                     android:textColor="@color/black" />
 
                 <CheckBox
+                    android:id="@+id/cbPumpHeadBeneficiary3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="70"
                     android:textColor="@color/black" />
 
                 <CheckBox
+                    android:id="@+id/cbPumpHeadBeneficiary4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="100"
@@ -488,16 +519,68 @@
                     android:orientation="horizontal">
 
                     <RadioGroup
+                        android:id="@+id/rgAGPumpConnection"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <RadioButton
+                            android:id="@+id/rbAgYes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Yes" />
 
                         <RadioButton
+                            android:id="@+id/rbAgNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/round_background"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Whether solar pump installed under any Govt. scheme" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/rgSolarGovtPump"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/rbSolarYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="Yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbSolarNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="No" />
@@ -532,16 +615,20 @@
                     android:orientation="horizontal">
 
                     <RadioGroup
+                        android:id="@+id/rgShadowArea"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <RadioButton
+                            android:id="@+id/rbShadowYes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Yes" />
 
                         <RadioButton
+                            android:id="@+id/rbShadowNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="No" />
@@ -576,16 +663,20 @@
                     android:orientation="horizontal">
 
                     <RadioGroup
+                        android:id="@+id/rgNetworkAvailable"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <RadioButton
+                            android:id="@+id/rbNetworkYes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Yes" />
 
                         <RadioButton
+                            android:id="@+id/rbNetworkNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="No" />
@@ -609,6 +700,7 @@
                     android:text="Remark" />
 
                 <EditText
+                    android:id="@+id/edRemark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -646,6 +738,7 @@
                         app:cardCornerRadius="@dimen/_10sdp">
 
                         <ImageView
+                            android:id="@+id/ivWaterPhoto"
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_70sdp"
                             android:scaleType="centerCrop"
@@ -656,6 +749,7 @@
                 </FrameLayout>
 
                 <ImageView
+                    android:id="@+id/ivWaterSourceCamera"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="end|bottom"
@@ -682,13 +776,13 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="@dimen/_10sdp">
 
                         <ImageView
+                            android:id="@+id/ivLandmarkPhoto"
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_70sdp"
                             android:scaleType="centerCrop"
@@ -699,6 +793,7 @@
                 </FrameLayout>
 
                 <ImageView
+                    android:id="@+id/ivLandmarkCamera"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="end|bottom"
@@ -731,6 +826,7 @@
                         app:cardCornerRadius="@dimen/_10sdp">
 
                         <ImageView
+                            android:id="@+id/ivBeneficiaryPhotoJoint"
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_70sdp"
                             android:scaleType="centerCrop"
@@ -741,6 +837,7 @@
                 </FrameLayout>
 
                 <ImageView
+                    android:id="@+id/ivBeneficiaryCameraJoint"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="end|bottom"
@@ -752,7 +849,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_80sdp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
                 android:orientation="vertical">
 
@@ -770,6 +867,12 @@
                         android:text="Beneficiary Sign :"
                         android:textSize="@dimen/_12ssp" />
 
+                    <ImageView
+                        android:id="@+id/ivBeneficiarySignImage"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/round_background"/>
 
                 </LinearLayout>
 
@@ -780,17 +883,35 @@
                     android:layout_margin="@dimen/_10sdp"
                     android:orientation="horizontal">
 
-                    <ImageView
+
+                    <com.github.gcacace.signaturepad.views.SignaturePad
+                        android:id="@+id/signaturePadBeneficiary"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:background="@drawable/bg_signature_pad"
+                        app:penColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnClearBeneficiary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_close" />
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:text="@string/clear"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginEnd="@dimen/_40sdp"
-                        android:background="@color/black" />
+                    <Button
+                        android:id="@+id/btnCompletedBeneficiary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/complete"/>
 
                 </LinearLayout>
 
@@ -798,7 +919,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_80sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/round_background"
                 android:orientation="vertical">
@@ -814,9 +935,15 @@
                         android:layout_margin="@dimen/_10sdp"
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Surveyor Sign :"
+                        android:text="Sign :"
                         android:textSize="@dimen/_12ssp" />
 
+                    <ImageView
+                        android:id="@+id/ivSignImage"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/round_background"/>
 
                 </LinearLayout>
 
@@ -827,23 +954,41 @@
                     android:layout_margin="@dimen/_10sdp"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <com.github.gcacace.signaturepad.views.SignaturePad
+                        android:id="@+id/signaturePadSign"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:background="@drawable/bg_signature_pad"
+                        app:penColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnClearSign"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_close" />
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:text="@string/clear"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginEnd="@dimen/_40sdp"
-                        android:background="@color/black" />
+                    <Button
+                        android:id="@+id/btnCompletedSign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/complete"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llJointSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
