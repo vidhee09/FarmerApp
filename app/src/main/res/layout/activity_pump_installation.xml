@@ -126,8 +126,9 @@
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
                     android:hint="23568974123"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textCapCharacters|textEmailAddress"
                     android:padding="@dimen/_10sdp"
+                    android:maxLength="10"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -161,9 +162,9 @@
                         android:gravity="center_vertical"
                         android:hint="45632299885"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
+                        android:inputType="textCapCharacters|textEmailAddress"
                         android:maxLength="10"
-                        android:maxLines="2"
+                        android:maxLines="1"
                         android:padding="@dimen/_10sdp"
                         android:textColor="@color/black" />
 
@@ -177,12 +178,23 @@
 
                 </LinearLayout>
 
-                <TextView
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp">
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <!--<TextView
                     android:id="@+id/tvShowId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="dsdv" />
+                    android:visibility="visible"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="" />-->
 
             </LinearLayout>
 
@@ -208,7 +220,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
                     android:hint="45632299885"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textCapCharacters|textEmailAddress"
                     android:maxLength="10"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
@@ -237,7 +249,8 @@
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
                     android:hint="45632299885"
-                    android:inputType="textEmailAddress"
+                    android:maxLength="10"
+                    android:inputType="textCapCharacters|textEmailAddress"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
 
@@ -294,8 +307,8 @@
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
                     android:hint="45632299885"
-                    android:inputType="textEmailAddress"
-                    android:maxLength="10"
+                    android:inputType="textCapCharacters|textEmailAddress"
+                    android:maxLength="12"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
 

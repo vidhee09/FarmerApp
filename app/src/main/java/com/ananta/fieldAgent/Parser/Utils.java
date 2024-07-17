@@ -46,9 +46,9 @@ public class Utils {
 
     public static void hideProgressDialog(Context context) {
         if (dialog != null){
-
             dialog.hide();
         }
     }
+
        
 }

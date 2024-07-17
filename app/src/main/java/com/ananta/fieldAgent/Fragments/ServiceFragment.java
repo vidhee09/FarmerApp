@@ -57,7 +57,6 @@ public class ServiceFragment extends Fragment {
 
     }
 
-
     public void getServiceData(String id){
 
         Utils.showCustomProgressDialog(getActivity(),true);

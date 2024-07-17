@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Parser;
 
 import com.ananta.fieldAgent.Models.AddServiceModel;
+import com.ananta.fieldAgent.Models.AllFarmerModel;
 import com.ananta.fieldAgent.Models.DeliveryDataModel;
 import com.ananta.fieldAgent.Models.DetailModel;
 import com.ananta.fieldAgent.Models.FarmerModel;
@@ -14,13 +15,16 @@ import com.ananta.fieldAgent.Models.SiteReportModel;
 import java.io.File;
 import java.util.HashMap;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiInterface {
 
@@ -63,11 +67,14 @@ public interface ApiInterface {
     Call<JointSurveyorModel> getJointSurveyorData(@Body HashMap<String, String> joint);
 
     /*---  upload Image  ---*/
-    @FormUrlEncoded
+    @Multipart
     @POST("upload-image")
-    Call<ImageModel> uploadImage(@Field("image") File image,
-                                 @Field("type") String type);
+    Call<ImageModel> uploadImage(@Part MultipartBody.Part image,
+                                 @Part("type") String type);
 
 
+    /*--- Get all farmer Data  ---*/
+    @POST("farmer/all")
+    Call<AllFarmerModel> getAllFarmerData(@Body HashMap<String, String> allFarmer);
 
 }

@@ -1,5 +1,9 @@
 package com.ananta.fieldAgent.Fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -45,14 +49,20 @@ public class FramerFragment extends Fragment {
         binding = FragmentFramerBinding.inflate(inflater);
         View view =  binding.getRoot();
 
-        getFarmerData(Const.AGENT_ID);
+
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFarmerData(Const.AGENT_ID);
+        Log.d("AgentId==","="+Const.AGENT_ID);
+
+    }
 
     public void  bindList(){
-
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         binding.rcvFarmerView.setLayoutManager(manager);
@@ -77,7 +87,7 @@ public class FramerFragment extends Fragment {
             public void onResponse(Call<FarmerModel> call, @NonNull Response<FarmerModel> response) {
 
                 if (response.body() != null){
-                    if (response.body().getSuccess().equals("true")){
+                    if (response.isSuccessful()){
                         Utils.hideProgressDialog(getActivity());
                         farmerModelArrayList.addAll(response.body().getFarmer_data());
                         Log.d("id===>","="+response.body().getName());
@@ -85,18 +95,18 @@ public class FramerFragment extends Fragment {
                         Const.FARMER_ID = response.body().getFarmer_data().get(0).getId();
                         bindList();
                     }else {
-                        Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
                     Utils.showCustomProgressDialog(getActivity(),true);
-                    Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Server not responding", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerModel> call, Throwable t) {
-                Toast.makeText(getActivity(), "No Internet Connection-", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Server not responding", Toast.LENGTH_SHORT).show();
             }
         });
     }

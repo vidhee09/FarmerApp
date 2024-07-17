@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.ananta.fieldAgent.Adapters.PastReqAdapter;
 import com.ananta.fieldAgent.Models.PastReqModel;
+import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.databinding.FragmentPastRequestBinding;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class PastRequestFragment extends Fragment {
     FragmentPastRequestBinding binding;
     PastReqAdapter adapter;
     ArrayList<PastReqModel> pastReqModelArrayList = new ArrayList<>();
+
+    ApiInterface apiInterface;
 
     public static Fragment newInstance() {
         return new PastRequestFragment();
@@ -46,6 +49,8 @@ public class PastRequestFragment extends Fragment {
         adapter = new PastReqAdapter(getActivity(),pastReqModelArrayList);
         binding.rcvPastReqView.setAdapter(adapter);
 
-
     }
+
+//    public void get
+
 }

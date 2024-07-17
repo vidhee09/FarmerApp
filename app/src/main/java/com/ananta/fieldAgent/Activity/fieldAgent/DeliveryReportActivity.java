@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -22,13 +23,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ananta.fieldAgent.Models.DeliveryDataModel;
+import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
+import com.ananta.fieldAgent.Parser.ImageCompression;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityDeliveryReportBinding;
+import com.bumptech.glide.Glide;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 
 import java.io.ByteArrayOutputStream;
@@ -41,6 +46,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,14 +61,13 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     private static final int PERMISSION_CODE = 1;
     ActivityDeliveryReportBinding binding;
     ApiInterface apiInterface;
-    String Farmer_ID,signImage,path;
+    String Farmer_ID, signImage, path;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     int photos;
-    private File signatureName;
+    private String signatureName;
     double latitude, longitude;
-
 
     @Override
     public void onBackPressed() {
@@ -74,14 +81,16 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         setContentView(binding.getRoot());
 
         loadData();
-        initView ();
+        initView();
         setClickListener();
         clickListener();
 
     }
 
-    public void loadData(){
-        Farmer_ID = getIntent().getStringExtra("FarmerPosition");
+    public void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
+        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+        Log.d("Name===", "=site==" + Const.AGENT_NAME);
         binding.edSurveyorNameDelivery.setText(Const.AGENT_NAME);
         getLocation();
         datePick();
@@ -100,13 +109,13 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
     }
 
-    public boolean validation(){
-        boolean isValid= true;
-        if (binding.edSurveyorNameDelivery.getText().toString().isEmpty()){
+    public boolean validation() {
+        boolean isValid = true;
+        if (binding.edSurveyorNameDelivery.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvErrorSurveyorName.setVisibility(View.VISIBLE);
 
-        }else if (binding.edPresentPersonNameDelivery.getText().toString().isEmpty()){
+        } else if (binding.edPresentPersonNameDelivery.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvErrorPresentPersonName.setVisibility(View.VISIBLE);
 
@@ -118,19 +127,19 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         return isValid;
     }
 
-    public void getDeliveryReportData(){
+    public void getDeliveryReportData() {
 
-        Utils.showCustomProgressDialog(DeliveryReportActivity.this,true);
+        Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("surveyor_name",Const.AGENT_NAME);
-        hashMap.put("farmer_id",Const.FARMER_ID);
-        hashMap.put("agent_id",Const.AGENT_ID);
-        hashMap.put("present_person_name",binding.edPresentPersonNameDelivery.getText().toString());
-        hashMap.put("image",path);
-        hashMap.put("date",binding.tvDeliveryDate.getText().toString());
-        hashMap.put("sign",signatureName.toString());
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("surveyor_name", Const.AGENT_NAME);
+        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
+        hashMap.put("image", path);
+        hashMap.put("date", binding.tvDeliveryDate.getText().toString());
+        hashMap.put("sign", signatureName);
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
 
@@ -139,26 +148,26 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             @Override
             public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
 
-                if (response.body() != null){
-                    if (response.body().getSuccess().equals("true")){
+                if (response.body() != null) {
+                    if (response.isSuccessful()) {
                         Utils.hideProgressDialog(DeliveryReportActivity.this);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(DeliveryReportActivity.this, FarmerDetailActivity.class);
-                        startActivity(intent);
+                        finish();
 
-                    }else {
-                        Utils.showCustomProgressDialog(DeliveryReportActivity.this,true);
+                    } else {
+                        Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    Utils.showCustomProgressDialog(DeliveryReportActivity.this,true);
-                    Toast.makeText(DeliveryReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
+
             @Override
             public void onFailure(Call<DeliveryDataModel> call, Throwable t) {
-                Utils.showCustomProgressDialog(DeliveryReportActivity.this,true);
+                Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
                 Toast.makeText(DeliveryReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -177,7 +186,6 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         }
 
         File fileName = new File(folder, "signatureDelivery.jpg");
-        signatureName = fileName;
         Log.d("Site===>", "==d=>" + fileName.toString());
         try {
             FileOutputStream outputStream = new FileOutputStream(String.valueOf(fileName));
@@ -189,9 +197,10 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         } catch (IOException e) {
             e.printStackTrace();
         }
+        uploadFileImage(fileName);
     }
 
-    private void initView () {
+    private void initView() {
         binding.signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
@@ -218,7 +227,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             signImage = binding.signaturePad.getSignatureSvg();
             signImage = BitMapToString(binding.signaturePad.getSignatureBitmap());
             saveBitmapIntoCacheDir(binding.signaturePad.getSignatureBitmap());
-            Log.d("DeliveryReport===>" ,"===>" + signImage);
+            Log.d("DeliveryReport===>", "===>" + signImage);
             binding.ivSignDeliveryImage.setImageBitmap(binding.signaturePad.getSignatureBitmap());
         });
         binding.btnClear.setOnClickListener(v -> {
@@ -226,25 +235,25 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         });
     }
 
-    public void clickListener(){
+    public void clickListener() {
         binding.ivMaterialCamera.setOnClickListener(this);
         binding.llDeliverySubmit.setOnClickListener(this);
         binding.tvAddressDelivery.setOnClickListener(this);
         binding.ivBackPress.setOnClickListener(this);
     }
 
-    public String BitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+    public String BitMapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select photo from gallery", "Capture photo from camera"};
+        String[] pictureDialogItems = {"Select photo from gallery", /*"Choose photo from Camera"*/};
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -284,22 +293,22 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
-                path = String.valueOf(contentURI);
-                Log.d("path===>", "=1=" + path);
+//                path = String.valueOf(contentURI);
 
+                Bitmap bitmap = null;
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                    Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     binding.ivMaterialPhoto.setImageBitmap(bitmap);
-
+                    uploadImage(contentURI, 1);
+                    Log.d("contentURI===>","=bitmap="+contentURI);
                 } catch (IOException e) {
-                    e.printStackTrace();
-//                    Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                    throw new RuntimeException(e);
                 }
+
+
             }
 
-        }
-        else if (requestCode == CAMERA) {
+        } else if (requestCode == CAMERA) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             binding.ivMaterialPhoto.setImageBitmap(thumbnail);
 
@@ -349,12 +358,12 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.ivMaterialCamera){
+        if (id == R.id.ivMaterialCamera) {
             showPictureDialog();
-        }else if (id == R.id.llDeliverySubmit){
-            if (validation()){
+        } else if (id == R.id.llDeliverySubmit) {
+            if (validation()) {
                 getDeliveryReportData();
-            }else {
+            } else {
                 Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.ivBackPress) {
@@ -395,14 +404,102 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void getLocation(){
+    public void getLocation() {
+
         GpsTracker gpsTracker = new GpsTracker(DeliveryReportActivity.this);
-        if(gpsTracker.canGetLocation()){
+        if (gpsTracker.canGetLocation()) {
             latitude = gpsTracker.getLatitude();
             longitude = gpsTracker.getLongitude();
-            binding.tvAddressDelivery.setText(latitude+" , "+longitude);
-        }else{
+            binding.tvAddressDelivery.setText(latitude + " , " + longitude);
+
+        } else {
             gpsTracker.showSettingsAlert();
         }
+    }
+
+    public void uploadImage(Uri contentURI, int fromWhere) {
+
+        Uri uri = null;
+        String fName = "";
+        try {
+            uri = FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI);
+            Log.w("contentURI===>", "=filesutils=" + FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        /*new ImageCompression(this).setImageCompressionListener(compressionImagePath -> {
+            path = compressionImagePath;
+            Log.d("contentURI===>", "=1=" + contentURI);
+            Glide.with(DeliveryReportActivity.this).load(contentURI).into(binding.ivMaterialPhoto);
+        }).execute(path);*/
+
+        File file = new File(String.valueOf(contentURI));
+        Log.w("contentURI===>","filePath="+ file.getPath());
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+
+        final String[] imageName = {""};
+        call.enqueue(new Callback<ImageModel>() {
+            @Override
+            public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+                ImageModel imageModel = response.body();
+
+                if (response.isSuccessful()) {
+                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    Log.w("contentURI===>","imagename"+ imageName[0]);
+                    path = imageModel.getFileUploadData().getImage_name();
+                } else {
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageModel> call, Throwable t) {
+                Toast.makeText(DeliveryReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void uploadFileImage(File file) {
+
+        Uri uri = null;
+        String fName = "";
+        Log.w("FilePath", file.getPath());
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+
+        final String[] imageName = {""};
+        call.enqueue(new Callback<ImageModel>() {
+            @Override
+            public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+                ImageModel imageModel = response.body();
+
+                if (response.isSuccessful()) {
+                    Utils.hideProgressDialog(DeliveryReportActivity.this);
+                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    signatureName = imageModel.getFileUploadData().getImage_name();
+                } else {
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageModel> call, Throwable t) {
+                Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
+                Toast.makeText(DeliveryReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

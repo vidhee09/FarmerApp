@@ -199,7 +199,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center_vertical"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                android:text="Jiont Survey Report"
+                android:text="Joint Survey Report"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp"/>
 

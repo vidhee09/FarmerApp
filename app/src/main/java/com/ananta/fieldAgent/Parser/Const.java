@@ -10,5 +10,4 @@ public class Const {
     public static String FARMER_ID = "";
 
 
-
 }

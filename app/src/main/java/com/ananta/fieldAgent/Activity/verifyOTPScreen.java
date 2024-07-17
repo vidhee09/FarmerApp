@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -83,6 +84,8 @@ public class verifyOTPScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
+                SharedPreferences sharedPreferences = getSharedPreferences("sharedData",MODE_PRIVATE);
+                SharedPreferences.Editor editor= sharedPreferences.edit();
                 if (response.body().getSuccess().equals("true")) {
                     Utils.hideProgressDialog(verifyOTPScreen.this);
                     pinView.getText().clear();
@@ -91,8 +94,11 @@ public class verifyOTPScreen extends AppCompatActivity {
 
                         Intent intent = new Intent(verifyOTPScreen.this, MainActivity.class);
                         Const.AGENT_ID = response.body().getUser_id();
-                        Log.d("id===","="+Const.AGENT_ID);
                         Const.AGENT_NAME = response.body().getUser_name();
+                        editor.putString("agentLogin",Const.AGENT_ID);
+                        editor.putString("agentName",Const.AGENT_NAME);
+                        Log.d("Name===","=aa=="+Const.AGENT_NAME);
+                        editor.commit();
                         Const.COMPANY_NAME = response.body().getUser_companyname();
                         Const.MOBILE_NUMBER = response.body().getMobile_number();
                         startActivity(intent);

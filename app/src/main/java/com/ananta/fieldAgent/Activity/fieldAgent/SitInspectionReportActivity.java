@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.media.MediaScannerConnection;
@@ -27,14 +29,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ananta.fieldAgent.Activity.LoginScreen;
+import com.ananta.fieldAgent.Models.ImageModel;
+import com.ananta.fieldAgent.Models.JointSurveyorModel;
 import com.ananta.fieldAgent.Models.SiteReportModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivitySitInspectionReportBinding;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -49,6 +56,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,10 +77,9 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
 
-    String FarmerPosition,FarmerName,CompanyName;
     int photos;
-    double latitude,longitude;
-    private File FilepathName;
+    double latitude, longitude;
+    private String FilepathName;
 
     @Override
     public void onBackPressed() {
@@ -91,14 +100,16 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     }
 
     public void loadData() {
-        FarmerPosition = getIntent().getStringExtra("farmer_position");
-        FarmerName = getIntent().getStringExtra("FarmerName");
-        CompanyName = getIntent().getStringExtra("CompanyName");
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
+        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+        Log.d("Name===", "=site==" + Const.AGENT_NAME);
         binding.tvSurveyorName.setText(Const.AGENT_NAME);
-        Log.d("id===", "=" + Farmer_ID);
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLocation();
         datePick();
+
+
     }
 
     @Override
@@ -198,7 +209,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         }
 
         File fileName = new File(folder, "signature.jpg");
-        FilepathName = fileName;
+
         Log.d("Site===>", "===>" + fileName.toString());
         try {
             FileOutputStream outputStream = new FileOutputStream(String.valueOf(fileName));
@@ -210,6 +221,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         } catch (IOException e) {
             e.printStackTrace();
         }
+        uploadFileImage(fileName);
     }
 
     public String BitMapToString(Bitmap bitmap) {
@@ -222,7 +234,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
     public void getSiteReportData() {
 
-        Utils.showCustomProgressDialog(SitInspectionReportActivity.this,true);
+        Utils.showCustomProgressDialog(SitInspectionReportActivity.this, true);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -232,7 +244,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         hashMap.put("pump_image", Imagepath);
         hashMap.put("pump_benificiaryimage", baneficiarypath);
         hashMap.put("date", binding.tvDateSiteReport.getText().toString());
-        hashMap.put("inspection_sign", FilepathName.toString());
+        hashMap.put("inspection_sign", FilepathName);
         hashMap.put("inspection_officer_name", binding.edInspectionOfficerName.getText().toString());
         hashMap.put("present_person_name", binding.edPresentPersonName.getText().toString());
         hashMap.put("latitude", String.valueOf(latitude));
@@ -246,24 +258,21 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                     if (response.body().getSuccess().equals("true")) {
                         Utils.hideProgressDialog(SitInspectionReportActivity.this);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SitInspectionReportActivity.this, FarmerDetailActivity.class);
-                        intent.putExtra("FarmerName",FarmerName);
-                        intent.putExtra("CompanyName",CompanyName);
-                        startActivity(intent);
+                        finish();
 
                     } else {
-                        Utils.showCustomProgressDialog(SitInspectionReportActivity.this,true);
+                        Utils.showCustomProgressDialog(SitInspectionReportActivity.this, true);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Utils.showCustomProgressDialog(SitInspectionReportActivity.this,true);
+                    Utils.showCustomProgressDialog(SitInspectionReportActivity.this, true);
                     Toast.makeText(SitInspectionReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SiteReportModel> call, Throwable t) {
-                Utils.showCustomProgressDialog(SitInspectionReportActivity.this,true);
+                Utils.showCustomProgressDialog(SitInspectionReportActivity.this, true);
                 Toast.makeText(SitInspectionReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -273,7 +282,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     private void showPictureDialog(int photoImage) {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select photo from gallery", "Capture photo from camera"};
+        String[] pictureDialogItems = {"Select photo from gallery" /*"Capture photo from camera"*/};
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -314,25 +323,21 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
-                Imagepath = String.valueOf(contentURI);
-
+                Log.d("siteins", "==> Gallery " + Imagepath);
                 try {
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        Imagepath = saveImage(bitmap);
-//                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                        uploadImage(contentURI, 1);
+                        Log.w("siteins", "photo 1" + Imagepath);
                         binding.ivPumpPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        baneficiarypath = String.valueOf(contentURI);
-//                            baneficiarypath = saveImage(bitmap);
-//                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                        uploadImage(contentURI, 2);
                         binding.ivBenificiaryPhoto.setImageBitmap(bitmap);
                     }
 
                 } catch (IOException e) {
                     e.printStackTrace();
-//                    Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -340,16 +345,15 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             if (photos == 1) {
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
                 Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-                Imagepath = String.valueOf(tempUri);
+                uploadImage(tempUri, 1);
                 binding.ivPumpPhoto.setImageBitmap(thumbnail);
-//                Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
                 saveImage(thumbnail);
             } else {
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-                baneficiarypath = String.valueOf(tempUri);
                 binding.ivBenificiaryPhoto.setImageBitmap(thumbnail);
-//                Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                assert thumbnail != null;
+                Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
+                uploadImage(tempUri, 2);
                 saveImage(thumbnail);
             }
 
@@ -358,6 +362,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     }
 
     public String saveImage(Bitmap myBitmap) {
+        String imageFile = "";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
         File wallpaperDirectory = new File(Environment.getExternalStorageDirectory() + "12345");
@@ -375,12 +380,12 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                     new String[]{"image/jpeg"}, null);
             fo.close();
             Log.d("TAG", "File Saved::---&gt;" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
+            imageFile = f.getAbsolutePath();
+//            return f.getAbsolutePath();
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        return "";
+        return imageFile;
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -456,15 +461,93 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         }
     }
 
-    public void getLocation(){
+    public void getLocation() {
         GpsTracker gpsTracker = new GpsTracker(SitInspectionReportActivity.this);
-        if(gpsTracker.canGetLocation()){
-             latitude = gpsTracker.getLatitude();
-             longitude = gpsTracker.getLongitude();
-            binding.tvAddressSite.setText(latitude+" , "+longitude);
-        }else{
+        if (gpsTracker.canGetLocation()) {
+            latitude = gpsTracker.getLatitude();
+            longitude = gpsTracker.getLongitude();
+            binding.tvAddressSite.setText(latitude + " , " + longitude);
+
+
+        } else {
             gpsTracker.showSettingsAlert();
         }
     }
 
+    public void uploadImage(Uri contentURI, int fromWhere) {
+        Uri uri = null;
+        String fName = "";
+        try {
+            uri = FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI);
+            Log.w("FilePathURL", "" + FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        File file = new File(uri.getPath());
+        Log.w("FilePath", file.getPath());
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+
+        final String[] imageName = {""};
+        call.enqueue(new Callback<ImageModel>() {
+            @Override
+            public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+                ImageModel imageModel = response.body();
+
+                if (response.isSuccessful()) {
+                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    Log.w("ImageName", imageName[0]);
+                    if (fromWhere == 1)
+                        Imagepath = imageModel.getFileUploadData().getImage_name();
+                    else
+                        baneficiarypath = imageModel.getFileUploadData().getImage_name();
+                } else {
+                    Toast.makeText(SitInspectionReportActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageModel> call, Throwable t) {
+                Toast.makeText(SitInspectionReportActivity.this, "Image uploaded failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void uploadFileImage(File file) {
+        Uri uri = null;
+        String fName = "";
+        Log.w("FilePath", file.getPath());
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+
+        final String[] imageName = {""};
+        call.enqueue(new Callback<ImageModel>() {
+            @Override
+            public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+                ImageModel imageModel = response.body();
+
+                if (response.isSuccessful()) {
+                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    FilepathName = imageModel.getFileUploadData().getImage_name();
+                } else {
+                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageModel> call, Throwable t) {
+                Toast.makeText(SitInspectionReportActivity.this, "Signature image uploaded failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

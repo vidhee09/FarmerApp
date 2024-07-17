@@ -3,6 +3,7 @@ package com.ananta.fieldAgent.Activity;
 import static com.ananta.fieldAgent.Parser.ErrorLogStatement.LOGIN_FAIL;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,12 +40,12 @@ public class LoginScreen extends AppCompatActivity {
             public void onClick(View v) {
                 if (checkValidation()) {
                     if (Utils.isInternetConnected(LoginScreen.this)) {
+
                         login();
                     } else {
                         Utils.showCustomProgressDialog(LoginScreen.this, true);
                         Toast.makeText(LoginScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
                     }
-
                 }
             }
         });

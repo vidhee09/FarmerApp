@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,9 +27,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.ananta.fieldAgent.Models.AddServiceModel;
+import com.ananta.fieldAgent.Models.AllFarmerModel;
+import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.FileSelectionUtils;
+import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityAddRequestBinding;
 
@@ -43,7 +48,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,8 +63,14 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private static final int GALLERY = 101;
     private static final int CAMERA = 102;
     ActivityAddRequestBinding binding;
-    String path = "";
+    String path = "", claim = "", reason = "", farmer_name="", farmer_id="" ;
     ApiInterface apiInterface;
+    int photos;
+    private int mYear, mMonth, mDay, mHour, mMinute;
+    ArrayList<AllFarmerModel> allFarmersList = new ArrayList<>();
+    ArrayList<String> lsit = new ArrayList<>();
+    ArrayList<String> ids = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +79,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         View view = binding.getRoot();
         setContentView(view);
 
-        clickListener();
-        binding.tvFarmerName.setText(Const.AGENT_NAME);
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
+        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+
+        getAllFarmerData();
+        loadData();
 
         ArrayList<String> categories = new ArrayList<>();
         categories.add("Select type");
@@ -76,24 +94,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         binding.spSpinner.setAdapter(dataAdapter);
-
-        binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        ArrayList<String> request = new ArrayList<>();
-        request.add("Select request");
-        request.add("Pump not working");
-        request.add("Water flow id low");
-        request.add("Other");
-
-        ArrayAdapter reqAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, request);
-        reqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        binding.spSpinnerRequest.setAdapter(reqAdapter);
 
         binding.spSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -120,8 +120,113 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
+        binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
     }
+
+    public void loadData() {
+
+        clickListener();
+        datePick();
+        getInsuranceReasonData();
+        getInsuranceClaim();
+        getServiceRequest();
+
+    }
+
+    public void getInsuranceReasonData() {
+
+        ArrayList<String> insuranceReason = new ArrayList<>();
+        insuranceReason.add("Select one");
+        insuranceReason.add("Strom");
+        insuranceReason.add("Heavy rain");
+        insuranceReason.add("Other");
+
+        ArrayAdapter reasonAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, insuranceReason);
+        reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        binding.spSpinnerIcReason.setAdapter(reasonAdapter);
+
+        binding.spSpinnerIcReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                reason = binding.spSpinnerIcReason.getSelectedItem().toString();
+
+//                Toast.makeText(AddRequestActivity.this, reason, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+
+    public void getInsuranceClaim() {
+
+        ArrayList<String> insuranceClaim = new ArrayList<>();
+        insuranceClaim.add("Select one");
+        insuranceClaim.add("Panel Broken");
+        insuranceClaim.add("Motor brunt");
+
+        ArrayAdapter claimAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, insuranceClaim);
+        claimAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        binding.spSpinnerInsuranceClaim.setAdapter(claimAdapter);
+
+        binding.spSpinnerInsuranceClaim.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                claim = binding.spSpinnerInsuranceClaim.getSelectedItem().toString();
+
+//                Toast.makeText(AddRequestActivity.this, claim, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
+
+    public void getServiceRequest() {
+
+        ArrayList<String> request = new ArrayList<>();
+        request.add("Select request");
+        request.add("Pump not working");
+        request.add("Water flow id low");
+        request.add("Other");
+
+        ArrayAdapter reqAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, request);
+        reqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        binding.spSpinnerRequest.setAdapter(reqAdapter);
+    }
+
+    private void datePick() {
+
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String formattedDate = sdf.format(c.getTime());
+        binding.tvRequestDate.setText(formattedDate);
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -132,6 +237,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
         binding.ivReqCamera.setOnClickListener(this::onClick);
         binding.llAddReqBtn.setOnClickListener(this::onClick);
+        binding.ivInsuranceCamera.setOnClickListener(this::onClick);
 
     }
 
@@ -139,45 +245,110 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.llAddReqBtn) {
-            if (validation()){
+            if (validation()) {
                 getAddRequestData();
-            }else {
+            } else {
                 Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.ivReqCamera) {
-            showPictureDialog();
+            showPictureDialog(1);
+        } else if (id == R.id.ivInsuranceCamera) {
+            showPictureDialog(2);
         }
 
     }
 
-    public boolean validation(){
+    public boolean validation() {
         boolean isvalid = true;
-        if (binding.edReqDescription.getText().toString().isEmpty()){
+        if (binding.edReqDescription.getText().toString().isEmpty()) {
             isvalid = false;
             binding.edReqDescription.setError("Please Enter Description");
-        }else if (binding.spSpinner.getSelectedItem().equals("Select type")){
+        } else if (binding.spSpinner.getSelectedItem().equals("Select type")) {
             isvalid = false;
             binding.tvErrorText.setVisibility(View.VISIBLE);
-        }else if (binding.spSpinnerRequest.getSelectedItem().equals("Select request")){
+        } else if (binding.spSpinnerRequest.getSelectedItem().equals("Select request")) {
             isvalid = false;
             binding.tvReqErrorText.setVisibility(View.VISIBLE);
-        }else if (binding.edRequestDate.getText().toString().isEmpty()){
-            isvalid = false;
-            binding.tvDateErrorText.setVisibility(View.VISIBLE);
         }
         return isvalid;
     }
 
+    public void getAllFarmerData() {
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        HashMap<String, String> hashMap = new HashMap<>();
+
+        Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap);
+        call.enqueue(new Callback<AllFarmerModel>() {
+            @Override
+            public void onResponse(Call<AllFarmerModel> call, Response<AllFarmerModel> response) {
+
+                if (response.isSuccessful()) {
+
+                    allFarmersList.addAll(response.body().getFarmer());
+
+                    for (int i = 0; i < allFarmersList.size(); i++) {
+                        lsit.add(allFarmersList.get(i).getName());
+                        ids.add(allFarmersList.get(i).getId());
+
+                    }
+                    setFarmerList();
+
+
+                } else {
+                    Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AllFarmerModel> call, Throwable t) {
+                Toast.makeText(AddRequestActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    public void setFarmerList() {
+
+        ArrayAdapter farmSAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, lsit);
+        farmSAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spFarmerName.setAdapter(farmSAdapter);
+
+        binding.spFarmerName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                farmer_name = lsit.get(position);
+                farmer_id = ids.get(position);
+
+                Log.d("farmer id===>", "=list=" + farmer_name);
+
+                Log.d("farmer id===>", "=ids=" + farmer_id);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
 
     public void getAddRequestData() {
+
+        Utils.showCustomProgressDialog(AddRequestActivity.this, true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("request_type", binding.spSpinner.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequest.getSelectedItem().toString());
         hashMap.put("description", binding.edReqDescription.getText().toString());
         hashMap.put("image_name", path);
-        hashMap.put("agent_id",Const.AGENT_ID);
-        hashMap.put("incident_date", binding.edRequestDate.getText().toString());
+        hashMap.put("reason", reason);
+        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
+        hashMap.put("incident_date", binding.tvRequestDate.getText().toString());
 
         Call<AddServiceModel> call = apiInterface.getAddServiceRequest(hashMap);
         call.enqueue(new Callback<AddServiceModel>() {
@@ -186,38 +357,40 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
                 if (response.body() != null) {
                     if (response.body().getSuccess().equals("true")) {
+                        Utils.hideProgressDialog(AddRequestActivity.this);
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(AddRequestActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        finish();
 
-                    }else {
+                    } else {
+                        Utils.showCustomProgressDialog(AddRequestActivity.this, true);
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    Toast.makeText(AddRequestActivity.this, "Data not Found...", Toast.LENGTH_SHORT).show();
+                } else {
+                    Utils.showCustomProgressDialog(AddRequestActivity.this, true);
+                    Toast.makeText(AddRequestActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
-                Toast.makeText(AddRequestActivity.this, "Data not Found...", Toast.LENGTH_SHORT).show();
-
+                Utils.hideProgressDialog(AddRequestActivity.this);
+                Toast.makeText(AddRequestActivity.this, "Data not Found" + t, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void showPictureDialog() {
+    private void showPictureDialog(int photoImage) {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select photo from gallery", "Capture photo from camera"};
+        String[] pictureDialogItems = {"Select photo from gallery"/*"Choose photo from camera"*/};
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                choosePhotoFromGallary();
+                                choosePhotoFromGallary(photoImage);
                                 break;
                             case 1:
                                 takePhotoFromCamera();
@@ -228,22 +401,17 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         pictureDialog.show();
     }
 
-    public void choosePhotoFromGallary() {
-//        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(galleryIntent, GALLERY);
-
+    public void choosePhotoFromGallary(int photo) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, GALLERY);
+        photos = photo;
     }
 
     private void takePhotoFromCamera() {
-//        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(intent, CAMERA);
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(camera_intent, CAMERA);
-
     }
 
     @Override
@@ -256,14 +424,24 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
-                path = String.valueOf(contentURI);
-                Log.d("path===>", "=1=" + path);
+//                path = String.valueOf(contentURI);
 
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                    path = saveImage(bitmap);
-                    Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
-                    binding.ivRequestPhoto.setImageBitmap(bitmap);
+                    if (photos == 1) {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                        uploadImage(contentURI, 1);
+                        path = String.valueOf(contentURI);
+                        Log.d("path===>", "=1=" + path);
+                        binding.ivRequestPhoto.setImageBitmap(bitmap);
+                    } else {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                        uploadImage(contentURI, 2);
+                        path = String.valueOf(contentURI);
+                        Log.d("path===>", "=2=" + path);
+                        binding.ivInsurancePhoto.setImageBitmap(bitmap);
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -271,8 +449,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 }
             }
 
-        }
-        else if (requestCode == CAMERA) {
+        } else if (requestCode == CAMERA) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             binding.ivRequestPhoto.setImageBitmap(thumbnail);
 
@@ -285,6 +462,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     public String saveImage(Bitmap myBitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -318,5 +496,52 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
+    public void uploadImage(Uri contentURI, int fromWhere) {
+        Uri uri = null;
+        String fName = "";
+        try {
+            uri = FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI);
+            Log.w("FilePathURL", "" + FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        File file = new File(uri.getPath());
+        Log.w("FilePath", file.getPath());
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+
+        final String[] imageName = {""};
+        call.enqueue(new Callback<ImageModel>() {
+            @Override
+            public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+                ImageModel imageModel = response.body();
+
+                if (response.isSuccessful()) {
+                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    Log.w("ImageName", imageName[0]);
+                    if (fromWhere == 1) {
+                        path = imageModel.getFileUploadData().getImage_name();
+                    } else {
+                        path = imageModel.getFileUploadData().getImage_name();
+                    }
+                } else {
+                    Toast.makeText(AddRequestActivity.this, "image not uploaded", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageModel> call, Throwable t) {
+                Toast.makeText(AddRequestActivity.this, "image not uploaded" + t, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
 
 }

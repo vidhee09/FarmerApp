@@ -1,10 +1,10 @@
 package com.ananta.fieldAgent.Activity.fieldAgent;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -18,10 +18,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Models.PumpInstallModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
@@ -29,6 +31,9 @@ import com.ananta.fieldAgent.databinding.ActivityPumpInstallationBinding;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -41,6 +46,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,14 +61,15 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     private static final int CAMERA = 101;
     ApiInterface apiInterface;
     String Farmer_ID, signImage, path;
-    String beneficiarySignImage, pumpPath, baneficiarypath, workingPumpPath;
+    String beneficiarySignImage, pumpPath, baneficiarypath, workingPumpPath,signatureName;
     File SignPath;
     int imagePhoto;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     double latitude, longitude;
+    ArrayList<String> panelIdList = new ArrayList<>();
+    private int SpannedLength = 0,chipLength = 4;
 
 
     @Override
@@ -76,11 +85,13 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     }
 
     public void loadData() {
-        Farmer_ID = getIntent().getStringExtra("FarmerPosition");
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
+        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
         binding.tvSurveyorNamePump.setText(Const.AGENT_NAME);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLocation();
         datePick();
+
     }
 
     public boolean validation() {
@@ -89,11 +100,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             isValid = false;
             binding.edPumpId.setError("please enter pump id");
 
-        } else if (binding.edPanelId.getText().toString().isEmpty()) {
-            isValid = false;
-            binding.edPanelId.setError("please enter Panel Id");
-
-        } else if (binding.edIMEIId.getText().toString().isEmpty()) {
+        }  else if (binding.edIMEIId.getText().toString().isEmpty()) {
             isValid = false;
             binding.edIMEIId.setError("please enter IMEI Id");
 
@@ -132,6 +139,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     private void setClickListener() {
         binding.btnCompleted.setOnClickListener(v -> {
+            Utils.hideProgressDialog(this);
             signImage = binding.signaturePad.getSignatureSvg();
             signImage = BitMapToString(binding.signaturePad.getSignatureBitmap());
             saveBitmapIntoCacheDir(binding.signaturePad.getSignatureBitmap());
@@ -197,12 +205,14 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        uploadFileImage(fileName);
     }
 
     private void showPictureDialog(Integer photo) {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select photo from gallery", "Capture photo from camera"};
+        String[] pictureDialogItems = {"Select photo from gallery"};
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -248,15 +258,18 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 try {
                     if (imagePhoto == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                        pumpPath = String.valueOf(contentURI);
+                        uploadImage(contentURI,1);
                         binding.ivPhotoInstallPump.setImageBitmap(bitmap);
                     } else if (imagePhoto == 2) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                        baneficiarypath = String.valueOf(contentURI);
+                        uploadImage(contentURI,1);
                         binding.ivBeneficiaryInstallPump.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                        workingPumpPath = String.valueOf(contentURI);
+                        uploadImage(contentURI,1);
                         binding.ivPumpWorking.setImageBitmap(bitmap);
                     }
 
@@ -266,7 +279,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 }
             }
 
-        } else if (requestCode == CAMERA) {
+        } /*else if (requestCode == CAMERA) {
 
             if (imagePhoto == 1) {
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
@@ -291,41 +304,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 saveImage(thumbnail);
             }
 
-        }
-    }
-
-    public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(Environment.getExternalStorageDirectory() + "123");
-        if (!wallpaperDirectory.exists()) {  // have the object build the directory structure, if needed.
-            wallpaperDirectory.mkdirs();
-        }
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::---&gt;" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
-    }
-
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+        }*/
     }
 
 
@@ -342,7 +321,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     public void getPumpInstallationData() {
 
-        Utils.showCustomProgressDialog(PumpInstallationActivity.this,true);
+        Utils.showCustomProgressDialog(PumpInstallationActivity.this, true);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -350,7 +329,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("farmer_id", Const.FARMER_ID);
         hashMap.put("pump_id", binding.edPumpId.getText().toString());
-        hashMap.put("panel_id", binding.edPanelId.getText().toString());
+        hashMap.put("panel_id", panelIdList.toString());
         hashMap.put("controller_id", binding.edControllerId.getText().toString());
         hashMap.put("imei_no", binding.edIMEIId.getText().toString());
         hashMap.put("structure_id", binding.edStructureId.getText().toString());
@@ -358,8 +337,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("install_image", pumpPath);
         hashMap.put("pump_benifi_image", baneficiarypath);
         hashMap.put("pump_work_image", workingPumpPath);
-        hashMap.put("sign", SignPath.toString());
-        hashMap.put("installation_date", binding.tvDatePumpInstall.getText().toString());
+        hashMap.put("sign", signatureName);
+        hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
         Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap);
 
@@ -371,6 +350,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                     if (response.body().getSuccess().equals("true")) {
                         Utils.hideProgressDialog(PumpInstallationActivity.this);
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -398,13 +378,19 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             showPictureDialog(3);
         } else if (id == R.id.llSubmitPumpInstall) {
             if (validation()) {
-                getPumpInstallationData();
+                if (countChipsInChipGroup(binding.chipGroup) >= 9){
+                    getPumpInstallationData();
+                }else {
+                    Toast.makeText(this, "Panel id minimum 9 required", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.ivAddMoreId) {
             if (!binding.edPanelId.getText().toString().isEmpty()) {
-                addMorePanelId();
+                addMorePanelId(binding.edPanelId.getText().toString());
+                binding.edPanelId.setText("");
+
             }
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
@@ -416,16 +402,106 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         super.onBackPressed();
     }
 
-    private void addMorePanelId() {
+    private void addMorePanelId(String txet) {
 
-        ArrayList<String> panelIdList = new ArrayList<>();
-        panelIdList.add(binding.edPanelId.getText().toString());
-        for (int i = 0; i < panelIdList.size(); i++) {
-            binding.tvShowId.append(panelIdList.get(i).toString());
-            binding.tvShowId.append(",");
-            Log.d("panelID===", "=" + panelIdList);
+        Chip chip = new Chip(PumpInstallationActivity.this);
+        chip.setText(txet);
+        binding.chipGroup.addView(chip);
+
+        panelIdList.add(txet);
+        Log.d("chip====","="+new Gson().toJson(panelIdList));
+
+        countChipsInChipGroup(binding.chipGroup);
+        Log.d("chipgroup====","="+countChipsInChipGroup(binding.chipGroup));
+
+
+        /*  if remove chip   */
+       /* chip.setCloseIconVisible(true);
+        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.chipGroup.removeView(chip);
+            }
+        });*/
+
+    }
+
+    private int countChipsInChipGroup(ChipGroup chipGroup) {
+        return binding.chipGroup.getChildCount();
+    }
+
+    public void uploadImage(Uri contentURI, int fromWhere) {
+
+        Uri uri = null;
+        String fName = "";
+        try {
+            uri = FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI);
+            Log.w("FilePathURL", "" + contentURI + " "+ uri);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        File file = new File(uri.getPath());
+        Log.w("FilePath", file.getPath());
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+
+        final String[] imageName = {""};
+        call.enqueue(new Callback<ImageModel>() {
+            @Override
+            public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+                ImageModel imageModel = response.body();
+
+                if (response.isSuccessful()) {
+                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    Log.w("ImageName", imageName[0]);
+                    path = imageModel.getFileUploadData().getImage_name();
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageModel> call, Throwable t) {
+                Toast.makeText(PumpInstallationActivity.this, ""+t, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void uploadFileImage(File file) {
+        Uri uri = null;
+        String fName = "";
+        Log.w("FilePath", file.getPath());
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+
+        final String[] imageName = {""};
+        call.enqueue(new Callback<ImageModel>() {
+            @Override
+            public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+                ImageModel imageModel = response.body();
+
+                if (response.isSuccessful()) {
+                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    signatureName = imageModel.getFileUploadData().getImage_name();
+                } else {
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageModel> call, Throwable t) {
+                Toast.makeText(PumpInstallationActivity.this, "-" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

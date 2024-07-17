@@ -31,9 +31,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityFarmerDetailBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-
-        setContentView(view);
+        setContentView(binding.getRoot());
 
         FarmerPosition = getIntent().getStringExtra("farmer_position");
         FarmerName = getIntent().getStringExtra("FarmerName");
@@ -93,6 +91,11 @@ public class FarmerDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
