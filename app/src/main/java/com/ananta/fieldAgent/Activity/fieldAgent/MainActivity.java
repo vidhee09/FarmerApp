@@ -3,7 +3,6 @@ package com.ananta.fieldAgent.Activity.fieldAgent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,53 +38,41 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-
             }
 
             @Override
             public void onPageSelected(int i) {
-
             }
 
             @Override
             public void onPageScrollStateChanged(int i) {
-
             }
         });
 
 
-        binding.ivAddReqImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.ivAddReqImage.setOnClickListener(v -> {
 
-                Intent intent = new Intent(MainActivity.this, AddRequestActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, AddRequestActivity.class);
+            startActivity(intent);
 
-            }
         });
 
 
-        binding.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.ivProfileImage.setOnClickListener(v -> {
 
-                Intent intent = new Intent(MainActivity.this, AgentProfileActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, AgentProfileActivity.class);
+            startActivity(intent);
 
-            }
         });
 
-        binding.ivSignout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("sharedData",MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("agentLogin","");
-                editor.commit();
-                Intent intent = new Intent(MainActivity.this, LoginScreen.class);
-                startActivity(intent);
-                finishAffinity();
-            }
+        binding.ivSignout.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("sharedData",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("agentLogin","");
+            editor.commit();
+            Intent intent = new Intent(MainActivity.this, LoginScreen.class);
+            startActivity(intent);
+            finishAffinity();
         });
 
     }
