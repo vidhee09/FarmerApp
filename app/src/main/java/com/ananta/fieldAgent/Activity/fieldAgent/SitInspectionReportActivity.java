@@ -108,8 +108,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLocation();
         datePick();
-
-
     }
 
     @Override
@@ -222,14 +220,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             e.printStackTrace();
         }
         uploadFileImage(fileName);
-    }
-
-    public String BitMapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
     }
 
     public void getSiteReportData() {

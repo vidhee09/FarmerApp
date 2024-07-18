@@ -41,7 +41,8 @@ public class VerifyOTPScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verify_otpscreen2);
+        binding = ActivityVerifyOtpscreen2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         OTP = getIntent().getStringExtra("OTP");
         Number = getIntent().getStringExtra("NUMBER");
