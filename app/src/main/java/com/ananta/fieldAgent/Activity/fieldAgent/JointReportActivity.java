@@ -525,7 +525,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     public void getJointReportData() {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        Utils.showCustomProgressDialog(JointReportActivity.this, true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
@@ -561,16 +561,16 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
-                        Utils.hideProgressDialog(JointReportActivity.this);
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
 
                     } else {
-                        Utils.showCustomProgressDialog(JointReportActivity.this, true);
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Utils.showCustomProgressDialog(JointReportActivity.this, true);
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
@@ -578,6 +578,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<JointSurveyorModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(JointReportActivity.this, "Data not found"+t, Toast.LENGTH_SHORT).show();
             }
         });
@@ -585,6 +586,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void uploadImage(Uri contentURI, int fromWhere) {
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         Uri uri = null;
         String fName = "";
         try {
@@ -610,6 +612,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     Log.w("ImageName", imageName[0]);
                     if (fromWhere == 1){
@@ -620,12 +623,14 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         baneficiarypath = imageModel.getFileUploadData().getImage_name();
                     }
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(JointReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
             }
         });
@@ -633,6 +638,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
     public void uploadFileImage(File file) {
 
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         Uri uri = null;
         String fName = "";
         Log.w("FilePath", file.getPath());
@@ -651,17 +657,19 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
-                    Utils.hideProgressDialog(JointReportActivity.this);
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     signatureSurveyor = imageModel.getFileUploadData().getImage_name();
                     signatureBeneficiary = imageModel.getFileUploadData().getImage_name();
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(JointReportActivity.this, "-"+ t, Toast.LENGTH_SHORT).show();
             }
         });

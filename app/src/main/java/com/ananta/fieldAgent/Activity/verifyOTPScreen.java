@@ -72,7 +72,7 @@ public class verifyOTPScreen extends AppCompatActivity {
 
     private void loginWithOtp(String otp, PinView pinView) {
 
-        Utils.showCustomProgressDialog(verifyOTPScreen.this,true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -86,33 +86,34 @@ public class verifyOTPScreen extends AppCompatActivity {
 
                 SharedPreferences sharedPreferences = getSharedPreferences("sharedData",MODE_PRIVATE);
                 SharedPreferences.Editor editor= sharedPreferences.edit();
-                if (response.body().getSuccess().equals("true")) {
-                    Utils.hideProgressDialog(verifyOTPScreen.this);
+
+                if (response.isSuccessful()) {
+                   binding.pbProgressBar.setVisibility(View.GONE);
                     pinView.getText().clear();
 
                     if (response.body().getType().equals("agent")){
-
                         Intent intent = new Intent(verifyOTPScreen.this, MainActivity.class);
                         Const.AGENT_ID = response.body().getUser_id();
                         Const.AGENT_NAME = response.body().getUser_name();
-                        editor.putString("agentLogin",Const.AGENT_ID);
-                        editor.putString("agentName",Const.AGENT_NAME);
-                        Log.d("Name===","=aa=="+Const.AGENT_NAME);
-                        editor.commit();
                         Const.COMPANY_NAME = response.body().getUser_companyname();
                         Const.MOBILE_NUMBER = response.body().getMobile_number();
+                        editor.putString("agentLogin",Const.AGENT_ID);
+                        editor.putString("agentName",Const.AGENT_NAME);
+                        editor.putString("companyName",Const.COMPANY_NAME);
+                        editor.putString("mobileNumber",Const.MOBILE_NUMBER);
+                        Log.d("Name===","=aa=="+Const.AGENT_NAME);
+                        editor.commit();
+
                         startActivity(intent);
                         finish();
 
                     }else if (response.body().getType().equals("farmer")){
-
                         Intent intent = new Intent(verifyOTPScreen.this, FarmerDashboardActivity.class);
                         startActivity(intent);
                     }
 
-
                 } else {
-                    Utils.showCustomProgressDialog(verifyOTPScreen.this,true);
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(verifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
 
                 }
@@ -121,7 +122,7 @@ public class verifyOTPScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
-
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(verifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });

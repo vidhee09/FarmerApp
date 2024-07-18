@@ -42,13 +42,12 @@ public class LoginScreen extends AppCompatActivity {
                     if (Utils.isInternetConnected(LoginScreen.this)) {
                         login();
                     } else {
-                        Utils.showCustomProgressDialog(LoginScreen.this, true);
+                       binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(LoginScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-
     }
 
     public boolean checkValidation() {
@@ -61,12 +60,11 @@ public class LoginScreen extends AppCompatActivity {
             binding.edMobileNo.setError("Please Enter valid Mobile Number");
         }
         return isValid;
-
     }
 
     public void login() {
 
-        Utils.showCustomProgressDialog(LoginScreen.this,true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -81,7 +79,7 @@ public class LoginScreen extends AppCompatActivity {
 
                 assert response.body() != null;
                 if (response.body().getSuccess().equals("true")) {
-                    Utils.hideProgressDialog(LoginScreen.this);
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     binding.tvErrorMobileNumber.setVisibility(View.GONE);
                     Intent intent = new Intent(LoginScreen.this, verifyOTPScreen.class);
                     intent.putExtra("OTP", response.body().getOtp());
@@ -91,14 +89,14 @@ public class LoginScreen extends AppCompatActivity {
 
                 } else {
                     binding.tvErrorMobileNumber.setVisibility(View.VISIBLE);
-                    Utils.showCustomProgressDialog(LoginScreen.this, true);
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
-                Utils.showCustomProgressDialog(LoginScreen.this, true);
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
 
             }

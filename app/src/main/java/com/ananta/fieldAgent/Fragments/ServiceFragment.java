@@ -69,57 +69,8 @@ public class ServiceFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
-//    public void bindRcv(){
-//
-//        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-//        binding.rcvServiceView.setLayoutManager(manager);
-//
-//        serviceAdapter = new ServiceAdapter(getActivity(),serviceArrayList);
-//        binding.rcvServiceView.setAdapter(serviceAdapter);
-//
-//    }
-//
-//    public void getServiceData(String id){
-//
-//        Utils.showCustomProgressDialog(getActivity(),true);
-//        apiInterface = ApiClient.getClient().create(ApiInterface.class);
-//
-//        HashMap<String, String> hashMap = new HashMap<>();
-//        hashMap.put("id",id);
-//
-//        Call<ServiceModel> call = apiInterface.getDashboardService(hashMap);
-//        call.enqueue(new Callback<ServiceModel>() {
-//            @Override
-//            public void onResponse(Call<ServiceModel> call, Response<ServiceModel> response) {
-//
-//                if (response.body() != null){
-//                    if (response.body().getSuccess().equals("true")){
-//                        Utils.hideProgressDialog(getActivity());
-//                        serviceArrayList.addAll(response.body().getService_data());
-//                        bindRcv();
-//                    }else {
-//                        Utils.showCustomProgressDialog(getActivity(),true);
-//                        Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }else {
-//                    Utils.showCustomProgressDialog(getActivity(),true);
-//                    Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ServiceModel> call, Throwable t) {
-//                Utils.showCustomProgressDialog(getActivity(),true);
-//                Toast.makeText(getActivity(), "Data not found-"+t, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//    }
 
 }

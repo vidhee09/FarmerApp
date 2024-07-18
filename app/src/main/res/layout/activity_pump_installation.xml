@@ -37,536 +37,551 @@
 
     </RelativeLayout>
 
-    <ScrollView
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/_10sdp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Name of Surveyor" />
-
-                <TextView
-                    android:id="@+id/tvSurveyorNamePump"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/fill_round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:inputType="text"
-                    android:padding="@dimen/_10sdp"
-                    android:text="Surveyor Name"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Lat,Long" />
-
-                <TextView
-                    android:id="@+id/tvAddressPump"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/fill_round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/_10sdp"
-                    android:singleLine="true"
-                    android:text="Enter Address"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Pump Id" />
-
-                <EditText
-                    android:id="@+id/edPumpId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="23568974123"
-                    android:inputType="textCapCharacters|textEmailAddress"
-                    android:padding="@dimen/_10sdp"
-                    android:maxLength="10"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Panel Id" />
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_10sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_background"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/edPanelId"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Name of Surveyor" />
+
+                    <TextView
+                        android:id="@+id/tvSurveyorNamePump"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_weight="1"
-                        android:background="@null"
+                        android:background="@drawable/fill_round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center_vertical"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        android:text="Surveyor Name"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Lat,Long" />
+
+                    <TextView
+                        android:id="@+id/tvAddressPump"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/fill_round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:text="Enter Address"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Pump Id" />
+
+                    <EditText
+                        android:id="@+id/edPumpId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center_vertical"
-                        android:hint="45632299885"
-                        android:imeOptions="actionNext"
+                        android:hint="23568974123"
                         android:inputType="textCapCharacters|textEmailAddress"
                         android:maxLength="10"
-                        android:maxLines="1"
                         android:padding="@dimen/_10sdp"
                         android:textColor="@color/black" />
 
-                    <ImageView
-                        android:id="@+id/ivAddMoreId"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:src="@drawable/add" />
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Panel Id" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_background"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edPanelId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:fontFamily="@font/poppins_regular"
+                            android:gravity="center_vertical"
+                            android:hint="45632299885"
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapCharacters|textEmailAddress"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:padding="@dimen/_10sdp"
+                            android:textColor="@color/black" />
+
+                        <ImageView
+                            android:id="@+id/ivAddMoreId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:src="@drawable/add" />
+
+                    </LinearLayout>
+
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp">
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <!--<TextView
+                        android:id="@+id/tvShowId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:text="" />-->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Controller Id" />
+
+                    <EditText
+                        android:id="@+id/edControllerId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="45632299885"
+                        android:inputType="textCapCharacters|textEmailAddress"
+                        android:maxLength="10"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="IMEI Id" />
+
+                    <EditText
+                        android:id="@+id/edIMEIId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="45632299885"
+                        android:inputType="textCapCharacters|textEmailAddress"
+                        android:maxLength="10"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Structure Id" />
+
+                    <EditText
+                        android:id="@+id/edStructureId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="45632299885"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="10"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Policy Number (if available)" />
+
+                    <EditText
+                        android:id="@+id/edPolicyNumberPumpInstall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="45632299885"
+                        android:inputType="textCapCharacters|textEmailAddress"
+                        android:maxLength="12"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
 
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp">
-
-                </com.google.android.material.chip.ChipGroup>
-
-                <!--<TextView
-                    android:id="@+id/tvShowId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:text="" />-->
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Controller Id" />
-
-                <EditText
-                    android:id="@+id/edControllerId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="45632299885"
-                    android:inputType="textCapCharacters|textEmailAddress"
-                    android:maxLength="10"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="IMEI Id" />
-
-                <EditText
-                    android:id="@+id/edIMEIId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="45632299885"
-                    android:maxLength="10"
-                    android:inputType="textCapCharacters|textEmailAddress"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Structure Id" />
-
-                <EditText
-                    android:id="@+id/edStructureId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="45632299885"
-                    android:inputType="textEmailAddress"
-                    android:maxLength="10"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Policy Number (if available)" />
-
-                <EditText
-                    android:id="@+id/edPolicyNumberPumpInstall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="45632299885"
-                    android:inputType="textCapCharacters|textEmailAddress"
-                    android:maxLength="12"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Photo Of installed Structure :" />
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_10sdp">
-
-                        <ImageView
-                            android:id="@+id/ivPhotoInstallPump"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="@dimen/_60sdp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/placeholder" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </FrameLayout>
-
-                <ImageView
-                    android:id="@+id/ivCameraInstallPump"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginStart="-10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Photo Of Pump with beneficiary : " />
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_10sdp">
-
-                        <ImageView
-                            android:id="@+id/ivBeneficiaryInstallPump"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="@dimen/_60sdp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/placeholder" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </FrameLayout>
-
-                <ImageView
-                    android:id="@+id/ivBaneficiaryCameraPump"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginStart="-10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Photo Of Pump working :" />
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_10sdp">
-
-                        <ImageView
-                            android:id="@+id/ivPumpWorking"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="@dimen/_60sdp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/placeholder" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </FrameLayout>
-
-                <ImageView
-                    android:id="@+id/ivWorkingPumpCamera"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginStart="-10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_background"
-                android:orientation="vertical">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_10sdp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_10sdp"
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Sign :"
-                        android:textSize="@dimen/_14ssp" />
+                        android:text="Photo Of installed Structure :" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="@dimen/_10sdp">
+
+                            <ImageView
+                                android:id="@+id/ivPhotoInstallPump"
+                                android:layout_width="@dimen/_60sdp"
+                                android:layout_height="@dimen/_60sdp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </FrameLayout>
 
                     <ImageView
-                        android:id="@+id/ivSignImagePump"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/round_background" />
+                        android:id="@+id/ivCameraInstallPump"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginStart="-10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_camera" />
+
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
                     android:orientation="horizontal">
 
-                    <com.github.gcacace.signaturepad.views.SignaturePad
-                        android:id="@+id/signaturePad"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Photo Of Pump with beneficiary : " />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="@dimen/_10sdp">
+
+                            <ImageView
+                                android:id="@+id/ivBeneficiaryInstallPump"
+                                android:layout_width="@dimen/_60sdp"
+                                android:layout_height="@dimen/_60sdp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/ivBaneficiaryCameraPump"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginStart="-10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_camera" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Photo Of Pump working :" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="@dimen/_10sdp">
+
+                            <ImageView
+                                android:id="@+id/ivPumpWorking"
+                                android:layout_width="@dimen/_60sdp"
+                                android:layout_height="@dimen/_60sdp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/ivWorkingPumpCamera"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginStart="-10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_camera" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:background="@drawable/bg_signature_pad"
-                        app:penColor="@color/black" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Sign :"
+                            android:textSize="@dimen/_14ssp" />
+
+                        <ImageView
+                            android:id="@+id/ivSignImagePump"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/round_background" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:orientation="horizontal">
+
+                        <com.github.gcacace.signaturepad.views.SignaturePad
+                            android:id="@+id/signaturePad"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:background="@drawable/bg_signature_pad"
+                            app:penColor="@color/black" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnClear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:text="@string/clear" />
+
+                        <Button
+                            android:id="@+id/btnCompleted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/complete" />
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
-
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btnClear"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:text="@string/clear" />
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Date" />
 
-                    <Button
-                        android:id="@+id/btnCompleted"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tvDatePumpInstall"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/complete" />
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/fill_round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/_10sdp"
+                        android:text="15132"
+                        android:textColor="@color/black" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSubmitPumpInstall"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/round_fill_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:text="Submit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp" />
                 </LinearLayout>
 
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
+        </ScrollView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Date" />
+        <ProgressBar
+            android:id="@+id/pbProgressBar"
+            style="@style/progressbar"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
-                <TextView
-                    android:id="@+id/tvDatePumpInstall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/fill_round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/_10sdp"
-                    android:text="15132"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llSubmitPumpInstall"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_fill_background"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center"
-                    android:text="Submit"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14ssp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-    </ScrollView>
+    </RelativeLayout>
 
 </LinearLayout>

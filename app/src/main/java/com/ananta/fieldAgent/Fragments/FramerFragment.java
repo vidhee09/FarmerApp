@@ -49,8 +49,6 @@ public class FramerFragment extends Fragment {
         binding = FragmentFramerBinding.inflate(inflater);
         View view =  binding.getRoot();
 
-
-
         return view;
     }
 
@@ -74,7 +72,7 @@ public class FramerFragment extends Fragment {
 
     public void getFarmerData(String id){
 
-        Utils.showCustomProgressDialog(getActivity(),true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("id",id);
@@ -88,24 +86,24 @@ public class FramerFragment extends Fragment {
 
                 if (response.body() != null){
                     if (response.isSuccessful()){
-                        Utils.hideProgressDialog(getActivity());
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.addAll(response.body().getFarmer_data());
-                        Log.d("id===>","="+response.body().getName());
-
                         Const.FARMER_ID = response.body().getFarmer_data().get(0).getId();
                         bindList();
                     }else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
-                    Utils.showCustomProgressDialog(getActivity(),true);
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "Server not responding", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(getActivity(), "Server not responding", Toast.LENGTH_SHORT).show();
             }
         });

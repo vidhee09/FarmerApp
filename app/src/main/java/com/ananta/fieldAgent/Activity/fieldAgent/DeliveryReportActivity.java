@@ -90,7 +90,6 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
-        Log.d("Name===", "=site==" + Const.AGENT_NAME);
         binding.edSurveyorNameDelivery.setText(Const.AGENT_NAME);
         getLocation();
         datePick();
@@ -129,7 +128,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
     public void getDeliveryReportData() {
 
-        Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
+       binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -150,16 +149,16 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
-                        Utils.hideProgressDialog(DeliveryReportActivity.this);
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
 
                     } else {
-                        Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
@@ -167,7 +166,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onFailure(Call<DeliveryDataModel> call, Throwable t) {
-                Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(DeliveryReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -437,7 +436,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         File file = new File(String.valueOf(contentURI));
         Log.w("contentURI===>","filePath="+ file.getPath());
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
@@ -451,10 +450,12 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     Log.w("contentURI===>","imagename"+ imageName[0]);
                     path = imageModel.getFileUploadData().getImage_name();
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -468,6 +469,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
     public void uploadFileImage(File file) {
 
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         Uri uri = null;
         String fName = "";
         Log.w("FilePath", file.getPath());
@@ -486,7 +488,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
-                    Utils.hideProgressDialog(DeliveryReportActivity.this);
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     signatureName = imageModel.getFileUploadData().getImage_name();
                 } else {
@@ -497,7 +499,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                Utils.showCustomProgressDialog(DeliveryReportActivity.this, true);
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(DeliveryReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
             }
         });

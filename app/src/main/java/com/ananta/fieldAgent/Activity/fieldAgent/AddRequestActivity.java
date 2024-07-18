@@ -53,7 +53,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private static final int GALLERY = 101;
     private static final int CAMERA = 102;
     ActivityAddRequestBinding binding;
-    String path = "", claim = "", reason = "", farmer_name="", farmer_id="" ;
+    String path = "", claim = "", reason = "", farmer_name = "", farmer_id = "";
     ApiInterface apiInterface;
     int photos;
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -61,13 +61,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     ArrayList<String> list = new ArrayList<>();
     ArrayList<String> ids = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
 
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
@@ -236,16 +234,16 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.llAddReqBtn) {
-            if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")){
-                if (validationIns()){
+            if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")) {
+                if (validationIns()) {
                     getAddRequestData();
-                }else {
-                    Toast.makeText(this, "Please filled all field and try again+ inssssssss", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
-            }else {
-                if (validation()){
+            } else {
+                if (validation()) {
                     getAddRequestData();
-                }else {
+                } else {
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -259,16 +257,16 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public boolean validation() {
         boolean isvalid = true;
-       if (binding.spSpinner.getSelectedItem().equals("Select type")) {
+        if (binding.spSpinner.getSelectedItem().equals("Select type")) {
             isvalid = false;
             binding.tvErrorText.setVisibility(View.VISIBLE);
         } else if (binding.spSpinnerRequest.getSelectedItem().equals("Select request")) {
             isvalid = false;
             binding.tvReqErrorText.setVisibility(View.VISIBLE);
-        }else if (binding.edReqDescription.getText().toString().isEmpty()) {
-           isvalid = false;
-           Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
-       }
+        } else if (binding.edReqDescription.getText().toString().isEmpty()) {
+            isvalid = false;
+            Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
+        }
         return isvalid;
     }
 
@@ -281,10 +279,10 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         } else if (binding.spSpinnerInsuranceClaim.getSelectedItem().equals("Select one")) {
             isvalid = false;
             Toast.makeText(this, "Please Select Insaurance Claim", Toast.LENGTH_SHORT).show();
-        }else if (binding.spSpinnerIcReason.getSelectedItem().equals("Select one")) {
+        } else if (binding.spSpinnerIcReason.getSelectedItem().equals("Select one")) {
             isvalid = false;
             Toast.makeText(this, "Please select reason", Toast.LENGTH_SHORT).show();
-        }else if (binding.edInsuranceDescription.getText().toString().isEmpty()) {
+        } else if (binding.edInsuranceDescription.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
         }
@@ -293,9 +291,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public void getAllFarmerData() {
 
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("agent_id", Const.AGENT_ID);
 
         Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap);
         call.enqueue(new Callback<AllFarmerModel>() {
@@ -303,18 +303,17 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(Call<AllFarmerModel> call, Response<AllFarmerModel> response) {
 
                 if (response.isSuccessful()) {
-
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     allFarmersList.addAll(response.body().getFarmer());
 
                     for (int i = 0; i < allFarmersList.size(); i++) {
                         list.add(allFarmersList.get(i).getName());
                         ids.add(allFarmersList.get(i).getId());
-
                     }
                     setFarmerList();
 
-
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -355,15 +354,16 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public void getAddRequestData() {
 
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
         hashMap.put("request_type", binding.spSpinner.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequest.getSelectedItem().toString());
-        if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")){
+        if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")) {
             hashMap.put("description", binding.edInsuranceDescription.getText().toString());
-        }else {
+        } else {
             hashMap.put("description", binding.edReqDescription.getText().toString());
         }
         hashMap.put("image_name", path);
@@ -378,20 +378,23 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
 
                     } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(AddRequestActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
-                Utils.hideProgressDialog(AddRequestActivity.this);
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(AddRequestActivity.this, "Data not Found" + t, Toast.LENGTH_SHORT).show();
             }
         });
@@ -516,6 +519,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void uploadImage(Uri contentURI, int fromWhere) {
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+
         Uri uri = null;
         String fName = "";
         try {
@@ -541,6 +546,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     Log.w("ImageName", imageName[0]);
                     if (fromWhere == 1) {
@@ -549,12 +555,14 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                         path = imageModel.getFileUploadData().getImage_name();
                     }
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(AddRequestActivity.this, "image not uploaded", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(AddRequestActivity.this, "image not uploaded" + t, Toast.LENGTH_SHORT).show();
 
             }

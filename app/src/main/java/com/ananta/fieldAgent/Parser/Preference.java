@@ -12,8 +12,6 @@ public class Preference {
     private static String MOBILE_NUMBER = "Mobile_number";
     private static String NAME = "name";
 
-
-
     public static Preference getInstance(Context context) {
         app_preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return preference;

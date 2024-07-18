@@ -74,7 +74,7 @@ public interface ApiInterface {
 
 
     /*--- Get all farmer Data  ---*/
-    @POST("farmer/all")
+    @POST("farmer/details")
     Call<AllFarmerModel> getAllFarmerData(@Body HashMap<String, String> allFarmer);
 
 }

@@ -139,7 +139,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     private void setClickListener() {
         binding.btnCompleted.setOnClickListener(v -> {
-            Utils.hideProgressDialog(this);
+         binding.pbProgressBar.setVisibility(View.VISIBLE);
             signImage = binding.signaturePad.getSignatureSvg();
             signImage = BitMapToString(binding.signaturePad.getSignatureBitmap());
             saveBitmapIntoCacheDir(binding.signaturePad.getSignatureBitmap());
@@ -279,7 +279,9 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 }
             }
 
-        } /*else if (requestCode == CAMERA) {
+        }
+
+        /*else if (requestCode == CAMERA) {
 
             if (imagePhoto == 1) {
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
@@ -321,7 +323,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     public void getPumpInstallationData() {
 
-        Utils.showCustomProgressDialog(PumpInstallationActivity.this, true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -347,20 +349,23 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             public void onResponse(Call<PumpInstallModel> call, Response<PumpInstallModel> response) {
 
                 if (response.body() != null) {
-                    if (response.body().getSuccess().equals("true")) {
-                        Utils.hideProgressDialog(PumpInstallationActivity.this);
+                    if (response.isSuccessful()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
             }
         });
@@ -432,6 +437,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     public void uploadImage(Uri contentURI, int fromWhere) {
 
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         Uri uri = null;
         String fName = "";
         try {
@@ -457,21 +463,25 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     Log.w("ImageName", imageName[0]);
                     path = imageModel.getFileUploadData().getImage_name();
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                Toast.makeText(PumpInstallationActivity.this, ""+t, Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(PumpInstallationActivity.this, "Data not found"+t, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void uploadFileImage(File file) {
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         Uri uri = null;
         String fName = "";
         Log.w("FilePath", file.getPath());
@@ -490,15 +500,18 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     signatureName = imageModel.getFileUploadData().getImage_name();
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(PumpInstallationActivity.this, "-" + t, Toast.LENGTH_SHORT).show();
             }
         });

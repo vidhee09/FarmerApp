@@ -234,7 +234,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
     public void getSiteReportData() {
 
-        Utils.showCustomProgressDialog(SitInspectionReportActivity.this, true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -255,24 +255,24 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             @Override
             public void onResponse(Call<SiteReportModel> call, Response<SiteReportModel> response) {
                 if (response.body() != null) {
-                    if (response.body().getSuccess().equals("true")) {
-                        Utils.hideProgressDialog(SitInspectionReportActivity.this);
+                    if (response.isSuccessful()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
 
                     } else {
-                        Utils.showCustomProgressDialog(SitInspectionReportActivity.this, true);
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Utils.showCustomProgressDialog(SitInspectionReportActivity.this, true);
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(SitInspectionReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SiteReportModel> call, Throwable t) {
-                Utils.showCustomProgressDialog(SitInspectionReportActivity.this, true);
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(SitInspectionReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -475,6 +475,8 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     }
 
     public void uploadImage(Uri contentURI, int fromWhere) {
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+
         Uri uri = null;
         String fName = "";
         try {
@@ -500,25 +502,30 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     Log.w("ImageName", imageName[0]);
-                    if (fromWhere == 1)
+                    if (fromWhere == 1) {
                         Imagepath = imageModel.getFileUploadData().getImage_name();
-                    else
+                    } else {
                         baneficiarypath = imageModel.getFileUploadData().getImage_name();
+                    }
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(SitInspectionReportActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(SitInspectionReportActivity.this, "Image uploaded failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void uploadFileImage(File file) {
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         Uri uri = null;
         String fName = "";
         Log.w("FilePath", file.getPath());
@@ -537,15 +544,18 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     FilepathName = imageModel.getFileUploadData().getImage_name();
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(SitInspectionReportActivity.this, "Signature image uploaded failed", Toast.LENGTH_SHORT).show();
             }
         });
