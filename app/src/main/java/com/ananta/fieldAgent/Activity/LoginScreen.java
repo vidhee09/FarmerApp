@@ -40,7 +40,6 @@ public class LoginScreen extends AppCompatActivity {
             public void onClick(View v) {
                 if (checkValidation()) {
                     if (Utils.isInternetConnected(LoginScreen.this)) {
-
                         login();
                     } else {
                         Utils.showCustomProgressDialog(LoginScreen.this, true);
@@ -80,8 +79,10 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
+                assert response.body() != null;
                 if (response.body().getSuccess().equals("true")) {
                     Utils.hideProgressDialog(LoginScreen.this);
+                    binding.tvErrorMobileNumber.setVisibility(View.GONE);
                     Intent intent = new Intent(LoginScreen.this, verifyOTPScreen.class);
                     intent.putExtra("OTP", response.body().getOtp());
                     intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
@@ -89,10 +90,10 @@ public class LoginScreen extends AppCompatActivity {
                     finish();
 
                 } else {
+                    binding.tvErrorMobileNumber.setVisibility(View.VISIBLE);
                     Utils.showCustomProgressDialog(LoginScreen.this, true);
                     Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
