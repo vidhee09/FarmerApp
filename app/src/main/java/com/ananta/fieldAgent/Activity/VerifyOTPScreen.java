@@ -8,7 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Activity.farmer.FarmerDashboardActivity;
 import com.ananta.fieldAgent.Activity.fieldAgent.MainActivity;
@@ -16,8 +20,8 @@ import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
-import com.ananta.fieldAgent.Parser.Utils;
-import com.ananta.fieldAgent.databinding.ActivityVerifyOtpscreenBinding;
+import com.ananta.fieldAgent.R;
+import com.ananta.fieldAgent.databinding.ActivityVerifyOtpscreen2Binding;
 import com.chaos.view.PinView;
 
 import java.text.DecimalFormat;
@@ -28,18 +32,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class verifyOTPScreen extends AppCompatActivity {
+public class VerifyOTPScreen extends AppCompatActivity {
 
-    ActivityVerifyOtpscreenBinding binding;
+    ActivityVerifyOtpscreen2Binding binding;
     String OTP = "", Number = "";
     ApiInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityVerifyOtpscreenBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(R.layout.activity_verify_otpscreen2);
 
         OTP = getIntent().getStringExtra("OTP");
         Number = getIntent().getStringExtra("NUMBER");
@@ -72,7 +74,7 @@ public class verifyOTPScreen extends AppCompatActivity {
 
     private void loginWithOtp(String otp, PinView pinView) {
 
-        binding.pbProgressBar.setVisibility(View.VISIBLE);
+//        Utils.showCustomProgressDialog(VerifyOTPScreen.this,true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -86,35 +88,34 @@ public class verifyOTPScreen extends AppCompatActivity {
 
                 SharedPreferences sharedPreferences = getSharedPreferences("sharedData",MODE_PRIVATE);
                 SharedPreferences.Editor editor= sharedPreferences.edit();
-
                 if (response.isSuccessful()) {
-                   binding.pbProgressBar.setVisibility(View.GONE);
+//                    Utils.hideProgressDialog(VerifyOTPScreen.this);
                     pinView.getText().clear();
 
                     if (response.body().getType().equals("agent")){
-                        Intent intent = new Intent(verifyOTPScreen.this, MainActivity.class);
+
+                        Intent intent = new Intent(VerifyOTPScreen.this, MainActivity.class);
                         Const.AGENT_ID = response.body().getUser_id();
                         Const.AGENT_NAME = response.body().getUser_name();
-                        Const.COMPANY_NAME = response.body().getUser_companyname();
-                        Const.MOBILE_NUMBER = response.body().getMobile_number();
-                        editor.putString("agentLogin",Const.AGENT_ID);
+                        editor.putString("agentLogin", Const.AGENT_ID);
                         editor.putString("agentName",Const.AGENT_NAME);
-                        editor.putString("companyName",Const.COMPANY_NAME);
-                        editor.putString("mobileNumber",Const.MOBILE_NUMBER);
                         Log.d("Name===","=aa=="+Const.AGENT_NAME);
                         editor.commit();
-
+                        Const.COMPANY_NAME = response.body().getUser_companyname();
+                        Const.MOBILE_NUMBER = response.body().getMobile_number();
                         startActivity(intent);
                         finish();
 
                     }else if (response.body().getType().equals("farmer")){
-                        Intent intent = new Intent(verifyOTPScreen.this, FarmerDashboardActivity.class);
+
+                        Intent intent = new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
                         startActivity(intent);
                     }
 
+
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(verifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
+//                    Utils.showCustomProgressDialog(verifyOTPScreen.this,true);
+                    Toast.makeText(VerifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -122,8 +123,8 @@ public class verifyOTPScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(verifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(VerifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -131,6 +132,7 @@ public class verifyOTPScreen extends AppCompatActivity {
     }
 
     /*------------  CountDownTimer -----------*/
+
     public void countDownTimerFun() {
         new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {

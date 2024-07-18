@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class ServiceModel {
 
-    String success,message,description,service_request,incident_date,agent_id,created_at,updated_at;
-
+    String message,description,service_request,incident_date,agent_id,created_at,updated_at;
+    boolean success;
     String image;
     ArrayList<ServiceModel> service_data;
 
@@ -17,11 +17,11 @@ public class ServiceModel {
         this.image = image;
     }
 
-    public String getSuccess() {
+    public boolean getSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 

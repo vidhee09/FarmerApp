@@ -76,7 +76,6 @@ public class FramerFragment extends Fragment {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("id",id);
-        Log.d("id===>","="+id);
 
         Call<FarmerModel> call = apiInterface.getDashboardData(hashMap);
 

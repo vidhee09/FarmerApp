@@ -2,9 +2,11 @@ package com.ananta.fieldAgent.Models;
 
 public class LoginModel {
 
-    String success;
+    boolean success;
     String message;
-    String otp,user_name,user_companyname,mobile_number;
+    String otp,user_name,
+            user_companyname,
+            mobile_number;
 
     public String getMobile_number() {
         return mobile_number;
@@ -32,11 +34,11 @@ public class LoginModel {
         this.token = token;
     }
 
-    public String getSuccess() {
+    public boolean getSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 

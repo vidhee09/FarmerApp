@@ -78,10 +78,10 @@ public class LoginScreen extends AppCompatActivity {
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
                 assert response.body() != null;
-                if (response.body().getSuccess().equals("true")) {
+                if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     binding.tvErrorMobileNumber.setVisibility(View.GONE);
-                    Intent intent = new Intent(LoginScreen.this, verifyOTPScreen.class);
+                    Intent intent = new Intent(LoginScreen.this, VerifyOTPScreen.class);
                     intent.putExtra("OTP", response.body().getOtp());
                     intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
                     startActivity(intent);

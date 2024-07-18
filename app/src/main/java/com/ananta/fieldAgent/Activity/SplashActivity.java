@@ -35,7 +35,9 @@ public class SplashActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
                 if (!sharedPreferences.getString("agentLogin", "").equals("")) {
                     Const.AGENT_ID = sharedPreferences.getString("agentLogin", "");
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    // old screen
+//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
