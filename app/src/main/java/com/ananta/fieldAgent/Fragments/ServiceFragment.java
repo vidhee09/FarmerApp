@@ -2,6 +2,7 @@ package com.ananta.fieldAgent.Fragments;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.ananta.fieldAgent.Activity.LoginScreen;
 import com.ananta.fieldAgent.Adapters.ServiceAdapter;
+import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Models.ServiceModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
@@ -30,6 +32,7 @@ public class ServiceFragment extends Fragment {
     ServiceAdapter serviceAdapter;
     ArrayList<ServiceModel> serviceArrayList = new ArrayList<>();
     ApiInterface apiInterface;
+    TabFragmentAdapter adapter;
 
     public static Fragment newInstance() {
         return new ServiceFragment();
@@ -40,60 +43,83 @@ public class ServiceFragment extends Fragment {
 
         binding = FragmentServiceBinding.inflate(inflater);
         View view = binding.getRoot();
-
-        getServiceData(Const.AGENT_ID);
+//        getServiceData(Const.AGENT_ID);
         Log.d("id===","="+ Const.AGENT_ID);
+
+        adapter = new TabFragmentAdapter(getActivity().getSupportFragmentManager());
+        adapter.addFragment(CurrentRequestFragment.newInstance(), "Current Request");
+        adapter.addFragment(PastRequestFragment.newInstance(), "Past Request");
+        binding.vpViewPager.setAdapter(adapter);
+        binding.tbTabLayout.setupWithViewPager(binding.vpViewPager);
+
+        binding.vpViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
 
         return view;
     }
 
-    public void bindRcv(){
-
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        binding.rcvServiceView.setLayoutManager(manager);
-
-        serviceAdapter = new ServiceAdapter(getActivity(),serviceArrayList);
-        binding.rcvServiceView.setAdapter(serviceAdapter);
-
-    }
-
-    public void getServiceData(String id){
-
-        Utils.showCustomProgressDialog(getActivity(),true);
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("id",id);
-
-        Call<ServiceModel> call = apiInterface.getDashboardService(hashMap);
-        call.enqueue(new Callback<ServiceModel>() {
-            @Override
-            public void onResponse(Call<ServiceModel> call, Response<ServiceModel> response) {
-
-                if (response.body() != null){
-                    if (response.body().getSuccess().equals("true")){
-                        Utils.hideProgressDialog(getActivity());
-                        serviceArrayList.addAll(response.body().getService_data());
-                        bindRcv();
-                    }else {
-                        Utils.showCustomProgressDialog(getActivity(),true);
-                        Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
-
-                    }
-                }else {
-                    Utils.showCustomProgressDialog(getActivity(),true);
-                    Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ServiceModel> call, Throwable t) {
-                Utils.showCustomProgressDialog(getActivity(),true);
-                Toast.makeText(getActivity(), "Data not found-"+t, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
+//    public void bindRcv(){
+//
+//        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+//        binding.rcvServiceView.setLayoutManager(manager);
+//
+//        serviceAdapter = new ServiceAdapter(getActivity(),serviceArrayList);
+//        binding.rcvServiceView.setAdapter(serviceAdapter);
+//
+//    }
+//
+//    public void getServiceData(String id){
+//
+//        Utils.showCustomProgressDialog(getActivity(),true);
+//        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+//
+//        HashMap<String, String> hashMap = new HashMap<>();
+//        hashMap.put("id",id);
+//
+//        Call<ServiceModel> call = apiInterface.getDashboardService(hashMap);
+//        call.enqueue(new Callback<ServiceModel>() {
+//            @Override
+//            public void onResponse(Call<ServiceModel> call, Response<ServiceModel> response) {
+//
+//                if (response.body() != null){
+//                    if (response.body().getSuccess().equals("true")){
+//                        Utils.hideProgressDialog(getActivity());
+//                        serviceArrayList.addAll(response.body().getService_data());
+//                        bindRcv();
+//                    }else {
+//                        Utils.showCustomProgressDialog(getActivity(),true);
+//                        Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                }else {
+//                    Utils.showCustomProgressDialog(getActivity(),true);
+//                    Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ServiceModel> call, Throwable t) {
+//                Utils.showCustomProgressDialog(getActivity(),true);
+//                Toast.makeText(getActivity(), "Data not found-"+t, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//    }
 
 }

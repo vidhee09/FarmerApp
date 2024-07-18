@@ -14,7 +14,7 @@ import com.ananta.fieldAgent.databinding.ActivityServiceReportBinding;
 public class ServiceReportActivity extends AppCompatActivity {
 
     ActivityServiceReportBinding binding;
-    TabFragmentAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,28 +23,6 @@ public class ServiceReportActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        adapter = new TabFragmentAdapter(getSupportFragmentManager());
-        adapter.addFragment(CurrentRequestFragment.newInstance(), "Current Request");
-        adapter.addFragment(PastRequestFragment.newInstance(), "Past Request");
-        binding.vpViewPager.setAdapter(adapter);
-        binding.tbTabLayout.setupWithViewPager(binding.vpViewPager);
-
-        binding.vpViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
 
     }
 }
