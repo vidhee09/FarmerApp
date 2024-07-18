@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import com.ananta.fieldAgent.Activity.DashboardActivity;
 import com.ananta.fieldAgent.databinding.ActivityAddRequestFarmerBinding;
 
 public class AddRequestFarmerActivity extends AppCompatActivity {
@@ -23,7 +24,8 @@ public class AddRequestFarmerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(AddRequestFarmerActivity.this, FarmerDashboardActivity.class);
+//                Intent intent = new Intent(AddRequestFarmerActivity.this, FarmerDashboardActivity.class);
+                Intent intent = new Intent(AddRequestFarmerActivity.this, DashboardActivity.class);
                 startActivity(intent);
 
             }

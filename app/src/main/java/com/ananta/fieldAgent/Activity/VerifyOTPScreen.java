@@ -28,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class verifyOTPScreen extends AppCompatActivity {
+public class VerifyOTPScreen extends AppCompatActivity {
 
     ActivityVerifyOtpscreenBinding binding;
     String OTP = "", Number = "";
@@ -72,7 +72,7 @@ public class verifyOTPScreen extends AppCompatActivity {
 
     private void loginWithOtp(String otp, PinView pinView) {
 
-        Utils.showCustomProgressDialog(verifyOTPScreen.this,true);
+        Utils.showCustomProgressDialog(VerifyOTPScreen.this,true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -86,43 +86,42 @@ public class verifyOTPScreen extends AppCompatActivity {
 
                 SharedPreferences sharedPreferences = getSharedPreferences("sharedData",MODE_PRIVATE);
                 SharedPreferences.Editor editor= sharedPreferences.edit();
-                if (response.body().getSuccess().equals("true")) {
-                    Utils.hideProgressDialog(verifyOTPScreen.this);
-                    pinView.getText().clear();
+                if (response.body() != null) {
+                    if (response.body().getSuccess()) {
+                        Utils.hideProgressDialog(VerifyOTPScreen.this);
+                        pinView.getText().clear();
+                        if (response.body().getType().equals("agent")) {
+                            //old Activity when we want see old view
+//                            Intent intent = new Intent(VerifyOTPScreen.this, MainActivity.class);
+                            Intent intent = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
+                            Const.AGENT_ID = response.body().getUser_id();
+                            Const.AGENT_NAME = response.body().getUser_name();
+                            editor.putString("agentLogin", Const.AGENT_ID);
+                            editor.putString("agentName", Const.AGENT_NAME);
+                            Log.d("Name===", "=aa==" + Const.AGENT_NAME);
+                            editor.commit();
+                            Const.COMPANY_NAME = response.body().getUser_companyname();
+                            Const.MOBILE_NUMBER = response.body().getMobile_number();
+                            startActivity(intent);
+                            finish();
 
-                    if (response.body().getType().equals("agent")){
-
-                        Intent intent = new Intent(verifyOTPScreen.this, MainActivity.class);
-                        Const.AGENT_ID = response.body().getUser_id();
-                        Const.AGENT_NAME = response.body().getUser_name();
-                        editor.putString("agentLogin",Const.AGENT_ID);
-                        editor.putString("agentName",Const.AGENT_NAME);
-                        Log.d("Name===","=aa=="+Const.AGENT_NAME);
-                        editor.commit();
-                        Const.COMPANY_NAME = response.body().getUser_companyname();
-                        Const.MOBILE_NUMBER = response.body().getMobile_number();
-                        startActivity(intent);
-                        finish();
-
-                    }else if (response.body().getType().equals("farmer")){
-
-                        Intent intent = new Intent(verifyOTPScreen.this, FarmerDashboardActivity.class);
-                        startActivity(intent);
+                        } else if (response.body().getType().equals("farmer")) {
+                            Intent intent = new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
+                            startActivity(intent);
+                        }
                     }
 
-
                 } else {
-                    Utils.showCustomProgressDialog(verifyOTPScreen.this,true);
-                    Toast.makeText(verifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
-
+                    Utils.showCustomProgressDialog(VerifyOTPScreen.this, true);
+                    Toast.makeText(VerifyOTPScreen.this, "Server Under Maintenance", Toast.LENGTH_SHORT).show();
+                    pinView.getText().clear();
                 }
-
             }
 
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
 
-                Toast.makeText(verifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VerifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
 

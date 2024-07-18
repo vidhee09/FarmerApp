@@ -69,8 +69,7 @@ public interface ApiInterface {
     /*---  upload Image  ---*/
     @Multipart
     @POST("upload-image")
-    Call<ImageModel> uploadImage(@Part MultipartBody.Part image,
-                                 @Part("type") String type);
+    Call<ImageModel> uploadImage(@Part MultipartBody.Part image, @Part("type") String type);
 
 
     /*--- Get all farmer Data  ---*/
