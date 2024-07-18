@@ -21,8 +21,8 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
         bindView();
-        initView();
         addListener();
     }
 
@@ -32,14 +32,13 @@ public class DashboardActivity extends AppCompatActivity {
         ivAddReqImage = findViewById(R.id.ivAddReqImage);
     }
 
-    private void initView() {
-    }
 
     private void addListener() {
         llFarmer.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, FarmerActivity.class);
             startActivity(intent);
         });
+
         llService.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, ServiceActivity.class);
             startActivity(intent);

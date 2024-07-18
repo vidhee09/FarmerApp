@@ -71,4 +71,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/svSearchView" />
 
+    <ProgressBar
+        android:id="@+id/pbProgressBar"
+        style="@style/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rcvFarmer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rcvFarmer"
+        app:layout_constraintTop_toBottomOf="@+id/svSearchView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

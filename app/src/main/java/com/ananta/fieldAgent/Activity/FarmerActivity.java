@@ -21,6 +21,7 @@ import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
+import com.ananta.fieldAgent.databinding.ActivityFarmerBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,45 +32,37 @@ import retrofit2.Response;
 
 public class FarmerActivity extends AppCompatActivity {
 
+    ActivityFarmerBinding binding;
     FarmerAdapter farmerAdapter;
     ArrayList<FarmerModel> farmerModelArrayList = new ArrayList<>();
     ApiInterface apiInterface;
-    private RecyclerView rcvFarmer;
-    private ImageView ivBackPress, ivAddReqImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_farmer);
-//        getFarmerData(Const.AGENT_ID);
+        binding = ActivityFarmerBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        bindView();
         addListener();
-    }
-
-    private void bindView() {
-        rcvFarmer = findViewById(R.id.rcvFarmer);
-        ivBackPress = findViewById(R.id.ivBackPress);
-        ivAddReqImage = findViewById(R.id.ivAddReqImage);
     }
 
     private void initView() {
         LinearLayoutManager manager = new LinearLayoutManager(FarmerActivity.this,LinearLayoutManager.VERTICAL,false);
-        rcvFarmer.setLayoutManager(manager);
+        binding.rcvFarmer.setLayoutManager(manager);
 
         farmerAdapter = new FarmerAdapter(FarmerActivity.this,farmerModelArrayList);
-        rcvFarmer.setAdapter(farmerAdapter);
+        binding.rcvFarmer.setAdapter(farmerAdapter);
     }
 
     private void addListener() {
-        ivBackPress.setOnClickListener(new View.OnClickListener() {
+        binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
 
-        ivAddReqImage.setOnClickListener(new View.OnClickListener() {
+        binding.ivAddReqImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FarmerActivity.this, AddRequestActivity.class);
@@ -85,7 +78,7 @@ public class FarmerActivity extends AppCompatActivity {
     }
 
     private void getFarmerData(String agentId) {
-//        Utils.showCustomProgressDialog(FarmerActivity.this,true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("id",agentId);
@@ -98,23 +91,25 @@ public class FarmerActivity extends AppCompatActivity {
 
                 if (response.body() != null){
                     if (response.isSuccessful()){
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.clear();
-//                        Utils.hideProgressDialog(FarmerActivity.this);
                         farmerModelArrayList.addAll(response.body().getFarmer_data());
                         Const.FARMER_ID = response.body().getFarmer_data().get(0).getId();
                         initView();
                     }else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(FarmerActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
-//                    Utils.showCustomProgressDialog(FarmerActivity.this,true);
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(FarmerActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(FarmerActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
             }
         });
