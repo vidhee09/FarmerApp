@@ -65,4 +65,7 @@
     <string name="cancel">Cancel</string>
     <string name="clear">Clear</string>
     <string name="complete">Complete</string>
+    <string name="close_application">Close Application</string>
+    <string name="close_text">Are you want to close application ?</string>
+    <string name="yes">Sure</string>
 </resources>

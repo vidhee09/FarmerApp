@@ -28,7 +28,6 @@ public abstract class CustomDialogAlert extends BottomSheetDialog implements Vie
         btnDialogEditTextLeft = findViewById(R.id.btnDialogAlertLeft);
         btnDialogEditTextRight = findViewById(R.id.btnDialogAlertRight);
 
-
         btnDialogEditTextLeft.setOnClickListener(this);
         btnDialogEditTextRight.setOnClickListener(this);
         tvDialogEditTextTitle.setText(title);
