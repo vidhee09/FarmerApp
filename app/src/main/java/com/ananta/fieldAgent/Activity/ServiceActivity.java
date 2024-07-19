@@ -44,7 +44,6 @@ public class ServiceActivity extends AppCompatActivity {
     ActivityServiceBinding binding;
     TabFragmentAdapter adapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +75,14 @@ public class ServiceActivity extends AppCompatActivity {
             }
         });
 
+        binding.ivAddReqImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ServiceActivity.this, AddRequestActivity.class);
+                startActivity(intent);
 
-//        addListener();
+            }
+        });
     }
 
 }

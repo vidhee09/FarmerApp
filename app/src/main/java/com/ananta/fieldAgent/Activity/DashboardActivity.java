@@ -33,7 +33,6 @@ public class DashboardActivity extends AppCompatActivity {
         ivSignOut = findViewById(R.id.ivSignOut);
     }
 
-
     private void addListener() {
         llFarmer.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, FarmerActivity.class);
@@ -64,6 +63,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         CustomDialogAlert customDialogAlert = new CustomDialogAlert(this, this.getResources().getString(R.string.close_application), this.getResources().getString(R.string.close_text), this.getResources().getString(R.string.yes)) {
             @Override
             public void onClickLeftButton() {

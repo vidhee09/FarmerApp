@@ -1,13 +1,16 @@
 package com.ananta.fieldAgent.Parser;
 
+import com.ananta.fieldAgent.Fragments.PastRequestFragment;
 import com.ananta.fieldAgent.Models.AddServiceModel;
 import com.ananta.fieldAgent.Models.AllFarmerModel;
+import com.ananta.fieldAgent.Models.CurrentReqModel;
 import com.ananta.fieldAgent.Models.DeliveryDataModel;
 import com.ananta.fieldAgent.Models.DetailModel;
 import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Models.JointSurveyorModel;
 import com.ananta.fieldAgent.Models.LoginModel;
+import com.ananta.fieldAgent.Models.PastReqModel;
 import com.ananta.fieldAgent.Models.PumpInstallModel;
 import com.ananta.fieldAgent.Models.ServiceModel;
 import com.ananta.fieldAgent.Models.SiteReportModel;
@@ -18,10 +21,7 @@ import java.util.HashMap;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
+
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -41,21 +41,17 @@ public interface ApiInterface {
     @POST("agent/details")
     Call<FarmerModel> getDashboardData(@Body HashMap<String, String> dashboard);
 
-    /*---  Get service details Data ---*/
-    @POST("agent/details")
-    Call<ServiceModel> getDashboardService(@Body HashMap<String, String> service);
-
     /*--- Get service request Data  ---*/
     @POST("service-requests")
     Call<AddServiceModel> getAddServiceRequest(@Body HashMap<String, String> serviceRequest);
 
     /*--- Get delivery request Data  ---*/
     @POST("delivery-requests")
-    Call<DeliveryDataModel> getDeliveryData(@Body HashMap<String, String> Delivery);
+    Call<DeliveryDataModel> addDeliveryReport(@Body HashMap<String, String> Delivery);
 
     /*--- Get site inspection request Data  ---*/
     @POST("site-requests")
-    Call<SiteReportModel> getSiteReport(@Body HashMap<String, String> site);
+    Call<SiteReportModel> addSiteInspection(@Body HashMap<String, String> site);
 
     /*--- Get Pump installation Data  ---*/
     @POST("pump-install")
@@ -75,5 +71,29 @@ public interface ApiInterface {
     /*--- Get all farmer Data  ---*/
     @POST("farmer/details")
     Call<AllFarmerModel> getAllFarmerData(@Body HashMap<String, String> allFarmer);
+
+    /*--- Get current request Data  ---*/
+    @POST("agent/details")
+    Call<CurrentReqModel> getCurrentRequest(@Body HashMap<String, String> currentReq);
+
+    /*--- Get past request Data  ---*/
+    @POST("agent/details")
+    Call<CurrentReqModel> getPastRequest(@Body HashMap<String, String> pastReq);
+
+    /*--- site report update  ---*/
+    @POST("site-requests/update")
+    Call<SiteReportModel> updateSiteReport(@Body HashMap<String, String> updateSite);
+
+    /*--- delivery update  ---*/
+    @POST("delivery-requests/update")
+    Call<DeliveryDataModel> updateDeliveryReport(@Body HashMap<String, String> updateDelivery);
+
+    /*---  update Pump installation report  ---*/
+    @POST("pump-install/update")
+    Call<PumpInstallModel> updatePumpInstallReport(@Body HashMap<String, String> pumpUpdate);
+
+    /*---  update Pump installation report  ---*/
+    @POST("jointsurvey-request/update")
+    Call<JointSurveyorModel> updateJointReport(@Body HashMap<String, String> pumpUpdate);
 
 }

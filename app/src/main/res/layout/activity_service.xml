@@ -92,7 +92,7 @@
                     android:id="@+id/vpViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"/>
+                    android:layout_marginTop="@dimen/_2sdp"/>
 
             </LinearLayout>
 

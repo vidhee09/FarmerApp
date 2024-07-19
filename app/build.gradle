@@ -64,5 +64,6 @@ dependencies {
     implementation libs.material.v121
     implementation libs.signature.pad
     implementation libs.play.services.location
+    implementation libs.swiperefreshlayout
 
 }

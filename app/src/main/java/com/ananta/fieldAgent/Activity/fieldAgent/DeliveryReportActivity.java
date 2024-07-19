@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ananta.fieldAgent.Models.DeliveryDataModel;
 import com.ananta.fieldAgent.Models.ImageModel;
+import com.ananta.fieldAgent.Models.SiteReportModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
@@ -126,10 +127,51 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         return isValid;
     }
 
+    /*  delivery update  */
+
+    public void updateSiteReport() {
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        HashMap<String,String > hashMap = new HashMap<>();
+        hashMap.put("id","12");
+        hashMap.put("surveyor_name", Const.AGENT_NAME);
+        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
+        hashMap.put("image", path);
+        hashMap.put("date", binding.tvDeliveryDate.getText().toString());
+        hashMap.put("sign", signatureName);
+        hashMap.put("latitude", String.valueOf(latitude));
+        hashMap.put("longitude", String.valueOf(longitude));
+
+      Call<DeliveryDataModel> call = apiInterface.updateDeliveryReport(hashMap);
+        call.enqueue(new Callback<DeliveryDataModel>() {
+            @Override
+            public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
+
+                if (response.isSuccessful()){
+                    Toast.makeText(DeliveryReportActivity.this, "successfully updated", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(DeliveryReportActivity.this, "not updated", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeliveryDataModel> call, Throwable t) {
+                Toast.makeText(DeliveryReportActivity.this, "failure update", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+    /*   add report */
+
     public void getDeliveryReportData() {
 
        binding.pbProgressBar.setVisibility(View.VISIBLE);
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+       apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("surveyor_name", Const.AGENT_NAME);
@@ -142,7 +184,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
 
-        Call<DeliveryDataModel> call = apiInterface.getDeliveryData(hashMap);
+        Call<DeliveryDataModel> call = apiInterface.addDeliveryReport(hashMap);
         call.enqueue(new Callback<DeliveryDataModel>() {
             @Override
             public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
@@ -292,7 +334,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
-//                path = String.valueOf(contentURI);
+                path = String.valueOf(contentURI);
 
                 Bitmap bitmap = null;
                 try {
@@ -361,7 +403,8 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             showPictureDialog();
         } else if (id == R.id.llDeliverySubmit) {
             if (validation()) {
-                getDeliveryReportData();
+//                getDeliveryReportData();
+                updateSiteReport();
             } else {
                 Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
             }

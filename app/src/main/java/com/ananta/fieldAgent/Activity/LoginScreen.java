@@ -77,7 +77,7 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
-                assert response.body() != null;
+
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     binding.tvErrorMobileNumber.setVisibility(View.GONE);

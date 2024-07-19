@@ -11,15 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Models.PastReqModel;
+import com.ananta.fieldAgent.Models.PastServiceDatum;
 import com.ananta.fieldAgent.R;
 import java.util.ArrayList;
 
 public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<PastReqModel> pastReqModelsList;
+    ArrayList<PastServiceDatum> pastReqModelsList;
 
-    public PastReqAdapter(Context context, ArrayList<PastReqModel> pastReqModelsList) {
+    public PastReqAdapter(Context context, ArrayList<PastServiceDatum> pastReqModelsList) {
         this.context = context;
         this.pastReqModelsList = pastReqModelsList;
     }
@@ -34,8 +35,9 @@ public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull PastReqAdapter.ViewHolder holder, int position) {
 
-        PastReqModel model = pastReqModelsList.get(position);
-        holder.tvNamePastReq.setText(model.getName());
+        PastServiceDatum model = pastReqModelsList.get(position);
+        holder.tvNameFarmer.setText("jay");
+        holder.tvPastReqName.setText(model.getServiceRequest());
     }
 
     @Override
@@ -43,19 +45,18 @@ public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHold
         return pastReqModelsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvNamePastReq,tvPumpNamePastReq,tvAddressPastReq;
+        TextView tvNameFarmer,tvPastReqName,tvAddressPastReq;
         ImageView ivPastReqImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvNamePastReq = itemView.findViewById(R.id.tvNamePastReq);
-            tvPumpNamePastReq = itemView.findViewById(R.id.tvPumpNamePastReq);
+            tvNameFarmer = itemView.findViewById(R.id.tvNameFarmer);
+            tvPastReqName = itemView.findViewById(R.id.tvPastReqName);
             tvAddressPastReq = itemView.findViewById(R.id.tvAddressPastReq);
             ivPastReqImage = itemView.findViewById(R.id.ivPastReqImage);
-
 
         }
     }

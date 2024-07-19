@@ -321,6 +321,61 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         }
     }
 
+    /*  update pump report   */
+
+    public void updatePumpInstallReport() {
+
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("id", "14");
+        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("pump_id", binding.edPumpId.getText().toString());
+        hashMap.put("panel_id", panelIdList.toString());
+        hashMap.put("controller_id", binding.edControllerId.getText().toString());
+        hashMap.put("imei_no", binding.edIMEIId.getText().toString());
+        hashMap.put("structure_id", binding.edStructureId.getText().toString());
+        hashMap.put("policy_no", binding.edPolicyNumberPumpInstall.getText().toString());
+        hashMap.put("install_image", pumpPath);
+        hashMap.put("pump_benifi_image", baneficiarypath);
+        hashMap.put("pump_work_image", workingPumpPath);
+        hashMap.put("sign", signatureName);
+        hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
+
+        Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap);
+
+        call.enqueue(new Callback<PumpInstallModel>() {
+            @Override
+            public void onResponse(Call<PumpInstallModel> call, Response<PumpInstallModel> response) {
+
+                if (response.body() != null) {
+                    if (response.isSuccessful()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PumpInstallModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    /*  add report  */
     public void getPumpInstallationData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -384,7 +439,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         } else if (id == R.id.llSubmitPumpInstall) {
             if (validation()) {
                 if (countChipsInChipGroup(binding.chipGroup) >= 9){
-                    getPumpInstallationData();
+//                    getPumpInstallationData();
+                    updatePumpInstallReport();
                 }else {
                     Toast.makeText(this, "Panel id minimum 9 required", Toast.LENGTH_SHORT).show();
                 }

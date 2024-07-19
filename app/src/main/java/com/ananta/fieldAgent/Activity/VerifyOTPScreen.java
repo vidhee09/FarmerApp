@@ -95,7 +95,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
                     if (response.body().getType().equals("agent")){
 
-                        Intent intent = new Intent(VerifyOTPScreen.this, MainActivity.class);
+                        Intent intent = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
                         Const.AGENT_ID = response.body().getUser_id();
                         Const.AGENT_NAME = response.body().getUser_name();
                         editor.putString("agentLogin", Const.AGENT_ID);

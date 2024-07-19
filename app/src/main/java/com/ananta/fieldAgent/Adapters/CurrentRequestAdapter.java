@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Models.CurrentReqModel;
+import com.ananta.fieldAgent.Models.CurrentServiceDatum;
 import com.ananta.fieldAgent.R;
 
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ import java.util.ArrayList;
 public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<CurrentReqModel>currentReqList;
+    ArrayList<CurrentServiceDatum>currentReqList;
 
-    public CurrentRequestAdapter(Context context, ArrayList<CurrentReqModel> currentReqList) {
+    public CurrentRequestAdapter(Context context, ArrayList<CurrentServiceDatum> currentReqList) {
         this.context = context;
         this.currentReqList = currentReqList;
     }
@@ -35,9 +36,9 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
     @Override
     public void onBindViewHolder(@NonNull CurrentRequestAdapter.ViewHolder holder, int position) {
 
-        CurrentReqModel model = currentReqList.get(position);
-
-        holder.tvNameCurrentReq.setText(model.getName());
+        CurrentServiceDatum model = currentReqList.get(position);
+        holder.tvFarmerName.setText("jay");
+        holder.tvRequestName.setText(model.getServiceRequest());
 
     }
 
@@ -48,16 +49,18 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvNameCurrentReq,tvPumpNameCurrentReq,tvAddressCurrentReq;
+        TextView tvFarmerName,tvRequestName,tvAddressCurrentReq;
         ImageView ivCurrentReqImage;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNameCurrentReq= itemView.findViewById(R.id.tvNameCurrentReq);
-            tvPumpNameCurrentReq= itemView.findViewById(R.id.tvPumpNameCurrentReq);
+            tvFarmerName= itemView.findViewById(R.id.tvFarmerName);
+            tvRequestName= itemView.findViewById(R.id.tvRequestName);
             tvAddressCurrentReq= itemView.findViewById(R.id.tvAddressCurrentReq);
             ivCurrentReqImage= itemView.findViewById(R.id.ivCurrentReqImage);
 
         }
     }
+
+
 
 }
