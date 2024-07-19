@@ -8,6 +8,10 @@ public class Const {
     public static String COMPANY_NAME = "";
     public static String MOBILE_NUMBER = "";
     public static String FARMER_ID = "";
+    public static String FARMER_NAME = "";
+    public static String FARMER_NUM = "";
+    public static String FARMER_LOGIN_ID = "";
+
 
 
 }

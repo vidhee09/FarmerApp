@@ -7,12 +7,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Utils;
+import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityLoginScreenBinding;
 
 import java.util.HashMap;
@@ -28,11 +33,16 @@ public class LoginScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityLoginScreenBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
         binding.tvSendOtpLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +56,6 @@ public class LoginScreen extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public boolean checkValidation() {
@@ -88,7 +97,7 @@ public class LoginScreen extends AppCompatActivity {
                     }
                 }else {
                     Utils.hideProgressDialog(LoginScreen.this);
-                    Toast.makeText(LoginScreen.this, "Server Under Maintenance", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreen.this, "You are not approve by admin", Toast.LENGTH_SHORT).show();
                 }
 
 

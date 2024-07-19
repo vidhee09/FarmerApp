@@ -8,7 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Activity.farmer.FarmerDashboardActivity;
 import com.ananta.fieldAgent.Activity.fieldAgent.MainActivity;
@@ -17,6 +21,7 @@ import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Utils;
+import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityVerifyOtpscreenBinding;
 import com.chaos.view.PinView;
 
@@ -36,11 +41,16 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityVerifyOtpscreenBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
         OTP = getIntent().getStringExtra("OTP");
         Number = getIntent().getStringExtra("NUMBER");
 
@@ -98,7 +108,6 @@ public class VerifyOTPScreen extends AppCompatActivity {
                             Const.AGENT_NAME = response.body().getUser_name();
                             editor.putString("agentLogin", Const.AGENT_ID);
                             editor.putString("agentName", Const.AGENT_NAME);
-                            Log.d("Name===", "=aa==" + Const.AGENT_NAME);
                             editor.commit();
                             Const.COMPANY_NAME = response.body().getUser_companyname();
                             Const.MOBILE_NUMBER = response.body().getMobile_number();
@@ -107,7 +116,15 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
                         } else if (response.body().getType().equals("farmer")) {
                             Intent intent = new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
+                            Const.FARMER_NAME = response.body().getUser_name();
+                            Const.FARMER_LOGIN_ID = response.body().getUser_id();
+                            Const.FARMER_NUM = response.body().getMobile_number();
                             startActivity(intent);
+                            editor.putString("farmerLogin", Const.FARMER_LOGIN_ID);
+                            editor.putString("farmerName", Const.FARMER_NAME);
+                            editor.putString("farmerNum", Const.FARMER_NUM);
+                            editor.commit();
+                            finish();
                         }
                     }
 

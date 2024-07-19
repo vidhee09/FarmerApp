@@ -5,6 +5,7 @@ import com.ananta.fieldAgent.Models.AllFarmerModel;
 import com.ananta.fieldAgent.Models.DeliveryDataModel;
 import com.ananta.fieldAgent.Models.DetailModel;
 import com.ananta.fieldAgent.Models.FarmerModel;
+import com.ananta.fieldAgent.Models.FarmerServiceResponseModel;
 import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Models.JointSurveyorModel;
 import com.ananta.fieldAgent.Models.LoginModel;
@@ -76,4 +77,7 @@ public interface ApiInterface {
     @POST("farmer/all")
     Call<AllFarmerModel> getAllFarmerData(@Body HashMap<String, String> allFarmer);
 
+
+    @POST("farmer-service")
+    Call<FarmerServiceResponseModel> getCurrentAndPastData(@Body HashMap<String, String> currentPastData);
 }

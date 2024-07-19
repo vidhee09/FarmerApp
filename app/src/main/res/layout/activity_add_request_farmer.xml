@@ -84,18 +84,18 @@
                 android:text="Farmer Name"
                 android:fontFamily="@font/poppins_bold"/>
 
-            <EditText
+            <TextView
+                android:id="@+id/edtFarmerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
                 android:textColor="@color/black"
+                android:textStyle="bold"
                 android:fontFamily="@font/poppins_regular"
                 android:maxLength="10"
                 android:drawablePadding="@dimen/_5sdp"
-                android:inputType="text"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center_vertical"
-                android:hint="Enter Name"
                 android:padding="@dimen/_10sdp" />
 
         </LinearLayout>

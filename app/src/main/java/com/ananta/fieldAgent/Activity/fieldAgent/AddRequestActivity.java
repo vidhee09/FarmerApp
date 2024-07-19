@@ -17,7 +17,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Models.AddServiceModel;
 import com.ananta.fieldAgent.Models.AllFarmerModel;
@@ -64,11 +68,21 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        if (Const.FARMER_NAME != null){
+            binding.rlFarmerName.setVisibility(View.GONE);
+            binding.tvFarmerName.setVisibility(View.VISIBLE);
+            binding.tvFarmerName.setText(Const.FARMER_NAME);
+        }
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
 
@@ -226,9 +240,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public void clickListener() {
 
-        binding.ivReqCamera.setOnClickListener(this::onClick);
-        binding.llAddReqBtn.setOnClickListener(this::onClick);
-        binding.ivInsuranceCamera.setOnClickListener(this::onClick);
+        binding.ivReqCamera.setOnClickListener(this);
+        binding.llAddReqBtn.setOnClickListener(this);
+        binding.ivInsuranceCamera.setOnClickListener(this);
 
     }
 
@@ -294,9 +308,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void getAllFarmerData() {
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
         HashMap<String, String> hashMap = new HashMap<>();
-
         Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap);
         call.enqueue(new Callback<AllFarmerModel>() {
             @Override
@@ -313,7 +325,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     }
                     setFarmerList();
 
-
                 } else {
                     Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 }
@@ -321,7 +332,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onFailure(Call<AllFarmerModel> call, Throwable t) {
-                Toast.makeText(AddRequestActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                Log.d("Addrequest", "=" + t.getMessage());
             }
         });
     }
@@ -358,7 +369,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
-        hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
+        if (Const.FARMER_LOGIN_ID != null){
+            hashMap.put("farmer_id", Const.FARMER_LOGIN_ID);
+        }else {
+            hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
+        }
         hashMap.put("request_type", binding.spSpinner.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequest.getSelectedItem().toString());
         if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")){
@@ -378,9 +393,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
-
                     } else {
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }

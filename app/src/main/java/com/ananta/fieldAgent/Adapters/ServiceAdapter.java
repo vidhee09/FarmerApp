@@ -11,8 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ananta.fieldAgent.Activity.fieldAgent.FarmerDetailActivity;
-import com.ananta.fieldAgent.Activity.fieldAgent.ServiceReportActivity;
 import com.ananta.fieldAgent.Models.ServiceModel;
 import com.ananta.fieldAgent.*;
 
@@ -40,14 +38,7 @@ public class ServiceAdapter  extends RecyclerView.Adapter<ServiceAdapter.ViewHol
         ServiceModel model = serviceList.get(position);
         holder.tvFarmerName.setText(model.getService_request());
         holder.tvAddressName.setText(model.getDescription());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent intent = new Intent(context, ServiceReportActivity.class);
-                context.startActivity(intent);
-            }
-        });
 
     }
 

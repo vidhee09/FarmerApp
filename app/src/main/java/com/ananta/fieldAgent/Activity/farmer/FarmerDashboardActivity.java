@@ -2,15 +2,22 @@ package com.ananta.fieldAgent.Activity.farmer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.FramerFragmentFarm;
 import com.ananta.fieldAgent.Fragments.ServiceFragmentFarm;
+import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDashboardBinding;
 
 public class FarmerDashboardActivity extends AppCompatActivity {
@@ -21,11 +28,18 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityFarmerDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        binding.tvFarmerName.setText(Const.FARMER_NAME);
+        binding.tvFarmerNo.setText(Const.FARMER_NUM);
         adapter = new TabFragmentAdapter(getSupportFragmentManager());
         adapter.addFragment(FramerFragmentFarm.newInstance(), "Current Request");
         adapter.addFragment(ServiceFragmentFarm.newInstance(), "Past Request");
@@ -51,14 +65,12 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         });
 
 
-        binding.ivAddReqImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.ivAddReqImage.setOnClickListener(v -> {
 
-                Intent intent = new Intent(FarmerDashboardActivity.this, AddRequestFarmerActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(FarmerDashboardActivity.this, AddRequestActivity.class);
 
-            }
+            startActivity(intent);
+
         });
 
 

@@ -8,10 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ananta.fieldAgent.Models.FarmServiceModel;
+import com.ananta.fieldAgent.Models.PastFarmerRequestModel;
 import com.ananta.fieldAgent.R;
 
 import java.util.ArrayList;
@@ -19,9 +18,9 @@ import java.util.ArrayList;
 public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<FarmServiceModel> serviceList;
+    ArrayList<PastFarmerRequestModel> serviceList;
 
-    public FarmServiceAdapter(Context context, ArrayList<FarmServiceModel> serviceList) {
+    public FarmServiceAdapter(Context context, ArrayList<PastFarmerRequestModel> serviceList) {
         this.context = context;
         this.serviceList = serviceList;
     }
@@ -35,8 +34,10 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull FarmServiceAdapter.ViewHolder holder, int position) {
-        FarmServiceModel model = serviceList.get(position);
-        holder.tvFarmerName.setText(model.getName());
+        PastFarmerRequestModel model = serviceList.get(position);
+        holder.tvFarmerName.setText(model.getRequestType());
+        holder.tvAddressName.setText(model.getDescription());
+        holder.tvPumpName.setText(model.getServiceRequest());
     }
 
     @Override

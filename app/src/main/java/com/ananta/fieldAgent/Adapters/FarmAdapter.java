@@ -1,7 +1,6 @@
 package com.ananta.fieldAgent.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ananta.fieldAgent.Activity.farmer.FarmerProfileActivity;
-import com.ananta.fieldAgent.Activity.fieldAgent.FarmerDetailActivity;
-import com.ananta.fieldAgent.Models.FarmModel;
+import com.ananta.fieldAgent.Models.CurrentFarmerRequestModel;
 import com.ananta.fieldAgent.R;
 
 import java.util.ArrayList;
@@ -21,9 +18,9 @@ import java.util.ArrayList;
 public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
 
     Context context;
-    ArrayList<FarmModel> farmerList;
+    ArrayList<CurrentFarmerRequestModel> farmerList;
 
-    public FarmAdapter(Context context, ArrayList<FarmModel> farmerList) {
+    public FarmAdapter(Context context, ArrayList<CurrentFarmerRequestModel> farmerList) {
         this.context = context;
         this.farmerList = farmerList;
     }
@@ -37,14 +34,16 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull FarmAdapter.ViewHolder holder, int position) {
-        FarmModel model = farmerList.get(position);
-        holder.tvFarmerName.setText(model.getName());
+        CurrentFarmerRequestModel model = farmerList.get(position);
+        holder.tvFarmerName.setText(model.getRequestType());
+        holder.tvAddressName.setText(model.getDescription());
+        holder.tvPumpName.setText(model.getServiceRequest());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, FarmerProfileActivity.class);
-                context.startActivity(intent);
+               /* Intent intent = new Intent(context, FarmerProfileActivity.class);
+                context.startActivity(intent);*/
             }
         });
     }
