@@ -10,21 +10,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
 import com.ananta.fieldAgent.Models.PastFarmerRequestModel;
 import com.ananta.fieldAgent.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<PastFarmerRequestModel> serviceList;
+    List<PastFarmerRequestModel> serviceList;
 
-    public FarmServiceAdapter(Context context, ArrayList<PastFarmerRequestModel> serviceList) {
+    public FarmServiceAdapter(Context context, List<PastFarmerRequestModel> serviceList) {
         this.context = context;
         this.serviceList = serviceList;
     }
 
+    public void filterList(ArrayList<PastFarmerRequestModel> filterlist) {
+        serviceList = filterlist;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public FarmServiceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

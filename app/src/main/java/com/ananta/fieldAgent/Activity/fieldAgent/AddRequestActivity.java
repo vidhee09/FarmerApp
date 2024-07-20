@@ -30,6 +30,7 @@ import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityAddRequestBinding;
@@ -64,7 +65,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     ArrayList<AllFarmerModel> allFarmersList = new ArrayList<>();
     ArrayList<String> list = new ArrayList<>();
     ArrayList<String> ids = new ArrayList<>();
-
+    private Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +74,16 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        if (Const.FARMER_NAME != null){
+        if (preference.getFarmerName() != null){
             binding.rlFarmerName.setVisibility(View.GONE);
             binding.tvFarmerName.setVisibility(View.VISIBLE);
-            binding.tvFarmerName.setText(Const.FARMER_NAME);
+            binding.tvFarmerName.setText(preference.getFarmerName());
         }
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
@@ -365,12 +367,12 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void getAddRequestData() {
-
+        Utils.showCustomProgressDialog(this, true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
-        if (Const.FARMER_LOGIN_ID != null){
-            hashMap.put("farmer_id", Const.FARMER_LOGIN_ID);
+        if (preference.getFarmerLoginId() != null){
+            hashMap.put("farmer_id", preference.getFarmerLoginId());
         }else {
             hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
         }
@@ -390,9 +392,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         call.enqueue(new Callback<AddServiceModel>() {
             @Override
             public void onResponse(Call<AddServiceModel> call, Response<AddServiceModel> response) {
-
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
+                        Utils.hideProgressDialog(AddRequestActivity.this);
                         finish();
                     } else {
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();

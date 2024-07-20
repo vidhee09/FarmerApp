@@ -2,34 +2,21 @@ package com.ananta.fieldAgent.Activity.fieldAgent;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.ananta.fieldAgent.Activity.FarmerActivity;
-import com.ananta.fieldAgent.Models.DetailModel;
-import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
-import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDetailBinding;
 import com.permissionx.guolindev.PermissionX;
 
-import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class FarmerDetailActivity extends AppCompatActivity {

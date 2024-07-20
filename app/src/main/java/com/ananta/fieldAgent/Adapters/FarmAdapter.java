@@ -10,19 +10,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ananta.fieldAgent.Models.CurrentFarmerRequestModel;
+import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
 import com.ananta.fieldAgent.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
 
     Context context;
-    ArrayList<CurrentFarmerRequestModel> farmerList;
+    List<CurrentRequestFarmerModel> farmerList;
 
-    public FarmAdapter(Context context, ArrayList<CurrentFarmerRequestModel> farmerList) {
+    public FarmAdapter(Context context, List<CurrentRequestFarmerModel> farmerList) {
         this.context = context;
         this.farmerList = farmerList;
+    }
+
+    // method for filtering our recyclerview items.
+    public void filterList(ArrayList<CurrentRequestFarmerModel> filterlist) {
+        farmerList = filterlist;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -34,7 +41,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull FarmAdapter.ViewHolder holder, int position) {
-        CurrentFarmerRequestModel model = farmerList.get(position);
+        CurrentRequestFarmerModel model = farmerList.get(position);
         holder.tvFarmerName.setText(model.getRequestType());
         holder.tvAddressName.setText(model.getDescription());
         holder.tvPumpName.setText(model.getServiceRequest());

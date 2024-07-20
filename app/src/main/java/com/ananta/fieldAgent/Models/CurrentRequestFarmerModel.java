@@ -3,7 +3,7 @@ package com.ananta.fieldAgent.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CurrentFarmerRequestModel {
+public class CurrentRequestFarmerModel {
 
     @SerializedName("id")
     @Expose

@@ -13,7 +13,7 @@ public class FarmerServiceResponseModel {
     private Boolean success;
     @SerializedName("current_service_data")
     @Expose
-    private List<CurrentFarmerRequestModel> currentServiceData;
+    private List<CurrentRequestFarmerModel> currentServiceData;
     @SerializedName("past_service_data")
     @Expose
     private List<PastFarmerRequestModel> pastServiceData;
@@ -26,11 +26,11 @@ public class FarmerServiceResponseModel {
         this.success = success;
     }
 
-    public List<CurrentFarmerRequestModel> getCurrentServiceData() {
+    public List<CurrentRequestFarmerModel> getCurrentServiceData() {
         return currentServiceData;
     }
 
-    public void setCurrentServiceData(List<CurrentFarmerRequestModel> currentServiceData) {
+    public void setCurrentServiceData(List<CurrentRequestFarmerModel> currentServiceData) {
         this.currentServiceData = currentServiceData;
     }
 

@@ -20,6 +20,7 @@ import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityVerifyOtpscreenBinding;
@@ -38,6 +39,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
     ActivityVerifyOtpscreenBinding binding;
     String OTP = "", Number = "";
     ApiInterface apiInterface;
+    private Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
         binding = ActivityVerifyOtpscreenBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -116,14 +119,11 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
                         } else if (response.body().getType().equals("farmer")) {
                             Intent intent = new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
-                            Const.FARMER_NAME = response.body().getUser_name();
-                            Const.FARMER_LOGIN_ID = response.body().getUser_id();
-                            Const.FARMER_NUM = response.body().getMobile_number();
+                            preference.putIsHideWelcomeScreen(true);
+                            preference.putFarmerLoginId(response.body().getUser_id());
+                            preference.putFarmerName(response.body().getUser_name());
+                            preference.putFarmerNum(response.body().getMobile_number());
                             startActivity(intent);
-                            editor.putString("farmerLogin", Const.FARMER_LOGIN_ID);
-                            editor.putString("farmerName", Const.FARMER_NAME);
-                            editor.putString("farmerNum", Const.FARMER_NUM);
-                            editor.commit();
                             finish();
                         }
                     }

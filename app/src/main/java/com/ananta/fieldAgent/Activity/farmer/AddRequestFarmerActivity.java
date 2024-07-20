@@ -13,35 +13,34 @@ import android.view.View;
 
 import com.ananta.fieldAgent.Activity.DashboardActivity;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityAddRequestFarmerBinding;
 
 public class AddRequestFarmerActivity extends AppCompatActivity {
 
     private ActivityAddRequestFarmerBinding binding;
-
+    private Preference preference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityAddRequestFarmerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        binding.edtFarmerName.setText(Const.FARMER_NAME);
-        binding.llAddRequestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.edtFarmerName.setText(preference.getFarmerName());
+        binding.llAddRequestBtn.setOnClickListener(v -> {
 
 //                Intent intent = new Intent(AddRequestFarmerActivity.this, FarmerDashboardActivity.class);
-                Intent intent = new Intent(AddRequestFarmerActivity.this, DashboardActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(AddRequestFarmerActivity.this, DashboardActivity.class);
+            startActivity(intent);
 
-            }
         });
 
     }
