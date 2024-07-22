@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ananta.fieldAgent.Activity.LoginScreen;
+import com.ananta.fieldAgent.Models.GetSiteData;
 import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Models.JointSurveyorModel;
 import com.ananta.fieldAgent.Models.SiteReportModel;
@@ -71,7 +72,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     private static final int PERMISSION_CODE = 1;
     ActivitySitInspectionReportBinding binding;
     ApiInterface apiInterface;
-    String Farmer_ID = "", Imagepath = "", baneficiarypath = "", signImage = "";
+    String Imagepath = "", baneficiarypath = "", signImage = "";
     private static final int GALLERY = 100;
     private static final int CAMERA = 101;
     Preference preference;
@@ -80,9 +81,10 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
 
+    String  reportId;
     int photos;
     double latitude, longitude;
-    private String FilepathName;
+    private String FilepathName, site_report;
     Siteinspectionn siteinspectionnModel;
 
     @Override
@@ -97,11 +99,10 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         preference = Preference.getInstance(SitInspectionReportActivity.this);
         setContentView(binding.getRoot());
 
-        fetchData();
+        loadData();
         clickLister();
         initView();
         setClickListener();
-        loadData();
 
     }
 
@@ -109,41 +110,47 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
         Log.d("Name===", "=site==" + Const.AGENT_NAME);
+        site_report = getIntent().getStringExtra("site_report");
         binding.tvSurveyorName.setText(Const.AGENT_NAME);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLocation();
         datePick();
+        fetchData();
     }
 
     public void fetchData() {
-        Log.d("SiteInspection ==>", "===> 1" + Const.SiteReport);
-        if (Const.SiteReport) {
-
-            Log.d("sitemodel===>", "===>");
-
+        if (site_report.equals("0")) {
+            binding.tvSubmit.setText("Add Report");
         } else {
-            Toast.makeText(this, "site report === false " + siteinspectionnModel, Toast.LENGTH_SHORT).show();
+            binding.tvSubmit.setText("Update Report");
+            getData();
         }
     }
 
     /*  site report update  */
 
-    public void updateSiteReport() {
+    public void updateSiteReport(String reportId) {
 
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("id", "26");
-        hashMap.put("farmer_id", Const.FARMER_ID);
-        hashMap.put("agent_id", Const.AGENT_ID);
-        hashMap.put("pump_image", Imagepath);
-        hashMap.put("pump_benificiaryimage", baneficiarypath);
-        hashMap.put("date", binding.tvDateSiteReport.getText().toString());
-        hashMap.put("inspection_sign", FilepathName);
-        hashMap.put("inspection_officer_name", binding.edInspectionOfficerName.getText().toString());
-        hashMap.put("present_person_name", binding.edPresentPersonName.getText().toString());
-        hashMap.put("latitude", String.valueOf(latitude));
-        hashMap.put("longitude", String.valueOf(longitude));
+            hashMap.put("id", reportId);
+            hashMap.put("farmer_id", Const.FARMER_ID);
+            hashMap.put("agent_id", Const.AGENT_ID);
+            hashMap.put("date", binding.tvDateSiteReport.getText().toString());
+            if(!Imagepath.isEmpty()){
+                hashMap.put("pump_image", Imagepath);
+            }
+            if(!baneficiarypath.isEmpty()){
+            hashMap.put("pump_benificiaryimage", baneficiarypath);
+            }
+            hashMap.put("inspection_sign", FilepathName);
+            hashMap.put("inspection_officer_name", binding.edInspectionOfficerName.getText().toString());
+            hashMap.put("present_person_name", binding.edPresentPersonName.getText().toString());
+            hashMap.put("latitude", String.valueOf(latitude));
+            hashMap.put("longitude", String.valueOf(longitude));
+
 
         Call<SiteReportModel> call = apiInterface.updateSiteReport(hashMap);
         call.enqueue(new Callback<SiteReportModel>() {
@@ -151,24 +158,28 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             public void onResponse(Call<SiteReportModel> call, Response<SiteReportModel> response) {
 
                 if (response.isSuccessful()) {
-                    Toast.makeText(SitInspectionReportActivity.this, "successfully updated", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    Siteinspectionn siteinspectionn =  response.body().getSiteinspectionn();
+                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
-                    Toast.makeText(SitInspectionReportActivity.this, "not updated", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SiteReportModel> call, Throwable t) {
-                Toast.makeText(SitInspectionReportActivity.this, "failure update", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(SitInspectionReportActivity.this, "update"+t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
-
     }
 
     /*   add report */
 
-    public void getSiteReportData() {
+    public void addSiteReportData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
 
@@ -219,6 +230,37 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
     }
 
+    public void getData() {
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("farmer_id", Const.FARMER_ID);
+
+        Call<GetSiteData> call = apiInterface.getSiteReport(hashMap);
+        call.enqueue(new Callback<GetSiteData>() {
+            @Override
+            public void onResponse(Call<GetSiteData> call, Response<GetSiteData> response) {
+                if (response.isSuccessful()) {
+                    Log.d("sitemodel===>", "==success=>" + response.body().getMessage());
+                    binding.edInspectionOfficerName.setText(response.body().getSitereport().get(0).getInspectionOfficerName());
+                    binding.edPresentPersonName.setText(response.body().getSitereport().get(0).getPresentPersonName());
+                    reportId  = String.valueOf(response.body().getSitereport().get(0).getId());
+                    Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSitereport().get(0).getPumpImage()).into(binding.ivPumpPhoto);
+                    Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSitereport().get(0).getPumpBenificiaryimage()).into(binding.ivBenificiaryPhoto);
+
+                } else {
+                    Log.d("sitemodel===>", "==success=false=>" + response.body().getMessage());
+                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetSiteData> call, Throwable t) {
+                Toast.makeText(SitInspectionReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -226,13 +268,15 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             checkAndRequestPermissions();
             showPictureDialog(1);
         } else if (id == R.id.ivBenificiaryCameraSite) {
-            checkAndRequestPermissions();
             showPictureDialog(2);
         } else if (id == R.id.llSiteSubmit) {
             if (validation()) {
-                if (isInternetAvailable()) {
-                    updateSiteReport();
-//                    getSiteReportData();
+                if (Utils.isInternetAvailable(SitInspectionReportActivity.this)) {
+                    if (site_report.equals("0")) {
+                        addSiteReportData();
+                    } else {
+                        updateSiteReport(reportId);
+                    }
                 }
             } else {
                 Toast.makeText(this, "Please fill all field", Toast.LENGTH_SHORT).show();
@@ -269,6 +313,9 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         } else if (binding.tvDateSiteReport.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvAddressSite.setError("please enter date");
+        } else if (signImage.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }
 
         return isValid;
@@ -278,20 +325,14 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         binding.signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
-                //Event triggered when the pad is touched
-//                Toast.makeText(SitInspectionReportActivity.this, "onStartSigning() triggered!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSigned() {
-                //Event triggered when the pad is signed
-//                Toast.makeText(SitInspectionReportActivity.this, "onStartSigning() triggered!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onClear() {
-                //Event triggered when the pad is cleared
-//                Toast.makeText(SitInspectionReportActivity.this, "onStartSigning() triggered!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -333,7 +374,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         }
         uploadFileImage(fileName);
     }
-
 
     private void showPictureDialog(int photoImage) {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -460,19 +500,9 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         binding.ivBackPress.setOnClickListener(this);
     }
 
-    private boolean isInternetAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-        }
-        return false;
-    }
-
     private void checkAndRequestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
 
         } else {
@@ -521,7 +551,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             latitude = gpsTracker.getLatitude();
             longitude = gpsTracker.getLongitude();
             binding.tvAddressSite.setText(latitude + " , " + longitude);
-
 
         } else {
             gpsTracker.showSettingsAlert();

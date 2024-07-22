@@ -39,7 +39,7 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
-                    if (Utils.isInternetConnected(LoginScreen.this)) {
+                    if (Utils.isInternetAvailable(LoginScreen.this)) {
                         login();
                     } else {
                        binding.pbProgressBar.setVisibility(View.VISIBLE);

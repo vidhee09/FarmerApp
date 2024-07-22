@@ -44,8 +44,9 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
         FarmerModel model = farmerList.get(position);
         holder.tvFarmerName.setText(model.getName());
         holder.tvAddressName.setText(model.getAddress());
-//        holder.tvPumpName.setText(model.getName());
-//        holder.tvAddressName.setText(model.getName());
+
+//      holder.tvPumpName.setText(model.getName());
+//      holder.tvAddressName.setText(model.getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +58,8 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
                 intent.putExtra("FarmerName",model.getName());
                 intent.putExtra("CompanyName",model.getAddress());
                 context.startActivity(intent);
+
+                Const.FARMER_ID = model.getId();
             }
         });
 

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ananta.fieldAgent.Models.CheckStatusModel;
 import com.ananta.fieldAgent.Models.DetailModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
@@ -25,7 +26,9 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
     ActivityFarmerDetailBinding binding;
     ApiInterface apiInterface;
-    String FarmerPosition="",CompanyName="",FarmerName;
+    String FarmerPosition = "", CompanyName = "", FarmerName;
+
+    String site_report,delivery_report,joint_report,pump_report;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +39,18 @@ public class FarmerDetailActivity extends AppCompatActivity {
         FarmerPosition = getIntent().getStringExtra("farmer_position");
         FarmerName = getIntent().getStringExtra("FarmerName");
         CompanyName = getIntent().getStringExtra("CompanyName");
-        Log.d("FarmerPosition====","=="+FarmerPosition);
-        Log.d("FarmerPosition====","=="+FarmerName);
-        Log.d("FarmerPosition====","=="+CompanyName);
 
         binding.tvAgentName.setText(FarmerName);
         binding.tvCompanyName.setText(CompanyName);
 
+        checkReportStatus();
+
         binding.rlSiteReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FarmerDetailActivity.this,SitInspectionReportActivity.class);
-                intent.putExtra("FarmerPosition",FarmerPosition);
-                intent.putExtra("FarmerName",FarmerName);
+                Intent intent = new Intent(FarmerDetailActivity.this, SitInspectionReportActivity.class);
+                intent.putExtra("site_report", site_report);
+                Log.d("report===","="+ site_report);
                 startActivity(intent);
             }
         });
@@ -56,9 +58,8 @@ public class FarmerDetailActivity extends AppCompatActivity {
         binding.rlDeliveryReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FarmerDetailActivity.this,DeliveryReportActivity.class);
-                intent.putExtra("FarmerPosition",FarmerPosition);
-                intent.putExtra("FarmerName",FarmerName);
+                Intent intent = new Intent(FarmerDetailActivity.this, DeliveryReportActivity.class);
+                intent.putExtra("delivery_report", delivery_report);
                 startActivity(intent);
             }
         });
@@ -66,10 +67,8 @@ public class FarmerDetailActivity extends AppCompatActivity {
         binding.rlPumpInstall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(FarmerDetailActivity.this,PumpInstallationActivity.class);
-                intent.putExtra("FarmerPosition",FarmerPosition);
-                intent.putExtra("FarmerName",FarmerName);
+                Intent intent = new Intent(FarmerDetailActivity.this, PumpInstallationActivity.class);
+                intent.putExtra("pump_report",pump_report);
                 startActivity(intent);
             }
         });
@@ -78,8 +77,8 @@ public class FarmerDetailActivity extends AppCompatActivity {
         binding.rlJointReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FarmerDetailActivity.this,JointReportActivity.class);
-                intent.putExtra("FarmerName",FarmerName);
+                Intent intent = new Intent(FarmerDetailActivity.this, JointReportActivity.class);
+                intent.putExtra("joint_report",joint_report);
                 startActivity(intent);
             }
         });
@@ -96,10 +95,46 @@ public class FarmerDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        checkReportStatus();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+
+    public void checkReportStatus() {
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        HashMap<String, String> hashMap = new HashMap<>();
+
+        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("farmer_id", Const.FARMER_ID);
+
+        Log.d("FARMER_ID==", "=" + Const.FARMER_ID + "aid===" + Const.AGENT_ID);
+
+        Call<CheckStatusModel> call = apiInterface.checkReportStatus(hashMap);
+        call.enqueue(new Callback<CheckStatusModel>() {
+            @Override
+            public void onResponse(Call<CheckStatusModel> call, Response<CheckStatusModel> response) {
+
+                site_report = response.body().getSite_report();
+                delivery_report = response.body().getSite_report();
+                joint_report= response.body().getJoint_report();
+                pump_report = response.body().getPump_report();
+
+                Log.d("response====", "=" + site_report + delivery_report + joint_report + pump_report);
+            }
+
+            @Override
+            public void onFailure(Call<CheckStatusModel> call, Throwable t) {
+                Toast.makeText(FarmerDetailActivity.this, "", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
 }

@@ -1,7 +1,4 @@
 package com.ananta.fieldAgent.Activity.fieldAgent;
-
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,15 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ananta.fieldAgent.Models.DeliveryDataModel;
+import com.ananta.fieldAgent.Models.GetDeliveryData;
 import com.ananta.fieldAgent.Models.ImageModel;
-import com.ananta.fieldAgent.Models.SiteReportModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
-import com.ananta.fieldAgent.Parser.ImageCompression;
-import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityDeliveryReportBinding;
 import com.bumptech.glide.Glide;
@@ -57,17 +52,15 @@ import retrofit2.Response;
 
 public class DeliveryReportActivity extends AppCompatActivity implements View.OnClickListener {
 
+    ActivityDeliveryReportBinding binding;
+    ApiInterface apiInterface;
+    String signImage, path;
     private static final int GALLERY = 100;
     private static final int CAMERA = 101;
     private static final int PERMISSION_CODE = 1;
-    ActivityDeliveryReportBinding binding;
-    ApiInterface apiInterface;
-    String Farmer_ID, signImage, path;
-    private int mYear, mMonth, mDay, mHour, mMinute;
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    int photos;
-    private String signatureName;
+    private String signatureName,delivery_report,reportId,Imagepath;
     double latitude, longitude;
 
     @Override
@@ -82,6 +75,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         setContentView(binding.getRoot());
 
         loadData();
+        fetchData();
         initView();
         setClickListener();
         clickListener();
@@ -91,22 +85,59 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+        delivery_report = getIntent().getStringExtra("delivery_report");
         binding.edSurveyorNameDelivery.setText(Const.AGENT_NAME);
         getLocation();
         datePick();
     }
 
-    private void datePick() {
+    public void fetchData() {
+        if (delivery_report.equals("0")) {
+            binding.tvSubmit.setText("Add Report");
+        } else {
+            binding.tvSubmit.setText("Update Report");
+            getData();
+        }
+    }
 
+    public void getData() {
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("farmer_id", Const.FARMER_ID);
+
+        Call<GetDeliveryData> call = apiInterface.getDeliveryReport(hashMap);
+        call.enqueue(new Callback<GetDeliveryData>() {
+            @Override
+            public void onResponse(Call<GetDeliveryData> call, Response<GetDeliveryData> response) {
+                if (response.isSuccessful()) {
+                    Log.d("delivery ===>", "=1=" + response.body().getMessage());
+                    binding.edPresentPersonNameDelivery.setText(response.body().getDelivery().get(0).getPresentPersonName());
+                    reportId  = String.valueOf(response.body().getDelivery().get(0).getId());
+                    Glide.with(DeliveryReportActivity.this).load(Const.IMAGE_URL + response.body().getDelivery().get(0).getImage()).into(binding.ivMaterialPhoto);
+
+                } else {
+                    Log.d("delivery ===>", "=2=" + response.body().getMessage());
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetDeliveryData> call, Throwable t) {
+                Toast.makeText(DeliveryReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void datePick() {
         final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = sdf.format(c.getTime());
         binding.tvDeliveryDate.setText(formattedDate);
-
     }
 
     public boolean validation() {
@@ -114,32 +145,35 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         if (binding.edSurveyorNameDelivery.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvErrorSurveyorName.setVisibility(View.VISIBLE);
-
         } else if (binding.edPresentPersonNameDelivery.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvErrorPresentPersonName.setVisibility(View.VISIBLE);
-
         } else if (binding.tvAddressDelivery.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvErrorAddress.setVisibility(View.VISIBLE);
-
-        }
+        } /*else if (signatureName.isEmpty()) {
+            isValid = false;
+            binding.tvErrorAddress.setVisibility(View.VISIBLE);
+            binding.tvErrorAddress.setText("please add signature");
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
+        }*/
         return isValid;
     }
 
     /*  delivery update  */
-
-    public void updateSiteReport() {
+    public void updateSiteReport(String reportId) {
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String,String > hashMap = new HashMap<>();
-        hashMap.put("id","12");
+        hashMap.put("id",reportId);
         hashMap.put("surveyor_name", Const.AGENT_NAME);
         hashMap.put("farmer_id", Const.FARMER_ID);
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
-        hashMap.put("image", path);
+        if (!Imagepath.isEmpty()){
+            hashMap.put("image", Imagepath);
+        }
         hashMap.put("date", binding.tvDeliveryDate.getText().toString());
         hashMap.put("sign", signatureName);
         hashMap.put("latitude", String.valueOf(latitude));
@@ -151,24 +185,22 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
 
                 if (response.isSuccessful()){
-                    Toast.makeText(DeliveryReportActivity.this, "successfully updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    finish();
                 }else {
-                    Toast.makeText(DeliveryReportActivity.this, "not updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<DeliveryDataModel> call, Throwable t) {
-                Toast.makeText(DeliveryReportActivity.this, "failure update", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(DeliveryReportActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     /*   add report */
-
-    public void getDeliveryReportData() {
+    public void addDeliveryReportData() {
 
        binding.pbProgressBar.setVisibility(View.VISIBLE);
        apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -178,7 +210,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("farmer_id", Const.FARMER_ID);
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
-        hashMap.put("image", path);
+        hashMap.put("image", Imagepath);
         hashMap.put("date", binding.tvDeliveryDate.getText().toString());
         hashMap.put("sign", signatureName);
         hashMap.put("latitude", String.valueOf(latitude));
@@ -403,8 +435,11 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             showPictureDialog();
         } else if (id == R.id.llDeliverySubmit) {
             if (validation()) {
-//                getDeliveryReportData();
-                updateSiteReport();
+                if (delivery_report.equals("0")){
+                    addDeliveryReportData();
+                }else {
+                    updateSiteReport(reportId);
+                }
             } else {
                 Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
             }
@@ -460,26 +495,20 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     }
 
     public void uploadImage(Uri contentURI, int fromWhere) {
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
 
         Uri uri = null;
         String fName = "";
         try {
             uri = FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI);
-            Log.w("contentURI===>", "=filesutils=" + FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI));
+            Log.w("FilePathURL", "" + FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        /*new ImageCompression(this).setImageCompressionListener(compressionImagePath -> {
-            path = compressionImagePath;
-            Log.d("contentURI===>", "=1=" + contentURI);
-            Glide.with(DeliveryReportActivity.this).load(contentURI).into(binding.ivMaterialPhoto);
-        }).execute(path);*/
-
-        File file = new File(String.valueOf(contentURI));
-        Log.w("contentURI===>","filePath="+ file.getPath());
+        File file = new File(uri.getPath());
+        Log.w("FilePath", file.getPath());
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        binding.pbProgressBar.setVisibility(View.VISIBLE);
+
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
@@ -495,17 +524,20 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    Log.w("contentURI===>","imagename"+ imageName[0]);
-                    path = imageModel.getFileUploadData().getImage_name();
+                    Log.w("ImageName", imageName[0]);
+                    if (fromWhere == 1) {
+                        Imagepath = imageModel.getFileUploadData().getImage_name();
+                    }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeliveryReportActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                Toast.makeText(DeliveryReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(DeliveryReportActivity.this, "Image uploaded failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

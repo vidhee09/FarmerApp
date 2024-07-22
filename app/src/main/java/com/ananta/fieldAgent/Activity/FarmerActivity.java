@@ -94,7 +94,6 @@ public class FarmerActivity extends AppCompatActivity {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.clear();
                         farmerModelArrayList.addAll(response.body().getFarmer_data());
-                        Const.FARMER_ID = response.body().getFarmer_data().get(0).getId();
                         initView();
                     }else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -103,14 +102,14 @@ public class FarmerActivity extends AppCompatActivity {
 
                 }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(FarmerActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FarmerActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(FarmerActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FarmerActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
             }
         });
     }
