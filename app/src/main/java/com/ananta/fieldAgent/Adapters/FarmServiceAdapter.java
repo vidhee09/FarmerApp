@@ -1,6 +1,8 @@
 package com.ananta.fieldAgent.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ananta.fieldAgent.Activity.farmer.AddRequestFarmerActivity;
 import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
 import com.ananta.fieldAgent.Models.PastFarmerRequestModel;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +49,17 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
         holder.tvFarmerName.setText(model.getRequestType());
         holder.tvAddressName.setText(model.getDescription());
         holder.tvPumpName.setText(model.getServiceRequest());
+        if (!model.getImageName().isEmpty()){
+            Glide.with(context).load(Const.IMAGE_URL+model.getImageName()).into(holder.ivServiceImage);
+        }else {
+            Glide.with(context).load(R.drawable.placeholder).into(holder.ivServiceImage);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((Activity)context).startActivity(new Intent(context, AddRequestFarmerActivity.class).putExtra("complaint_name", model.getServiceRequest()).putExtra("complaint_number", "1234567899"));
+            }
+        });
     }
 
     @Override
@@ -57,7 +73,6 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
         ImageView ivServiceImage;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvFarmerName = itemView.findViewById(R.id.tvFarmerName);
             tvPumpName = itemView.findViewById(R.id.tvPumpName);
             tvAddressName = itemView.findViewById(R.id.tvAddressName);

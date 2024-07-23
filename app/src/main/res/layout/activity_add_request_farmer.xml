@@ -35,16 +35,6 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/_10sdp"
-            android:background="@drawable/bg_green_add"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/user"/>
 
     </RelativeLayout>
 
@@ -85,21 +75,19 @@
                 android:fontFamily="@font/poppins_bold"/>
 
             <TextView
-                android:id="@+id/edtFarmerName"
+                android:id="@+id/tvFarmerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:fontFamily="@font/poppins_regular"
-                android:maxLength="10"
                 android:drawablePadding="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10sdp" />
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,90 +98,76 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Service Type"
+                android:text="Phone Number"
                 android:fontFamily="@font/poppins_bold"/>
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/tvFarmerNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_background"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:padding="@dimen/_5sdp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Pump head recommanded by surveyor" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="@dimen/_5sdp"
-                        android:background="@color/appColor"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="10dp"
-                        android:orientation="vertical">
-
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Surface Pump Solar"
-                            android:textColor="@color/black" />
-
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Surface Pump Solar"
-                            android:checked="true"
-                            android:textColor="@color/black" />
-
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Surface Pump Solar"
-                            android:textColor="@color/black" />
-
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Surface Pump Solar"
-                            android:textColor="@color/black" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
+                android:background="@drawable/round_background"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_regular"
+                android:drawablePadding="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center_vertical"
+                android:padding="@dimen/_10sdp" />
 
         </LinearLayout>
 
-
         <LinearLayout
-            android:id="@+id/llAddRequestBtn"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_35sdp"
-            android:background="@drawable/round_fill_background"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
             android:orientation="vertical">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Complaint Name"
+                android:fontFamily="@font/poppins_bold"/>
+
+            <TextView
+                android:id="@+id/tvFarmerComplaintName"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/poppins_bold"
-                android:gravity="center"
-                android:text="Add Request"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"/>
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_background"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_regular"
+                android:drawablePadding="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center_vertical"
+                android:padding="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Complaint Number"
+                android:fontFamily="@font/poppins_bold"/>
+
+            <TextView
+                android:id="@+id/tvFarmerComplaintNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_background"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_regular"
+                android:drawablePadding="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center_vertical"
+                android:padding="@dimen/_10sdp" />
+
         </LinearLayout>
 
     </LinearLayout>

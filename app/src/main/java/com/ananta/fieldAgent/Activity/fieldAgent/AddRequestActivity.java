@@ -265,7 +265,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             }
-
         } else if (id == R.id.ivReqCamera) {
             showPictureDialog(1);
         } else if (id == R.id.ivInsuranceCamera) {
@@ -462,17 +461,13 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 try {
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
                         uploadImage(contentURI, 1);
                         path = String.valueOf(contentURI);
-                        Log.d("path===>", "=1=" + path);
                         binding.ivRequestPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
                         uploadImage(contentURI, 2);
                         path = String.valueOf(contentURI);
-                        Log.d("path===>", "=2=" + path);
                         binding.ivInsurancePhoto.setImageBitmap(bitmap);
                     }
 
@@ -529,6 +524,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
 
     public void uploadImage(Uri contentURI, int fromWhere) {
         Uri uri = null;

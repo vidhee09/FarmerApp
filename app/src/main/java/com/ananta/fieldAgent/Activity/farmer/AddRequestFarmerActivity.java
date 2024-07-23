@@ -21,6 +21,7 @@ public class AddRequestFarmerActivity extends AppCompatActivity {
 
     private ActivityAddRequestFarmerBinding binding;
     private Preference preference;
+    private  String complaintName, complaintNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
@@ -33,16 +34,20 @@ public class AddRequestFarmerActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        complaintName = getIntent().getStringExtra("complaint_name");
+        complaintNumber = getIntent().getStringExtra("complaint_number");
 
-        binding.edtFarmerName.setText(preference.getFarmerName());
-        binding.llAddRequestBtn.setOnClickListener(v -> {
+        binding.tvFarmerName.setText(preference.getFarmerName());
+        binding.tvFarmerNumber.setText(preference.getFarmerNum());
+        binding.tvFarmerComplaintName.setText(complaintName);
+        binding.tvFarmerComplaintNumber.setText(complaintNumber);
 
-//                Intent intent = new Intent(AddRequestFarmerActivity.this, FarmerDashboardActivity.class);
-            Intent intent = new Intent(AddRequestFarmerActivity.this, DashboardActivity.class);
-            startActivity(intent);
-
+        binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
         });
-
     }
 
 }

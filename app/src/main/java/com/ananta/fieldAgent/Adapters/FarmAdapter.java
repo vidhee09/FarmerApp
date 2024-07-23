@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +47,12 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
         holder.tvFarmerName.setText(model.getRequestType());
         holder.tvAddressName.setText(model.getDescription());
         holder.tvPumpName.setText(model.getServiceRequest());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (!model.getImageName().isEmpty()){
+            Glide.with(context).load(Const.IMAGE_URL+model.getImageName()).into(holder.ivFarmerImage);
+        }else {
+            Glide.with(context).load(R.drawable.placeholder).into(holder.ivFarmerImage);
+        }
 
-               /* Intent intent = new Intent(context, FarmerProfileActivity.class);
-                context.startActivity(intent);*/
-            }
-        });
     }
 
     @Override

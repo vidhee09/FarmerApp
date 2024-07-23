@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -14,8 +15,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ananta.fieldAgent.R;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 public class Utils {
     private static Dialog dialog;
+    public static MediaType MEDIA_TYPE_IMAGE = MediaType.parse("placeholder/*");
+
   static ProgressBar ivProgressBar;
 
     public static boolean isInternetConnected(Context context) {
@@ -48,6 +57,18 @@ public class Utils {
             dialog.hide();
         }
     }
+
+    public static MultipartBody.Part makeMultipartRequestBody(Context context, String photoPath, String partName) {
+        try {
+            File file = new File(photoPath);
+            RequestBody requestFile = RequestBody.create(file, MEDIA_TYPE_IMAGE);
+            return MultipartBody.Part.createFormData(partName, context.getResources().getString(R.string.app_name), requestFile);
+        } catch (NullPointerException e) {
+            Log.d("AddRequestActivity", "makeMultipartRequestBody" + e.getMessage());
+            return null;
+        }
+    }
+
 
        
 }
