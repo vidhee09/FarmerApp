@@ -66,4 +66,6 @@ dependencies {
     implementation libs.play.services.location
     implementation libs.swiperefreshlayout
 
+    implementation (libs.permissionx)
+
 }

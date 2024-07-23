@@ -17,7 +17,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Models.AddServiceModel;
 import com.ananta.fieldAgent.Models.AllFarmerModel;
@@ -26,6 +30,7 @@ import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityAddRequestBinding;
@@ -61,11 +66,23 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     ArrayList<String> list = new ArrayList<>();
     ArrayList<String> ids = new ArrayList<>();
 
+    private Preference preference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        View view = binding.getRoot();
+        setContentView(view);
+        preference = Preference.getInstance(this);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
@@ -224,9 +241,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public void clickListener() {
 
-        binding.ivReqCamera.setOnClickListener(this::onClick);
-        binding.llAddReqBtn.setOnClickListener(this::onClick);
-        binding.ivInsuranceCamera.setOnClickListener(this::onClick);
+        binding.ivReqCamera.setOnClickListener(this);
+        binding.llAddReqBtn.setOnClickListener(this);
+        binding.ivInsuranceCamera.setOnClickListener(this);
 
     }
 
@@ -247,7 +264,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             }
-
         } else if (id == R.id.ivReqCamera) {
             showPictureDialog(1);
         } else if (id == R.id.ivInsuranceCamera) {
@@ -293,7 +309,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
 
@@ -320,7 +335,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onFailure(Call<AllFarmerModel> call, Throwable t) {
-                Toast.makeText(AddRequestActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                Log.d("Addrequest", "=" + t.getMessage());
             }
         });
     }
@@ -355,10 +370,15 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void getAddRequestData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+//        Utils.showCustomProgressDialog(this, true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
-        hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
+        if (preference.getFarmerLoginId() != null){
+            hashMap.put("farmer_id", preference.getFarmerLoginId());
+        }else {
+            hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
+        }
         hashMap.put("request_type", binding.spSpinner.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequest.getSelectedItem().toString());
         if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")) {
@@ -375,13 +395,12 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         call.enqueue(new Callback<AddServiceModel>() {
             @Override
             public void onResponse(Call<AddServiceModel> call, Response<AddServiceModel> response) {
-
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
+//                        Utils.hideProgressDialog(AddRequestActivity.this);
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
-
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -450,17 +469,13 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 try {
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
                         uploadImage(contentURI, 1);
                         path = String.valueOf(contentURI);
-                        Log.d("path===>", "=1=" + path);
                         binding.ivRequestPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
                         uploadImage(contentURI, 2);
                         path = String.valueOf(contentURI);
-                        Log.d("path===>", "=2=" + path);
                         binding.ivInsurancePhoto.setImageBitmap(bitmap);
                     }
 
@@ -517,6 +532,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
 
     public void uploadImage(Uri contentURI, int fromWhere) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);

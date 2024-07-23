@@ -1,7 +1,6 @@
 package com.ananta.fieldAgent.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +10,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ananta.fieldAgent.Activity.farmer.FarmerProfileActivity;
-import com.ananta.fieldAgent.Activity.fieldAgent.FarmerDetailActivity;
-import com.ananta.fieldAgent.Models.FarmModel;
+import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
 
     Context context;
-    ArrayList<FarmModel> farmerList;
+    List<CurrentRequestFarmerModel> farmerList;
 
-    public FarmAdapter(Context context, ArrayList<FarmModel> farmerList) {
+    public FarmAdapter(Context context, List<CurrentRequestFarmerModel> farmerList) {
         this.context = context;
         this.farmerList = farmerList;
+    }
+
+    // method for filtering our recyclerview items.
+    public void filterList(ArrayList<CurrentRequestFarmerModel> filterlist) {
+        farmerList = filterlist;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -37,16 +43,16 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull FarmAdapter.ViewHolder holder, int position) {
-        FarmModel model = farmerList.get(position);
-        holder.tvFarmerName.setText(model.getName());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        CurrentRequestFarmerModel model = farmerList.get(position);
+        holder.tvFarmerName.setText(model.getRequestType());
+        holder.tvAddressName.setText(model.getDescription());
+        holder.tvPumpName.setText(model.getServiceRequest());
+        if (!model.getImageName().isEmpty()){
+            Glide.with(context).load(Const.IMAGE_URL+model.getImageName()).into(holder.ivFarmerImage);
+        }else {
+            Glide.with(context).load(R.drawable.placeholder).into(holder.ivFarmerImage);
+        }
 
-                Intent intent = new Intent(context, FarmerProfileActivity.class);
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override

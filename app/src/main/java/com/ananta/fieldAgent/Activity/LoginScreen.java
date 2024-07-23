@@ -9,12 +9,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Utils;
+import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityLoginScreenBinding;
 
 import java.util.HashMap;
@@ -30,10 +35,16 @@ public class LoginScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityLoginScreenBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         binding.tvSendOtpLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +53,7 @@ public class LoginScreen extends AppCompatActivity {
                     if (Utils.isInternetAvailable(LoginScreen.this)) {
                         login();
                     } else {
-                       binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(LoginScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -76,21 +87,36 @@ public class LoginScreen extends AppCompatActivity {
         call.enqueue(new Callback<LoginModel>() {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
-
-
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    binding.tvErrorMobileNumber.setVisibility(View.GONE);
-                    Intent intent = new Intent(LoginScreen.this, VerifyOTPScreen.class);
-                    intent.putExtra("OTP", response.body().getOtp());
-                    intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
-                    startActivity(intent);
-                    finish();
-
+                if (response.body() != null) {
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        Intent intent = new Intent(LoginScreen.this, VerifyOTPScreen.class);
+                        intent.putExtra("OTP", response.body().getOtp());
+                        intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    binding.tvErrorMobileNumber.setVisibility(View.VISIBLE);
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreen.this, "You are not approve by admin", Toast.LENGTH_SHORT).show();
+
+                    if (response.isSuccessful()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        binding.tvErrorMobileNumber.setVisibility(View.GONE);
+                        Intent intent = new Intent(LoginScreen.this, VerifyOTPScreen.class);
+                        intent.putExtra("OTP", response.body().getOtp());
+                        intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        binding.tvErrorMobileNumber.setVisibility(View.VISIBLE);
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -100,6 +126,7 @@ public class LoginScreen extends AppCompatActivity {
                 Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
 
             }
+
         });
 
     }

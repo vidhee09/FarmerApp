@@ -10,6 +10,7 @@ import com.ananta.fieldAgent.Models.GetDeliveryData;
 import com.ananta.fieldAgent.Models.GetJointData;
 import com.ananta.fieldAgent.Models.GetPumpData;
 import com.ananta.fieldAgent.Models.GetSiteData;
+import com.ananta.fieldAgent.Models.FarmerServiceResponseModel;
 import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Models.JointSurveyorModel;
 import com.ananta.fieldAgent.Models.LoginModel;
@@ -113,4 +114,7 @@ public interface ApiInterface {
     /*---  check report status  ---*/
     @GET("joint-reports")
     Call<GetJointData> getJointReport(@QueryMap Map<String, String> stringMap);
+
+    @POST("farmer-service")
+    Call<FarmerServiceResponseModel> getCurrentAndPastData(@Body HashMap<String, String> currentPastData);
 }

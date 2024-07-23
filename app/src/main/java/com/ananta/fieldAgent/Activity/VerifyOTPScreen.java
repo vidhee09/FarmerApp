@@ -15,11 +15,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Activity.farmer.FarmerDashboardActivity;
-import com.ananta.fieldAgent.Activity.fieldAgent.MainActivity;
 import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityVerifyOtpscreen2Binding;
 import com.chaos.view.PinView;
@@ -37,12 +37,20 @@ public class VerifyOTPScreen extends AppCompatActivity {
     ActivityVerifyOtpscreen2Binding binding;
     String OTP = "", Number = "";
     ApiInterface apiInterface;
+    private Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityVerifyOtpscreen2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preference = Preference.getInstance(this);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         OTP = getIntent().getStringExtra("OTP");
         Number = getIntent().getStringExtra("NUMBER");
@@ -87,39 +95,63 @@ public class VerifyOTPScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
-                SharedPreferences sharedPreferences = getSharedPreferences("sharedData",MODE_PRIVATE);
-                SharedPreferences.Editor editor= sharedPreferences.edit();
+                SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 if (response.isSuccessful()) {
 //                    Utils.hideProgressDialog(VerifyOTPScreen.this);
                     pinView.getText().clear();
 
-                    if (response.body().getType().equals("agent")){
+                    if (response.body().getType().equals("agent")) {
 
                         Intent intent = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
                         Const.AGENT_ID = response.body().getUser_id();
                         Const.AGENT_NAME = response.body().getUser_name();
                         editor.putString("agentLogin", Const.AGENT_ID);
-                        editor.putString("agentName",Const.AGENT_NAME);
-                        Log.d("Name===","=aa=="+Const.AGENT_NAME);
+                        editor.putString("agentName", Const.AGENT_NAME);
+                        Log.d("Name===", "=aa==" + Const.AGENT_NAME);
                         editor.commit();
                         Const.COMPANY_NAME = response.body().getUser_companyname();
                         Const.MOBILE_NUMBER = response.body().getMobile_number();
                         startActivity(intent);
                         finish();
+                        if (response.body() != null) {
+                            if (response.body().getSuccess()) {
+                              binding.pbProgressBar.setVisibility(View.GONE);
+                                pinView.getText().clear();
+                                if (response.body().getType().equals("agent")) {
+                                    //old Activity when we want see old view
+//                            Intent intent = new Intent(VerifyOTPScreen.this, MainActivity.class);
+                                    Intent intent1 = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
+                                    Const.AGENT_ID = response.body().getUser_id();
+                                    Const.AGENT_NAME = response.body().getUser_name();
+                                    editor.putString("agentLogin", Const.AGENT_ID);
+                                    editor.putString("agentName", Const.AGENT_NAME);
+                                    editor.commit();
+                                    Const.COMPANY_NAME = response.body().getUser_companyname();
+                                    Const.MOBILE_NUMBER = response.body().getMobile_number();
+                                    startActivity(intent1);
+                                    finish();
 
-                    }else if (response.body().getType().equals("farmer")){
+                                }  else if (response.body().getType().equals("farmer")) {
+                                    Intent intent3= new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
+                                    preference.putIsHideWelcomeScreen(true);
+                                    preference.putFarmerLoginId(response.body().getUser_id());
+                                    preference.putFarmerName(response.body().getUser_name());
+                                    preference.putFarmerNum(response.body().getMobile_number());
+                                    startActivity(intent3);
+                                    finish();
+                                }
+                            }
 
-                        Intent intent = new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
-                        startActivity(intent);
+
+                        } else {
+                            binding.pbProgressBar.setVisibility(View.VISIBLE);
+                            Toast.makeText(VerifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
+
+                        }
+
                     }
-
-
-                } else {
-//                    Utils.showCustomProgressDialog(verifyOTPScreen.this,true);
-                    Toast.makeText(VerifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
 
             @Override
@@ -127,28 +159,28 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
                 Toast.makeText(VerifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
+
         });
-
-
     }
 
-    /*------------  CountDownTimer -----------*/
 
-    public void countDownTimerFun() {
-        new CountDownTimer(60000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                // Used for formatting digit to be in 2 digits only
-                NumberFormat f = new DecimalFormat("00");
-                long hour = (millisUntilFinished / 3600000) % 24;
-                long min = (millisUntilFinished / 60000) % 60;
-                long sec = (millisUntilFinished / 1000) % 60;
-                binding.tvSetTime.setText(f.format(sec) + "s");
-            }
+        /*------------  CountDownTimer -----------*/
 
-            public void onFinish() {
-                binding.tvSetTime.setVisibility(View.GONE);
-                binding.tvResend.setVisibility(View.VISIBLE);
-            }
-        }.start();
+        public void countDownTimerFun () {
+            new CountDownTimer(60000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    // Used for formatting digit to be in 2 digits only
+                    NumberFormat f = new DecimalFormat("00");
+                    long hour = (millisUntilFinished / 3600000) % 24;
+                    long min = (millisUntilFinished / 60000) % 60;
+                    long sec = (millisUntilFinished / 1000) % 60;
+                    binding.tvSetTime.setText(f.format(sec) + "s");
+                }
+
+                public void onFinish() {
+                    binding.tvSetTime.setVisibility(View.GONE);
+                    binding.tvResend.setVisibility(View.VISIBLE);
+                }
+            }.start();
+        }
     }
-}
