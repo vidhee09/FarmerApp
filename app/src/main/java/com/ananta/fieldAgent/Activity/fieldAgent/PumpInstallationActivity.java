@@ -358,13 +358,13 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("structure_id", binding.edStructureId.getText().toString());
         hashMap.put("policy_no", binding.edPolicyNumberPumpInstall.getText().toString());
         Log.d("imagee===","="+pumpPath+"=="+baneficiarypath+"="+workingPumpPath);
-        if (!pumpPath.isEmpty()) {
+        if ( pumpPath == null || !pumpPath.isEmpty()) {
             hashMap.put("install_image", pumpPath);
         }
-        if (!baneficiarypath.isEmpty()) {
+        if ( baneficiarypath == null || !baneficiarypath.isEmpty()) {
             hashMap.put("pump_benifi_image", baneficiarypath);
         }
-        if (!workingPumpPath.isEmpty()) {
+        if ( workingPumpPath == null || !workingPumpPath.isEmpty()) {
             hashMap.put("pump_work_image", workingPumpPath);
         }
         hashMap.put("sign", signatureName);

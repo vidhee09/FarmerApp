@@ -81,7 +81,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
 
-    String  reportId;
+    String reportId;
     int photos;
     double latitude, longitude;
     private String FilepathName, site_report;
@@ -135,21 +135,21 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
-            hashMap.put("id", reportId);
-            hashMap.put("farmer_id", Const.FARMER_ID);
-            hashMap.put("agent_id", Const.AGENT_ID);
-            hashMap.put("date", binding.tvDateSiteReport.getText().toString());
-            if(!Imagepath.isEmpty()){
-                hashMap.put("pump_image", Imagepath);
-            }
-            if(!baneficiarypath.isEmpty()){
+        hashMap.put("id", reportId);
+        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("date", binding.tvDateSiteReport.getText().toString());
+        if (Imagepath == null || !Imagepath.isEmpty()) {
+            hashMap.put("pump_image", Imagepath);
+        }
+        if (baneficiarypath == null || !baneficiarypath.isEmpty()) {
             hashMap.put("pump_benificiaryimage", baneficiarypath);
-            }
-            hashMap.put("inspection_sign", FilepathName);
-            hashMap.put("inspection_officer_name", binding.edInspectionOfficerName.getText().toString());
-            hashMap.put("present_person_name", binding.edPresentPersonName.getText().toString());
-            hashMap.put("latitude", String.valueOf(latitude));
-            hashMap.put("longitude", String.valueOf(longitude));
+        }
+        hashMap.put("inspection_sign", FilepathName);
+        hashMap.put("inspection_officer_name", binding.edInspectionOfficerName.getText().toString());
+        hashMap.put("present_person_name", binding.edPresentPersonName.getText().toString());
+        hashMap.put("latitude", String.valueOf(latitude));
+        hashMap.put("longitude", String.valueOf(longitude));
 
 
         Call<SiteReportModel> call = apiInterface.updateSiteReport(hashMap);
@@ -159,7 +159,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    Siteinspectionn siteinspectionn =  response.body().getSiteinspectionn();
+                    Siteinspectionn siteinspectionn = response.body().getSiteinspectionn();
                     Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -171,7 +171,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             @Override
             public void onFailure(Call<SiteReportModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(SitInspectionReportActivity.this, "update"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SitInspectionReportActivity.this, "update" + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -231,6 +231,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     }
 
     public void getData() {
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
@@ -240,14 +241,16 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             @Override
             public void onResponse(Call<GetSiteData> call, Response<GetSiteData> response) {
                 if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     Log.d("sitemodel===>", "==success=>" + response.body().getMessage());
                     binding.edInspectionOfficerName.setText(response.body().getSitereport().get(0).getInspectionOfficerName());
                     binding.edPresentPersonName.setText(response.body().getSitereport().get(0).getPresentPersonName());
-                    reportId  = String.valueOf(response.body().getSitereport().get(0).getId());
+                    reportId = String.valueOf(response.body().getSitereport().get(0).getId());
                     Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSitereport().get(0).getPumpImage()).into(binding.ivPumpPhoto);
                     Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSitereport().get(0).getPumpBenificiaryimage()).into(binding.ivBenificiaryPhoto);
 
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Log.d("sitemodel===>", "==success=false=>" + response.body().getMessage());
                     Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -255,6 +258,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
             @Override
             public void onFailure(Call<GetSiteData> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(SitInspectionReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
             }
         });
@@ -330,7 +334,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             @Override
             public void onSigned() {
             }
-
             @Override
             public void onClear() {
             }
@@ -635,7 +638,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                     Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);

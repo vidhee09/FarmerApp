@@ -292,13 +292,13 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("is_mobile_network", networkSelect);
         hashMap.put("survey_person", checkbox_available_person.toString());
         hashMap.put("remark", binding.edRemark.getText().toString());
-        if (!pumpPath.isEmpty()){
+        if (pumpPath == null || !pumpPath.isEmpty()){
             hashMap.put("water_res_image", pumpPath);
         }
-        if (!landmarkPath.isEmpty()){
+        if ( landmarkPath == null ||  !landmarkPath.isEmpty()){
             hashMap.put("landmark_image", landmarkPath);
         }
-        if (!baneficiarypath.isEmpty()){
+        if (baneficiarypath == null || !baneficiarypath.isEmpty()){
             hashMap.put("beneficiary_image", baneficiarypath);
         }
         hashMap.put("beneficiary_sign", signatureBeneficiary);
@@ -314,7 +314,6 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
-
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -322,7 +321,6 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
                 }
             }
 
@@ -560,7 +558,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         binding.btnCompletedSign.setOnClickListener(v -> {
             signImage = binding.signaturePadSign.getSignatureSvg();
             signImage = BitMapToString(binding.signaturePadSign.getSignatureBitmap());
-            saveBitmapIntoCacheDir(binding.signaturePadSign.getSignatureBitmap());
+            saveBitmapIntoCacheDir(binding.signaturePadSign.getSignatureBitmap(),1);
             Log.d("DeliveryReport===>", "===>" + signImage);
             binding.ivSignImage.setImageBitmap(binding.signaturePadSign.getSignatureBitmap());
         });
@@ -572,7 +570,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         binding.btnCompletedBeneficiary.setOnClickListener(v -> {
             beneficiarySignImage = binding.signaturePadBeneficiary.getSignatureSvg();
             beneficiarySignImage = BitMapToString(binding.signaturePadBeneficiary.getSignatureBitmap());
-            BitmapIntoCacheDir(binding.signaturePadBeneficiary.getSignatureBitmap());
+            BitmapIntoCacheDir(binding.signaturePadBeneficiary.getSignatureBitmap(),2);
             Log.d("DeliveryReport===>", "===>" + beneficiarySignImage);
             binding.ivBeneficiarySignImage.setImageBitmap(binding.signaturePadBeneficiary.getSignatureBitmap());
         });
@@ -598,7 +596,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         return temp;
     }
 
-    private void saveBitmapIntoCacheDir(Bitmap signatureBitmap) {
+    private void saveBitmapIntoCacheDir(Bitmap signatureBitmap, int pos) {
         File sd = getCacheDir();
         File folder = new File(sd, "/myfolder/");
         if (!folder.exists()) {
@@ -622,10 +620,10 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadFileImage(fileName);
+        uploadFileImage(fileName,pos);
     }
 
-    private void BitmapIntoCacheDir(Bitmap signatureBitmap) {
+    private void BitmapIntoCacheDir(Bitmap signatureBitmap,int pos) {
         File sd = getCacheDir();
         File folder = new File(sd, "/myfolder/");
         if (!folder.exists()) {
@@ -649,7 +647,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadFileImage(fileName);
+        uploadFileImage(fileName,pos);
     }
 
     private void showPictureDialog(Integer photo) {
@@ -864,7 +862,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    public void uploadFileImage(File file) {
+    public void uploadFileImage(File file,int fromWhere) {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         Uri uri = null;
@@ -887,8 +885,11 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    signatureSurveyor = imageModel.getFileUploadData().getImage_name();
-                    signatureBeneficiary = imageModel.getFileUploadData().getImage_name();
+                    if (fromWhere == 1){
+                        signatureSurveyor = imageModel.getFileUploadData().getImage_name();
+                    }else {
+                        signatureBeneficiary = imageModel.getFileUploadData().getImage_name();
+                    }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
