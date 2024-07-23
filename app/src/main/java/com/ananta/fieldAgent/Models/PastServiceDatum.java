@@ -42,6 +42,42 @@ public class PastServiceDatum {
     @Expose
     private String updatedAt;
 
+    @SerializedName("farmer_address")
+    @Expose
+    private String farmer_address;
+
+    @SerializedName("farmer_name")
+    @Expose
+    private String farmer_name;
+
+    @SerializedName("complaint_id")
+    @Expose
+    private String complaint_id;
+
+    public String getComplaint_id() {
+        return complaint_id;
+    }
+
+    public void setComplaint_id(String complaint_id) {
+        this.complaint_id = complaint_id;
+    }
+
+    public String getFarmer_address() {
+        return farmer_address;
+    }
+
+    public void setFarmer_address(String farmer_address) {
+        this.farmer_address = farmer_address;
+    }
+
+    public String getFarmer_name() {
+        return farmer_name;
+    }
+
+    public void setFarmer_name(String farmer_name) {
+        this.farmer_name = farmer_name;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class PastFarmerRequestModel {
 
-
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -43,6 +41,18 @@ public class PastFarmerRequestModel {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+
+    @SerializedName("complaint_id")
+    @Expose
+    private String complaint_id;
+
+    public String getComplaint_id() {
+        return complaint_id;
+    }
+
+    public void setComplaint_id(String complaint_id) {
+        this.complaint_id = complaint_id;
+    }
 
     public Integer getId() {
         return id;

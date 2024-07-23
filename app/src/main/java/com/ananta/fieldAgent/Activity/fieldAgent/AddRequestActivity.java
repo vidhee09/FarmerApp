@@ -75,8 +75,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        View view = binding.getRoot();
-        setContentView(view);
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -358,7 +356,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 Log.d("farmer id===>", "=ids=" + farmer_id);
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -370,15 +367,17 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void getAddRequestData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
-//        Utils.showCustomProgressDialog(this, true);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
-        if (preference.getFarmerLoginId() != null){
+
+        Log.d("farmerID===","="+farmer_id+"pref=="+preference.getFarmerLoginId());
+
+        if (!preference.getFarmerLoginId().isEmpty() || preference.getFarmerLoginId() != null){
             hashMap.put("farmer_id", preference.getFarmerLoginId());
-        }else {
-            hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
         }
+        hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
+
         hashMap.put("request_type", binding.spSpinner.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequest.getSelectedItem().toString());
         if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")) {
@@ -397,7 +396,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(Call<AddServiceModel> call, Response<AddServiceModel> response) {
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
-//                        Utils.hideProgressDialog(AddRequestActivity.this);
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();

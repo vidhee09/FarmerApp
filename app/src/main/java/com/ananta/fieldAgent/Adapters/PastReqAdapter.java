@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ananta.fieldAgent.Activity.fieldAgent.ShowComplaintActivity;
 import com.ananta.fieldAgent.Models.PastReqModel;
 import com.ananta.fieldAgent.Models.PastServiceDatum;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHolder> {
@@ -36,13 +41,33 @@ public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHold
     public void onBindViewHolder(@NonNull PastReqAdapter.ViewHolder holder, int position) {
 
         PastServiceDatum model = pastReqModelsList.get(position);
-        holder.tvNameFarmer.setText("jay");
+        holder.tvNameFarmer.setText(model.getFarmer_name());
+        holder.tvAddressPastReq.setText(model.getFarmer_address());
         holder.tvPastReqName.setText(model.getServiceRequest());
+
+        Glide.with(context).load(Const.IMAGE_URL+model.getImageName()).error(R.drawable.placeholder).into(holder.ivPastReqImage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ShowComplaintActivity.class);
+                intent.putExtra("position",position);
+                intent.putExtra("FName",model.getFarmer_name());
+                intent.putExtra("ComplaintID",model.getComplaint_id());
+                intent.putExtra("ComplaintName",model.getServiceRequest());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return pastReqModelsList.size();
+    }
+
+    public void filterList(ArrayList<PastServiceDatum> filteredlist) {
+        pastReqModelsList = filteredlist;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

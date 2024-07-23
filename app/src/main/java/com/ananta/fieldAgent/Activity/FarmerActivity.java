@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
 import com.ananta.fieldAgent.Adapters.FarmerAdapter;
+import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
+import com.ananta.fieldAgent.Models.FarmerDatum;
 import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
@@ -38,7 +41,7 @@ public class FarmerActivity extends AppCompatActivity {
 
     ActivityFarmerBinding binding;
     FarmerAdapter farmerAdapter;
-    ArrayList<FarmerModel> farmerModelArrayList = new ArrayList<>();
+    ArrayList<FarmerDatum> farmerModelArrayList = new ArrayList<>();
     ApiInterface apiInterface;
 
     @Override
@@ -55,8 +58,36 @@ public class FarmerActivity extends AppCompatActivity {
         });
 
         addListener();
+
+        binding.svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
     }
 
+    private void filter(String text) {
+        ArrayList<FarmerDatum> filteredlist = new ArrayList<>();
+
+        for (FarmerDatum item : farmerModelArrayList) {
+            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+
+        if (filteredlist.isEmpty()) {
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            farmerAdapter.filterList(filteredlist);
+        }
+    }
 
     private void initView() {
         LinearLayoutManager manager = new LinearLayoutManager(FarmerActivity.this,LinearLayoutManager.VERTICAL,false);
@@ -104,7 +135,7 @@ public class FarmerActivity extends AppCompatActivity {
                     if (response.isSuccessful()){
                         binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.clear();
-                        farmerModelArrayList.addAll(response.body().getFarmer_data());
+                        farmerModelArrayList.addAll(response.body().getFarmerData());
                         initView();
                     }else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);

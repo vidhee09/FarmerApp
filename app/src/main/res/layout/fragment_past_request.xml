@@ -17,10 +17,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <SearchView
+            android:id="@+id/svSearchViewPast"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_background"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvPastReqView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginHorizontal="@dimen/_5sdp"/>
 
     </LinearLayout>

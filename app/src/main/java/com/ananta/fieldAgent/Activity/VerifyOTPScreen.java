@@ -97,66 +97,44 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
                 SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+
                 if (response.isSuccessful()) {
-//                    Utils.hideProgressDialog(VerifyOTPScreen.this);
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     pinView.getText().clear();
 
                     if (response.body().getType().equals("agent")) {
-
-                        Intent intent = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
+                        Intent intent1 = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
                         Const.AGENT_ID = response.body().getUser_id();
                         Const.AGENT_NAME = response.body().getUser_name();
-                        editor.putString("agentLogin", Const.AGENT_ID);
-                        editor.putString("agentName", Const.AGENT_NAME);
-                        Log.d("Name===", "=aa==" + Const.AGENT_NAME);
-                        editor.commit();
                         Const.COMPANY_NAME = response.body().getUser_companyname();
                         Const.MOBILE_NUMBER = response.body().getMobile_number();
-                        startActivity(intent);
+                        editor.putString("agentLogin", Const.AGENT_ID);
+                        editor.putString("agentName", Const.AGENT_NAME);
+                        editor.putString("MOBILE_NUMBER", response.body().getMobile_number());
+                        editor.commit();
+                        startActivity(intent1);
                         finish();
-                        if (response.body() != null) {
-                            if (response.body().getSuccess()) {
-                              binding.pbProgressBar.setVisibility(View.GONE);
-                                pinView.getText().clear();
-                                if (response.body().getType().equals("agent")) {
-                                    //old Activity when we want see old view
-//                            Intent intent = new Intent(VerifyOTPScreen.this, MainActivity.class);
-                                    Intent intent1 = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
-                                    Const.AGENT_ID = response.body().getUser_id();
-                                    Const.AGENT_NAME = response.body().getUser_name();
-                                    editor.putString("agentLogin", Const.AGENT_ID);
-                                    editor.putString("agentName", Const.AGENT_NAME);
-                                    editor.commit();
-                                    Const.COMPANY_NAME = response.body().getUser_companyname();
-                                    Const.MOBILE_NUMBER = response.body().getMobile_number();
-                                    startActivity(intent1);
-                                    finish();
 
-                                }  else if (response.body().getType().equals("farmer")) {
-                                    Intent intent3= new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
-                                    preference.putIsHideWelcomeScreen(true);
-                                    preference.putFarmerLoginId(response.body().getUser_id());
-                                    preference.putFarmerName(response.body().getUser_name());
-                                    preference.putFarmerNum(response.body().getMobile_number());
-                                    startActivity(intent3);
-                                    finish();
-                                }
-                            }
-
-
-                        } else {
-                            binding.pbProgressBar.setVisibility(View.VISIBLE);
-                            Toast.makeText(VerifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
-
-                        }
-
+                    } else if (response.body().getType().equals("farmer")) {
+                        Intent intent3 = new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
+                        preference.putIsHideWelcomeScreen(true);
+                        preference.putFarmerLoginId(response.body().getUser_id());
+                        preference.putFarmerName(response.body().getUser_name());
+                        preference.putFarmerNum(response.body().getMobile_number());
+                        startActivity(intent3);
+                        finish();
                     }
+
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(VerifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
-
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(VerifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
 
@@ -164,23 +142,23 @@ public class VerifyOTPScreen extends AppCompatActivity {
     }
 
 
-        /*------------  CountDownTimer -----------*/
+    /*------------  CountDownTimer -----------*/
 
-        public void countDownTimerFun () {
-            new CountDownTimer(60000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    // Used for formatting digit to be in 2 digits only
-                    NumberFormat f = new DecimalFormat("00");
-                    long hour = (millisUntilFinished / 3600000) % 24;
-                    long min = (millisUntilFinished / 60000) % 60;
-                    long sec = (millisUntilFinished / 1000) % 60;
-                    binding.tvSetTime.setText(f.format(sec) + "s");
-                }
+    public void countDownTimerFun() {
+        new CountDownTimer(60000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                // Used for formatting digit to be in 2 digits only
+                NumberFormat f = new DecimalFormat("00");
+                long hour = (millisUntilFinished / 3600000) % 24;
+                long min = (millisUntilFinished / 60000) % 60;
+                long sec = (millisUntilFinished / 1000) % 60;
+                binding.tvSetTime.setText(f.format(sec) + "s");
+            }
 
-                public void onFinish() {
-                    binding.tvSetTime.setVisibility(View.GONE);
-                    binding.tvResend.setVisibility(View.VISIBLE);
-                }
-            }.start();
-        }
+            public void onFinish() {
+                binding.tvSetTime.setVisibility(View.GONE);
+                binding.tvResend.setVisibility(View.VISIBLE);
+            }
+        }.start();
     }
+}

@@ -28,12 +28,14 @@ public class AddRequestFarmerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAddRequestFarmerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         complaintName = getIntent().getStringExtra("complaint_name");
         complaintNumber = getIntent().getStringExtra("complaint_number");
 
@@ -47,6 +49,7 @@ public class AddRequestFarmerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onBackPressed();
             }
+
         });
     }
 

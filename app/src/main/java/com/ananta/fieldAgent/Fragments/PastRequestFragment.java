@@ -4,16 +4,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.ananta.fieldAgent.Adapters.PastReqAdapter;
 import com.ananta.fieldAgent.Models.CurrentReqModel;
-import com.ananta.fieldAgent.Models.PastReqModel;
 import com.ananta.fieldAgent.Models.PastServiceDatum;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
@@ -49,23 +48,23 @@ public class PastRequestFragment extends Fragment {
         return view;
     }
 
-    public void bindRcv(){
+    public void bindRcv() {
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         binding.rcvPastReqView.setLayoutManager(manager);
 
-        adapter = new PastReqAdapter(getActivity(),pastReqModelArrayList);
+        adapter = new PastReqAdapter(getActivity(), pastReqModelArrayList);
         binding.rcvPastReqView.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();
     }
 
-    public void getPastRequestData(){
+    public void getPastRequestData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        HashMap<String,String> hashMap = new HashMap<>();
+        HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", Const.AGENT_ID);
 
         Call<CurrentReqModel> call = apiInterface.getPastRequest(hashMap);
@@ -74,11 +73,12 @@ public class PastRequestFragment extends Fragment {
             @Override
             public void onResponse(Call<CurrentReqModel> call, Response<CurrentReqModel> response) {
 
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     pastReqModelArrayList.addAll(response.body().getPastServiceData());
                     bindRcv();
-                }else {
+
+                } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                 }
             }
@@ -89,6 +89,34 @@ public class PastRequestFragment extends Fragment {
             }
         });
 
+        binding.svSearchViewPast.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+
+    }
+
+    private void filter(String text) {
+        ArrayList<PastServiceDatum> filteredlist = new ArrayList<>();
+
+        for (PastServiceDatum item : pastReqModelArrayList) {
+            if (item.getRequestType().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            Toast.makeText(getContext(), "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            adapter.filterList(filteredlist);
+        }
     }
 
 }

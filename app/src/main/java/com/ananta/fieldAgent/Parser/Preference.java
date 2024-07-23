@@ -22,12 +22,7 @@ public class Preference {
     public  String FARMER_NUM = "farmer_num";
 
 
-
     public Preference() {}
-
-    public  Siteinspectionn getSiteinspectionn() {
-        return siteinspectionn;
-    }
 
     public static Preference getInstance(Context context) {
         app_preferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -93,6 +88,59 @@ public class Preference {
 
     public static String getString(String name){
         return app_preferences.getString(NAME, "");
+    }
+
+
+    /* -------agent------ */
+
+    /*    use for agent after login     */
+    public static String AGENT_ID = "agent_id";
+    public static String AGENT_NAME = "agent_name";
+    public static String COMPANY_NAME = "company_name";
+    public static String COMPLAINT_NUMBER = "complaint_number";
+    public static String COMPLAINT_NAME = "complaint_name";
+    public static String AGNET_MobileNo = "mobile_number";
+    public static Integer  ID ;
+    public static String FARMER_ID = "farmer_id";
+
+    public String getAgentName(){
+        return app_preferences.getString(AGENT_NAME, "");
+    }
+
+    public void putAgentName(String agent_name) {
+        SharedPreferences.Editor edit = app_preferences.edit();
+        edit.putString(AGENT_NAME, agent_name);
+        edit.apply();
+    }
+
+    public String getAgentId(){
+        return app_preferences.getString(AGENT_ID, "");
+    }
+
+    public void putAgentID(String agent_id) {
+        SharedPreferences.Editor edit = app_preferences.edit();
+        edit.putString(AGENT_ID, agent_id);
+        edit.apply();
+    }
+
+    public String getAgent(){
+        return app_preferences.getString(FARMER_ID, "");
+    }
+
+    public void putAgentFarmerID(String far_id) {
+        SharedPreferences.Editor edit = app_preferences.edit();
+        edit.putString(FARMER_ID, far_id);
+        edit.apply();
+    }
+
+    public String getAgentNumber(){
+        return app_preferences.getString(AGNET_MobileNo, "");
+    }
+
+    public void putAgentNumber(String mobile) {
+        SharedPreferences.Editor edit = app_preferences.edit();
+        edit.putString(AGNET_MobileNo, mobile);
+        edit.apply();
     }
 
 }

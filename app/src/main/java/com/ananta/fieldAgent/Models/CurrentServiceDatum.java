@@ -26,6 +26,31 @@ public class CurrentServiceDatum {
     @SerializedName("reason")
     @Expose
     private String reason;
+
+    @SerializedName("farmer_address")
+    @Expose
+    private String farmer_address;
+
+    public String getFarmer_address() {
+        return farmer_address;
+    }
+
+    public void setFarmer_address(String farmer_address) {
+        this.farmer_address = farmer_address;
+    }
+
+    public String getFarmer_name() {
+        return farmer_name;
+    }
+
+    public void setFarmer_name(String farmer_name) {
+        this.farmer_name = farmer_name;
+    }
+
+    @SerializedName("farmer_name")
+    @Expose
+    private String farmer_name;
+
     @SerializedName("incident_date")
     @Expose
     private String incidentDate;

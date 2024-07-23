@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
@@ -85,9 +86,10 @@ public class ServiceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ServiceActivity.this, AddRequestActivity.class);
                 startActivity(intent);
-
             }
         });
+
+
     }
 
 }

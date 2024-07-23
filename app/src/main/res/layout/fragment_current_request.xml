@@ -11,26 +11,36 @@
 
         <ProgressBar
             android:id="@+id/pbProgressBar"
+            style="@style/progressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/progressbar"
-            android:visibility="gone"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <SearchView
+                android:id="@+id/svSearchViewCurrent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_background"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvCurrentReqView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_5sdp"/>
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp" />
 
         </LinearLayout>
     </RelativeLayout>
-
 
 
 </FrameLayout>

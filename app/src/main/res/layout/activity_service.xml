@@ -46,20 +46,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <SearchView
-            android:id="@+id/svSearchView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/round_background"
-            android:iconifiedByDefault="false"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_18sdp"
-            android:queryHint="Search"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,8 +84,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
 
 
 

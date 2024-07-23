@@ -10,9 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ananta.fieldAgent.Fragments.CurrentRequestFragment;
 import com.ananta.fieldAgent.Models.CurrentReqModel;
 import com.ananta.fieldAgent.Models.CurrentServiceDatum;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -37,14 +40,25 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
     public void onBindViewHolder(@NonNull CurrentRequestAdapter.ViewHolder holder, int position) {
 
         CurrentServiceDatum model = currentReqList.get(position);
-        holder.tvFarmerName.setText("jay");
+        holder.tvFarmerName.setText(model.getFarmer_name());
         holder.tvRequestName.setText(model.getServiceRequest());
+        holder.tvAddressCurrentReq.setText(model.getFarmer_address());
+        Glide.with(context).load(Const.IMAGE_URL+model.getImageName()).error(R.drawable.placeholder).into(holder.ivCurrentReqImage);
 
     }
 
     @Override
     public int getItemCount() {
         return currentReqList.size();
+    }
+
+    public void filterList(ArrayList<CurrentServiceDatum> filteredlist) {
+        currentReqList = filteredlist;
+        notifyDataSetChanged();
+    }
+
+    public CurrentRequestFragment getFilter() {
+        return null;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

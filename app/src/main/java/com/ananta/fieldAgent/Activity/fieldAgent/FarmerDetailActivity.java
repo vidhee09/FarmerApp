@@ -44,11 +44,13 @@ public class FarmerDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityFarmerDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         FarmerPosition = getIntent().getStringExtra("farmer_position");
         FarmerName = getIntent().getStringExtra("FarmerName");
         CompanyName = getIntent().getStringExtra("CompanyName");
@@ -199,6 +201,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
     public void checkReportStatus() {
 
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -213,18 +216,33 @@ public class FarmerDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CheckStatusModel> call, Response<CheckStatusModel> response) {
 
+                binding.pbProgressBar.setVisibility(View.GONE);
+
                 site_report = response.body().getSite_report();
                 delivery_report = response.body().getSite_report();
                 joint_report= response.body().getJoint_report();
                 pump_report = response.body().getPump_report();
+
+                if (site_report.equals("1")){
+                    binding.ivSiteRightArrow.setImageResource(R.drawable.right);
+                }
+                if (delivery_report.equals("1")){
+                    binding.ivDeliveryRightArrow.setImageResource(R.drawable.right);
+                }
+                if (pump_report.equals("1")){
+                    binding.ivPumpRightArrow.setImageResource(R.drawable.right);
+                }
+                if (joint_report.equals("1")){
+                    binding.ivJointRightArrow.setImageResource(R.drawable.right);
+                }
 
                 Log.d("response====", "=" + site_report + delivery_report + joint_report + pump_report);
             }
 
             @Override
             public void onFailure(Call<CheckStatusModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(FarmerDetailActivity.this, "", Toast.LENGTH_SHORT).show();
-
             }
         });
 

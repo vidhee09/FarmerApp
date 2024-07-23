@@ -36,6 +36,7 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
         serviceList = filterlist;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public FarmServiceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -57,7 +58,7 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Activity)context).startActivity(new Intent(context, AddRequestFarmerActivity.class).putExtra("complaint_name", model.getServiceRequest()).putExtra("complaint_number", "1234567899"));
+                ((Activity)context).startActivity(new Intent(context, AddRequestFarmerActivity.class).putExtra("complaint_name", model.getServiceRequest()).putExtra("complaint_number", model.getComplaint_id()));
             }
         });
     }
