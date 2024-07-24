@@ -44,7 +44,6 @@ public class PastRequestFragment extends Fragment {
         View view = binding.getRoot();
 
         getPastRequestData();
-
         return view;
     }
 
@@ -108,7 +107,7 @@ public class PastRequestFragment extends Fragment {
         ArrayList<PastServiceDatum> filteredlist = new ArrayList<>();
 
         for (PastServiceDatum item : pastReqModelArrayList) {
-            if (item.getRequestType().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getFarmer_name().toLowerCase().contains(text.toLowerCase())) {
                 filteredlist.add(item);
             }
         }

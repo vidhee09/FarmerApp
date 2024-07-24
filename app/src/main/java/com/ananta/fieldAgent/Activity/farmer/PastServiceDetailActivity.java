@@ -1,6 +1,5 @@
 package com.ananta.fieldAgent.Activity.farmer;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -11,22 +10,20 @@ import androidx.core.view.WindowInsetsCompat;
 
 import android.view.View;
 
-import com.ananta.fieldAgent.Activity.DashboardActivity;
-import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
-import com.ananta.fieldAgent.databinding.ActivityAddRequestFarmerBinding;
+import com.ananta.fieldAgent.databinding.ActivityPastServiceDetailBinding;
 
-public class AddRequestFarmerActivity extends AppCompatActivity {
+public class PastServiceDetailActivity extends AppCompatActivity {
 
-    private ActivityAddRequestFarmerBinding binding;
+    private ActivityPastServiceDetailBinding binding;
     private Preference preference;
     private  String complaintName, complaintNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        binding = ActivityAddRequestFarmerBinding.inflate(getLayoutInflater());
+        binding = ActivityPastServiceDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         preference = Preference.getInstance(this);

@@ -2,6 +2,8 @@ package com.ananta.fieldAgent.Activity.fieldAgent;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,10 +35,10 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
     ActivityFarmerDetailBinding binding;
     ApiInterface apiInterface;
-    String FarmerPosition="",CompanyName="",FarmerName ="";
+    String FarmerPosition = "", CompanyName = "", FarmerName = "";
     public static final int PERMISSION_FOR_LOCATION = 2;
 
-    String site_report,delivery_report,joint_report,pump_report;
+    String site_report, delivery_report, joint_report, pump_report;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,48 +60,9 @@ public class FarmerDetailActivity extends AppCompatActivity {
         binding.tvAgentName.setText(FarmerName);
         binding.tvCompanyName.setText(CompanyName);
 
-        binding.rlSiteReport.setOnClickListener(v -> PermissionX.init(FarmerDetailActivity.this).permissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-                 .explainReasonBeforeRequest()
-                .onExplainRequestReason((scope, deniedList, beforeRequest) -> {
-//                    CustomDialog customDialog = new CustomDialog(MainJavaActivity.this, "PermissionX needs following permissions to continue", deniedList);
-//                    scope.showRequestReasonDialog(customDialog);
-                    scope.showRequestReasonDialog(deniedList, "PermissionX needs following permissions to continue", "Allow");
-                })
-                .onForwardToSettings((scope, deniedList) -> {
-                    scope.showForwardToSettingsDialog(deniedList, "Please allow following permissions in settings", "Allow");
-                })
-                .request((allGranted, grantedList, deniedList) -> {
-                    if (allGranted) {
-                        Intent intent = new Intent(FarmerDetailActivity.this,SitInspectionReportActivity.class);
-                        intent.putExtra("FarmerPosition",FarmerPosition);
-                        intent.putExtra("FarmerName",FarmerName);
-                        startActivity(intent);
-//                            Toast.makeText(FarmerDetailActivity.this, "All permissions are granted", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(FarmerDetailActivity.this, "The following permissions are denied：" + deniedList, Toast.LENGTH_SHORT).show();
-                    }
-                }));
         checkReportStatus();
 
-        binding.rlSiteReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FarmerDetailActivity.this, SitInspectionReportActivity.class);
-                intent.putExtra("site_report", site_report);
-                Log.d("report===","="+ site_report);
-                startActivity(intent);
-            }
-        });
-
-        binding.rlDeliveryReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FarmerDetailActivity.this, DeliveryReportActivity.class);
-                intent.putExtra("delivery_report", delivery_report);
-                startActivity(intent);
-            }
-        });
-        binding.rlDeliveryReport.setOnClickListener(v ->PermissionX.init(FarmerDetailActivity.this).permissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        binding.rlSiteReport.setOnClickListener(v -> PermissionX.init(FarmerDetailActivity.this).permissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .explainReasonBeforeRequest()
                 .onExplainRequestReason((scope, deniedList, beforeRequest) -> {
 //                    CustomDialog customDialog = new CustomDialog(MainJavaActivity.this, "PermissionX needs following permissions to continue", deniedList);
@@ -111,9 +74,9 @@ public class FarmerDetailActivity extends AppCompatActivity {
                 })
                 .request((allGranted, grantedList, deniedList) -> {
                     if (allGranted) {
-                        Intent intent = new Intent(FarmerDetailActivity.this,DeliveryReportActivity.class);
-                        intent.putExtra("FarmerPosition",FarmerPosition);
-                        intent.putExtra("FarmerName",FarmerName);
+                        Intent intent = new Intent(FarmerDetailActivity.this, SitInspectionReportActivity.class);
+                        intent.putExtra("site_report", site_report);
+                        Log.d("report===", "=" + site_report);
                         startActivity(intent);
 //                            Toast.makeText(FarmerDetailActivity.this, "All permissions are granted", Toast.LENGTH_SHORT).show();
                     } else {
@@ -121,14 +84,28 @@ public class FarmerDetailActivity extends AppCompatActivity {
                     }
                 }));
 
-        binding.rlPumpInstall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FarmerDetailActivity.this, PumpInstallationActivity.class);
-                intent.putExtra("pump_report",pump_report);
-                startActivity(intent);
-            }
-        });
+
+        binding.rlDeliveryReport.setOnClickListener(v -> PermissionX.init(FarmerDetailActivity.this).permissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .explainReasonBeforeRequest()
+                .onExplainRequestReason((scope, deniedList, beforeRequest) -> {
+//                    CustomDialog customDialog = new CustomDialog(MainJavaActivity.this, "PermissionX needs following permissions to continue", deniedList);
+//                    scope.showRequestReasonDialog(customDialog);
+                    scope.showRequestReasonDialog(deniedList, "PermissionX needs following permissions to continue", "Allow");
+                })
+                .onForwardToSettings((scope, deniedList) -> {
+                    scope.showForwardToSettingsDialog(deniedList, "Please allow following permissions in settings", "Allow");
+                })
+                .request((allGranted, grantedList, deniedList) -> {
+                    if (allGranted) {
+                        Intent deliverIntent = new Intent(FarmerDetailActivity.this, DeliveryReportActivity.class);
+                        deliverIntent.putExtra("delivery_report", delivery_report);
+                        startActivity(deliverIntent);
+//                            Toast.makeText(FarmerDetailActivity.this, "All permissions are granted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(FarmerDetailActivity.this, "The following permissions are denied：" + deniedList, Toast.LENGTH_SHORT).show();
+                    }
+                }));
+
 
         binding.rlPumpInstall.setOnClickListener(v -> PermissionX.init(FarmerDetailActivity.this).permissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .explainReasonBeforeRequest()
@@ -142,9 +119,8 @@ public class FarmerDetailActivity extends AppCompatActivity {
                 })
                 .request((allGranted, grantedList, deniedList) -> {
                     if (allGranted) {
-                        Intent intent = new Intent(FarmerDetailActivity.this,PumpInstallationActivity.class);
-                        intent.putExtra("FarmerPosition",FarmerPosition);
-                        intent.putExtra("FarmerName",FarmerName);
+                        Intent intent = new Intent(FarmerDetailActivity.this, PumpInstallationActivity.class);
+                        intent.putExtra("pump_report", pump_report);
                         startActivity(intent);
 //                            Toast.makeText(FarmerDetailActivity.this, "All permissions are granted", Toast.LENGTH_SHORT).show();
                     } else {
@@ -156,9 +132,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
         binding.rlJointReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FarmerDetailActivity.this, JointReportActivity.class);
-                intent.putExtra("joint_report",joint_report);
-                startActivity(intent);
+
             }
         });
 
@@ -174,8 +148,8 @@ public class FarmerDetailActivity extends AppCompatActivity {
                 })
                 .request((allGranted, grantedList, deniedList) -> {
                     if (allGranted) {
-                        Intent intent = new Intent(FarmerDetailActivity.this,JointReportActivity.class);
-                        intent.putExtra("FarmerName",FarmerName);
+                        Intent intent = new Intent(FarmerDetailActivity.this, JointReportActivity.class);
+                        intent.putExtra("joint_report", joint_report);
                         startActivity(intent);
 //                            Toast.makeText(FarmerDetailActivity.this, "All permissions are granted", Toast.LENGTH_SHORT).show();
                     } else {
@@ -216,27 +190,45 @@ public class FarmerDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CheckStatusModel> call, Response<CheckStatusModel> response) {
 
-                binding.pbProgressBar.setVisibility(View.GONE);
+                if (response.body() != null){
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    assert response.body() != null;
+                    site_report = response.body().getSiteReport();
+                    delivery_report = response.body().getDeliveryReport();
+                    joint_report = response.body().getJointReport();
+                    pump_report = response.body().getPumpReport();
 
-                site_report = response.body().getSite_report();
-                delivery_report = response.body().getSite_report();
-                joint_report= response.body().getJoint_report();
-                pump_report = response.body().getPump_report();
+                    if (site_report.equals("1")) {
+                        binding.ivSiteRightArrow.setImageResource(R.drawable.right);
+                        binding.ivSiteRightArrow.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+                    } else {
+                        binding.ivSiteRightArrow.setImageResource(R.drawable.ic_next_arrow);
+                    }
+                    if (delivery_report.equals("1")) {
+                        binding.ivDeliveryRightArrow.setImageResource(R.drawable.right);
+                        binding.ivDeliveryRightArrow.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+                    } else {
+                        binding.ivDeliveryRightArrow.setImageResource(R.drawable.ic_next_arrow);
+                    }
+                    if (pump_report.equals("1")) {
+                        binding.ivPumpRightArrow.setImageResource(R.drawable.right);
+                        binding.ivPumpRightArrow.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+                    } else {
+                        binding.ivPumpRightArrow.setImageResource(R.drawable.ic_next_arrow);
+                    }
+                    if (joint_report.equals("1")) {
+                        binding.ivJointRightArrow.setImageResource(R.drawable.right);
+                        binding.ivJointRightArrow.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+                    } else {
+                        binding.ivJointRightArrow.setImageResource(R.drawable.ic_next_arrow);
+                    }
 
-                if (site_report.equals("1")){
-                    binding.ivSiteRightArrow.setImageResource(R.drawable.right);
-                }
-                if (delivery_report.equals("1")){
-                    binding.ivDeliveryRightArrow.setImageResource(R.drawable.right);
-                }
-                if (pump_report.equals("1")){
-                    binding.ivPumpRightArrow.setImageResource(R.drawable.right);
-                }
-                if (joint_report.equals("1")){
-                    binding.ivJointRightArrow.setImageResource(R.drawable.right);
+                    Log.d("response====", "=" + site_report + delivery_report + joint_report + pump_report);
+                }else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Log.d("response====", "=" + site_report + delivery_report + joint_report + pump_report);
                 }
 
-                Log.d("response====", "=" + site_report + delivery_report + joint_report + pump_report);
             }
 
             @Override

@@ -63,7 +63,7 @@
             android:name=".Activity.farmer.FarmerProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.farmer.AddRequestFarmerActivity"
+            android:name=".Activity.farmer.PastServiceDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.FarmerApp" />
         <activity

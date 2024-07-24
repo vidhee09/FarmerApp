@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +79,9 @@ public class CurrentRequestFragment extends Fragment {
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    currentReqList.addAll(response.body().getCurrentServiceData());
+                    assert response.body() != null;
+//                    Log.d("response===","="+response.body().getCurrent_service_data());
+                    currentReqList.addAll(response.body().getCurrent_service_data());
                     bindRcv();
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -111,7 +114,7 @@ public class CurrentRequestFragment extends Fragment {
         ArrayList<CurrentServiceDatum> filteredlist = new ArrayList<>();
 
         for (CurrentServiceDatum item : currentReqList) {
-            if (item.getRequestType().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getFarmer_name().toLowerCase().contains(text.toLowerCase())) {
                 filteredlist.add(item);
             }
         }

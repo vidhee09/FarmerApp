@@ -12,7 +12,7 @@ public class CurrentReqModel {
     private Boolean success;
     @SerializedName("current_service_data")
     @Expose
-    private ArrayList<CurrentServiceDatum> currentServiceData;
+    private ArrayList<CurrentServiceDatum> current_service_data;
 
     @SerializedName("past_service_data")
     @Expose
@@ -31,17 +31,12 @@ public class CurrentReqModel {
         return this;
     }
 
-    public ArrayList<CurrentServiceDatum> getCurrentServiceData() {
-        return currentServiceData;
+    public ArrayList<CurrentServiceDatum> getCurrent_service_data() {
+        return current_service_data;
     }
 
-    public void setCurrentServiceData(ArrayList<CurrentServiceDatum> currentServiceData) {
-        this.currentServiceData = currentServiceData;
-    }
-
-    public CurrentReqModel withCurrentServiceData(ArrayList<CurrentServiceDatum> currentServiceData) {
-        this.currentServiceData = currentServiceData;
-        return this;
+    public void setCurrent_service_data(ArrayList<CurrentServiceDatum> current_service_data) {
+        this.current_service_data = current_service_data;
     }
 
     public ArrayList<PastServiceDatum> getPastServiceData() {

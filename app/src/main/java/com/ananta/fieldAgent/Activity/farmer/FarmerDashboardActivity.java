@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Activity.farmer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -14,6 +15,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ananta.fieldAgent.Activity.DashboardActivity;
+import com.ananta.fieldAgent.Activity.LoginScreen;
 import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.CurrenRequestFarmerFragment;
@@ -46,8 +49,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityFarmerDashboardBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
 
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -82,6 +84,16 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             startActivity(intent);
 
         });
+
+        binding.ivSignOut.setOnClickListener(v -> {
+            preference.putIsHideWelcomeScreen(false);
+            preference.putFarmerName(null);
+            preference.putFarmerNum(null);
+            preference.putFarmerLoginId(null);
+            Intent intent = new Intent(FarmerDashboardActivity.this, LoginScreen.class);
+            startActivity(intent);
+            finishAffinity();
+        });
     }
 
     @Override
@@ -90,11 +102,12 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         getFarmerData(preference.getFarmerLoginId());
     }
 
-    public void getFarmerData(String id){
-//
+    public void getFarmerData(String id) {
+
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("id",id);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("id", id);
 
         Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap);
 
@@ -102,21 +115,22 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
 
-                if (response.body() != null){
-                    if (response.isSuccessful()){
-//                        Utils.hideProgressDialog(FarmerDashboardActivity.this);
+                if (response.body() != null) {
+                    if (response.isSuccessful()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
                         adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrentServiceData()), "Current Request");
                         adapter.addFragment(new PastRequestFarmerFragment(response.body().getPastServiceData()), "Past Request");
                         binding.viewPager.setAdapter(adapter);
                         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
-                    }else {
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(FarmerDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
 
-                }else {
-//                    Utils.showCustomProgressDialog(FarmerDashboardActivity.this,true);
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(FarmerDashboardActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
                 }
             }

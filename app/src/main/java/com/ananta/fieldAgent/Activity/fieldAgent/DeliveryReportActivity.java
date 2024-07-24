@@ -78,13 +78,14 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         binding = ActivityDeliveryReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         loadData();
-        fetchData();
         initView();
         setClickListener();
         clickListener();
@@ -94,10 +95,22 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+
         delivery_report = getIntent().getStringExtra("delivery_report");
+
+        Log.d("delivery==","="+delivery_report);
+
+        if (delivery_report.isEmpty()){
+            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+        }else {
+            fetchData();
+        }
+
         binding.edSurveyorNameDelivery.setText(Const.AGENT_NAME);
+
         getLocation();
         datePick();
+
     }
 
     public void fetchData() {

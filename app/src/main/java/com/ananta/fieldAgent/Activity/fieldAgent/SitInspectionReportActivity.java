@@ -252,12 +252,15 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             public void onResponse(Call<GetSiteData> call, Response<GetSiteData> response) {
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
+
+                    assert response.body() != null;
                     Log.d("sitemodel===>", "==success=>" + response.body().getMessage());
-                    binding.edInspectionOfficerName.setText(response.body().getSitereport().get(0).getInspectionOfficerName());
-                    binding.edPresentPersonName.setText(response.body().getSitereport().get(0).getPresentPersonName());
-                    reportId = String.valueOf(response.body().getSitereport().get(0).getId());
-                    Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSitereport().get(0).getPumpImage()).into(binding.ivPumpPhoto);
-                    Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSitereport().get(0).getPumpBenificiaryimage()).into(binding.ivBenificiaryPhoto);
+                    binding.edInspectionOfficerName.setText(response.body().getSiteInpections().get(0).getInspectionOfficerName());
+                    binding.edPresentPersonName.setText(response.body().getSiteInpections().get(0).getPresentPersonName());
+                    reportId = String.valueOf(response.body().getSiteInpections().get(0).getId());
+
+                    Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSiteInpections().get(0).getPumpImage()).into(binding.ivPumpPhoto);
+                    Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSiteInpections().get(0).getPumpBenificiaryimage()).into(binding.ivBenificiaryPhoto);
 
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);

@@ -8,104 +8,128 @@
     android:orientation="vertical"
     tools:context=".Activity.farmer.FarmerDashboardActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="@dimen/_60sdp"
+        android:background="@drawable/round_bg_globle"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="@string/dashboard"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp" />
+
+        <ImageView
+            android:id="@+id/ivSignOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/bg_green_add"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/signout" />
+
+        <ImageView
+            android:id="@+id/ivAddReqImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/bg_green_add"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/user" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_60sdp"
-            android:background="@drawable/round_bg_globle"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:fontFamily="@font/poppins_bold"
-                android:text="@string/dashboard"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/ivAddReqImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/ivFarmerImage"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:src="@drawable/farmer" />
+
+
+            <TextView
+                android:id="@+id/tvFarmerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/round_background"
+                android:drawableTint="@color/appColor"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center_vertical"
                 android:padding="@dimen/_10sdp"
-                android:background="@drawable/bg_green_add"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/user"/>
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tvFarmerNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/round_background"
+                android:drawablePadding="@dimen/_5sdp"
+                android:drawableTint="@color/appColor"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center_vertical"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_44sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@android:color/transparent"
+                app:tabBackground="@drawable/tab_select"
+                app:tabIndicator="@null"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:tabTextColor="@color/black" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp" />
+
 
         </LinearLayout>
 
-
-        <ImageView
-            android:id="@+id/ivFarmerImage"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:src="@drawable/farmer"/>
-
-
-        <TextView
-            android:id="@+id/tvFarmerName"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/pbProgressBar"
+            style="@style/progressbar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_background"
-            android:drawableTint="@color/appColor"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppins_regular"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginHorizontal="@dimen/_18sdp"
-            android:gravity="center_vertical"
-            android:padding="@dimen/_10sdp" />
+            android:visibility="gone"
+            android:layout_centerInParent="true" />
 
-
-        <TextView
-            android:id="@+id/tvFarmerNo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_background"
-            android:drawableTint="@color/appColor"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:fontFamily="@font/poppins_regular"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginHorizontal="@dimen/_18sdp"
-            android:drawablePadding="@dimen/_5sdp"
-            android:gravity="center_vertical"
-            android:padding="@dimen/_10sdp" />
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_44sdp"
-            app:tabBackground="@drawable/tab_select"
-            app:tabIndicator="@null"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            app:tabIndicatorHeight="0dp"
-            app:tabIndicatorFullWidth="false"
-            app:tabMode="fixed"
-            android:background="@android:color/transparent"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/black"
-            app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"/>
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

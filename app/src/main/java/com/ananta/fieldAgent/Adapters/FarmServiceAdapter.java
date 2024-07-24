@@ -12,8 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ananta.fieldAgent.Activity.farmer.AddRequestFarmerActivity;
-import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
+import com.ananta.fieldAgent.Activity.farmer.PastServiceDetailActivity;
 import com.ananta.fieldAgent.Models.PastFarmerRequestModel;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
@@ -58,7 +57,7 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Activity)context).startActivity(new Intent(context, AddRequestFarmerActivity.class).putExtra("complaint_name", model.getServiceRequest()).putExtra("complaint_number", model.getComplaint_id()));
+                ((Activity)context).startActivity(new Intent(context, PastServiceDetailActivity.class).putExtra("complaint_name", model.getServiceRequest()).putExtra("complaint_number", model.getComplaint_id()));
             }
         });
     }

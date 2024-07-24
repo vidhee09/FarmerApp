@@ -58,14 +58,13 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private static final int GALLERY = 101;
     private static final int CAMERA = 102;
     ActivityAddRequestBinding binding;
-    String path = "", claim = "", reason = "", farmer_name = "", farmer_id = "";
+    String path = "", claim = "", reason = "", farmer_name="", farmer_id="" ;
     ApiInterface apiInterface;
     int photos;
     private int mYear, mMonth, mDay, mHour, mMinute;
     ArrayList<AllFarmerModel> allFarmersList = new ArrayList<>();
     ArrayList<String> list = new ArrayList<>();
     ArrayList<String> ids = new ArrayList<>();
-
     private Preference preference;
 
     @Override
@@ -73,7 +72,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        View view = binding.getRoot();
+        setContentView(view);
 
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -82,10 +82,20 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             return insets;
         });
 
+        if (preference.getFarmerName() != null){
+            binding.rlFarmerName.setVisibility(View.GONE);
+            binding.tvFarmerName.setVisibility(View.VISIBLE);
+            binding.tvFarmerName.setText(preference.getFarmerName());
+        }else {
+            binding.rlFarmerName.setVisibility(View.VISIBLE);
+            binding.tvFarmerName.setVisibility(View.GONE);
+//            binding.tvFarmerName.setText(preference.getFarmerName());
+            getAllFarmerData();
+        }
+
         SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
         Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
 
-        getAllFarmerData();
         loadData();
 
         ArrayList<String> categories = new ArrayList<>();
@@ -162,8 +172,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 reason = binding.spSpinnerIcReason.getSelectedItem().toString();
-
-//                Toast.makeText(AddRequestActivity.this, reason, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -249,16 +257,16 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.llAddReqBtn) {
-            if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")) {
-                if (validationIns()) {
+            if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")){
+                if (validationIns()){
                     getAddRequestData();
-                } else {
-                    Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(this, "Please filled all field and try again+ inssssssss", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                if (validation()) {
+            }else {
+                if (validation()){
                     getAddRequestData();
-                } else {
+                }else {
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -277,7 +285,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         } else if (binding.spSpinnerRequest.getSelectedItem().equals("Select request")) {
             isvalid = false;
             binding.tvReqErrorText.setVisibility(View.VISIBLE);
-        } else if (binding.edReqDescription.getText().toString().isEmpty()) {
+        }else if (binding.edReqDescription.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
         }
@@ -293,10 +301,10 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         } else if (binding.spSpinnerInsuranceClaim.getSelectedItem().equals("Select one")) {
             isvalid = false;
             Toast.makeText(this, "Please Select Insaurance Claim", Toast.LENGTH_SHORT).show();
-        } else if (binding.spSpinnerIcReason.getSelectedItem().equals("Select one")) {
+        }else if (binding.spSpinnerIcReason.getSelectedItem().equals("Select one")) {
             isvalid = false;
             Toast.makeText(this, "Please select reason", Toast.LENGTH_SHORT).show();
-        } else if (binding.edInsuranceDescription.getText().toString().isEmpty()) {
+        }else if (binding.edInsuranceDescription.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
         }
@@ -305,10 +313,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public void getAllFarmerData() {
 
-        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("agent_id", Const.AGENT_ID);
 
         Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap);
         call.enqueue(new Callback<AllFarmerModel>() {
@@ -316,12 +325,14 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(Call<AllFarmerModel> call, Response<AllFarmerModel> response) {
 
                 if (response.isSuccessful()) {
+
                     binding.pbProgressBar.setVisibility(View.GONE);
                     allFarmersList.addAll(response.body().getFarmer());
 
                     for (int i = 0; i < allFarmersList.size(); i++) {
                         list.add(allFarmersList.get(i).getName());
                         ids.add(allFarmersList.get(i).getId());
+
                     }
                     setFarmerList();
 
@@ -333,6 +344,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onFailure(Call<AllFarmerModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 Log.d("Addrequest", "=" + t.getMessage());
             }
         });
@@ -356,6 +369,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 Log.d("farmer id===>", "=ids=" + farmer_id);
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -365,24 +379,21 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void getAddRequestData() {
+       binding.pbProgressBar.setVisibility(View.VISIBLE);
 
-        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
-
-        Log.d("farmerID===","="+farmer_id+"pref=="+preference.getFarmerLoginId());
-
-        if (!preference.getFarmerLoginId().isEmpty() || preference.getFarmerLoginId() != null){
+        if (preference.getFarmerLoginId() != null){
             hashMap.put("farmer_id", preference.getFarmerLoginId());
+        }else {
+            hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
         }
-        hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
-
         hashMap.put("request_type", binding.spSpinner.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequest.getSelectedItem().toString());
-        if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")) {
+        if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")){
             hashMap.put("description", binding.edInsuranceDescription.getText().toString());
-        } else {
+        }else {
             hashMap.put("description", binding.edReqDescription.getText().toString());
         }
         hashMap.put("image_name", path);
@@ -397,7 +408,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -533,8 +543,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
 
     public void uploadImage(Uri contentURI, int fromWhere) {
-        binding.pbProgressBar.setVisibility(View.VISIBLE);
-
         Uri uri = null;
         String fName = "";
         try {
@@ -560,7 +568,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 ImageModel imageModel = response.body();
 
                 if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     Log.w("ImageName", imageName[0]);
                     if (fromWhere == 1) {
@@ -569,14 +576,12 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                         path = imageModel.getFileUploadData().getImage_name();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(AddRequestActivity.this, "image not uploaded", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(AddRequestActivity.this, "image not uploaded" + t, Toast.LENGTH_SHORT).show();
 
             }

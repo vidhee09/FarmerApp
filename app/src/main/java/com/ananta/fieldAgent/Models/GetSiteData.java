@@ -13,9 +13,9 @@ public class GetSiteData {
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("sitereport")
+    @SerializedName("siteInpections")
     @Expose
-    private ArrayList<Sitereport> sitereport;
+    private ArrayList<SiteInpection> siteInpections;
 
     public Boolean getSuccess() {
         return success;
@@ -43,16 +43,16 @@ public class GetSiteData {
         return this;
     }
 
-    public ArrayList<Sitereport> getSitereport() {
-        return sitereport;
+    public ArrayList<SiteInpection> getSiteInpections() {
+        return siteInpections;
     }
 
-    public void setSitereport(ArrayList<Sitereport> sitereport) {
-        this.sitereport = sitereport;
+    public void setSiteInpections(ArrayList<SiteInpection> siteInpections) {
+        this.siteInpections = siteInpections;
     }
 
-    public GetSiteData withSitereport(ArrayList<Sitereport> sitereport) {
-        this.sitereport = sitereport;
+    public GetSiteData withSiteInpections(ArrayList<SiteInpection> siteInpections) {
+        this.siteInpections = siteInpections;
         return this;
     }
 

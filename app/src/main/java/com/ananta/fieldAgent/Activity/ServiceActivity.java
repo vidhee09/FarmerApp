@@ -72,12 +72,10 @@ public class ServiceActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int i) {
-
             }
 
             @Override
             public void onPageScrollStateChanged(int i) {
-
             }
         });
 
@@ -89,7 +87,17 @@ public class ServiceActivity extends AppCompatActivity {
             }
         });
 
+        binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
