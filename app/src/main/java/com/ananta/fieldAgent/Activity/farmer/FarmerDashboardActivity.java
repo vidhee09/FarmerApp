@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Activity.farmer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -14,6 +15,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ananta.fieldAgent.Activity.DashboardActivity;
+import com.ananta.fieldAgent.Activity.LoginScreen;
 import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.CurrenRequestFarmerFragment;
@@ -79,6 +82,16 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             Intent intent = new Intent(FarmerDashboardActivity.this, AddRequestActivity.class);
             startActivity(intent);
 
+        });
+
+        binding.ivSignOut.setOnClickListener(v -> {
+            preference.putIsHideWelcomeScreen(false);
+            preference.putFarmerName(null);
+            preference.putFarmerNum(null);
+            preference.putFarmerLoginId(null);
+            Intent intent = new Intent(FarmerDashboardActivity.this, LoginScreen.class);
+            startActivity(intent);
+            finishAffinity();
         });
     }
 
