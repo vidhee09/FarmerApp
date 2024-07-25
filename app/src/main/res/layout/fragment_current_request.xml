@@ -5,17 +5,42 @@
     android:layout_height="match_parent"
     tools:context="com.ananta.fieldAgent.Fragments.CurrentRequestFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvCurrentReqView"
+        <ProgressBar
+            android:id="@+id/pbProgressBar"
+            style="@style/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_5sdp"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <SearchView
+                android:id="@+id/svSearchViewCurrent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_background"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvCurrentReqView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
 
 </FrameLayout>

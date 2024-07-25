@@ -1,34 +1,56 @@
 package com.ananta.fieldAgent.Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+
 public class CurrentReqModel {
 
-    String success,message,name;
+    @SerializedName("success")
+    @Expose
+    private Boolean success;
+    @SerializedName("current_service_data")
+    @Expose
+    private ArrayList<CurrentServiceDatum> current_service_data;
 
-    public CurrentReqModel(String name) {
-        this.name = name;
-    }
+    @SerializedName("past_service_data")
+    @Expose
+    private ArrayList<PastServiceDatum> pastServiceData;
 
-    public String getSuccess() {
+    public Boolean getSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(Boolean success) {
         this.success = success;
     }
 
-    public String getMessage() {
-        return message;
+    public CurrentReqModel withSuccess(Boolean success) {
+        this.success = success;
+        return this;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public ArrayList<CurrentServiceDatum> getCurrent_service_data() {
+        return current_service_data;
     }
 
-    public String getName() {
-        return name;
+    public void setCurrent_service_data(ArrayList<CurrentServiceDatum> current_service_data) {
+        this.current_service_data = current_service_data;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public ArrayList<PastServiceDatum> getPastServiceData() {
+        return pastServiceData;
     }
+
+    public void setPastServiceData(ArrayList<PastServiceDatum> pastServiceData) {
+        this.pastServiceData = pastServiceData;
+    }
+
+    public CurrentReqModel withPastServiceData(ArrayList<PastServiceDatum> pastServiceData) {
+        this.pastServiceData = pastServiceData;
+        return this;
+    }
+
+
 }

@@ -6,22 +6,38 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
+import com.ananta.fieldAgent.Models.CurrentServiceDatum;
+import com.ananta.fieldAgent.Parser.ApiClient;
+import com.ananta.fieldAgent.Parser.ApiInterface;
+import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.databinding.FragmentCurrentRequestBinding;
 import com.ananta.fieldAgent.Adapters.CurrentRequestAdapter;
 import com.ananta.fieldAgent.Models.CurrentReqModel;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CurrentRequestFragment extends Fragment {
 
     FragmentCurrentRequestBinding binding;
     CurrentRequestAdapter adapter;
-    ArrayList<CurrentReqModel> currentReqList = new ArrayList<>();
+    ArrayList<CurrentServiceDatum> currentReqList = new ArrayList<>();
+    ApiInterface apiInterface;
+    Preference preference;
 
     public static Fragment newInstance() {
         return new CurrentRequestFragment();
@@ -32,24 +48,83 @@ public class CurrentRequestFragment extends Fragment {
 
         binding = FragmentCurrentRequestBinding.inflate(inflater);
         View view = binding.getRoot();
+        preference = Preference.getInstance(getActivity());
 
-        bindRcv();
+        getCurrentRequestData();
         return view;
+    }
+
+    public void bindRcv() {
+
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        binding.rcvCurrentReqView.setLayoutManager(manager);
+
+        adapter = new CurrentRequestAdapter(getActivity(), currentReqList);
+        binding.rcvCurrentReqView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
     }
 
-    public void bindRcv(){
+    public void getCurrentRequestData() {
 
-        currentReqList.add(new CurrentReqModel("Jay Morjariya"));
-        currentReqList.add(new CurrentReqModel("Jay Morjariya"));
-        currentReqList.add(new CurrentReqModel("Jay Morjariya"));
-        currentReqList.add(new CurrentReqModel("Jay Morjariya"));
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        binding.rcvCurrentReqView.setLayoutManager(manager);
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        adapter = new CurrentRequestAdapter(getActivity(),currentReqList);
-        binding.rcvCurrentReqView.setAdapter(adapter);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("id", Const.AGENT_ID);
 
+        Call<CurrentReqModel> call = apiInterface.getCurrentRequest(hashMap ,"Bearer "+preference.getToken());
+
+        call.enqueue(new Callback<CurrentReqModel>() {
+            @Override
+            public void onResponse(Call<CurrentReqModel> call, Response<CurrentReqModel> response) {
+
+                if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    assert response.body() != null;
+//                    Log.d("response===","="+response.body().getCurrent_service_data());
+                    currentReqList.addAll(response.body().getCurrent_service_data());
+                    bindRcv();
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(getActivity(), "not success", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CurrentReqModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(getActivity(), "fail ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.svSearchViewCurrent.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+    }
+
+    private void filter(String text) {
+        ArrayList<CurrentServiceDatum> filteredlist = new ArrayList<>();
+
+        for (CurrentServiceDatum item : currentReqList) {
+            if (item.getFarmer_name().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            Toast.makeText(getContext(), "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            adapter.filterList(filteredlist);
+        }
     }
 }

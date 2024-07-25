@@ -8,21 +8,33 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.ananta.fieldAgent.Adapters.PastReqAdapter;
-import com.ananta.fieldAgent.Models.PastReqModel;
+import com.ananta.fieldAgent.Models.CurrentReqModel;
+import com.ananta.fieldAgent.Models.PastServiceDatum;
+import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
+import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.databinding.FragmentPastRequestBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PastRequestFragment extends Fragment {
 
     FragmentPastRequestBinding binding;
     PastReqAdapter adapter;
-    ArrayList<PastReqModel> pastReqModelArrayList = new ArrayList<>();
+    ArrayList<PastServiceDatum> pastReqModelArrayList = new ArrayList<>();
 
     ApiInterface apiInterface;
+    Preference preference;
 
     public static Fragment newInstance() {
         return new PastRequestFragment();
@@ -33,24 +45,80 @@ public class PastRequestFragment extends Fragment {
         binding = FragmentPastRequestBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
-        bindRcv();
+        preference = Preference.getInstance(getActivity());
+        getPastRequestData();
         return view;
     }
 
-    public void bindRcv(){
+    public void bindRcv() {
 
-        pastReqModelArrayList.add(new PastReqModel("Jay Morjariya"));
-        pastReqModelArrayList.add(new PastReqModel("Jay Morjariya"));
-        pastReqModelArrayList.add(new PastReqModel("Jay Morjariya"));
-
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         binding.rcvPastReqView.setLayoutManager(manager);
 
-        adapter = new PastReqAdapter(getActivity(),pastReqModelArrayList);
+        adapter = new PastReqAdapter(getActivity(), pastReqModelArrayList);
         binding.rcvPastReqView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
+    }
+
+    public void getPastRequestData() {
+
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("id", Const.AGENT_ID);
+
+        Call<CurrentReqModel> call = apiInterface.getPastRequest(hashMap,"Bearer "+preference.getToken());
+
+        call.enqueue(new Callback<CurrentReqModel>() {
+            @Override
+            public void onResponse(Call<CurrentReqModel> call, Response<CurrentReqModel> response) {
+
+                if (response.isSuccessful()) {
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    pastReqModelArrayList.addAll(response.body().getPastServiceData());
+                    bindRcv();
+
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CurrentReqModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+            }
+        });
+
+        binding.svSearchViewPast.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
 
     }
 
-//    public void get
+    private void filter(String text) {
+        ArrayList<PastServiceDatum> filteredlist = new ArrayList<>();
+
+        for (PastServiceDatum item : pastReqModelArrayList) {
+            if (item.getFarmer_name().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            Toast.makeText(getContext(), "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            adapter.filterList(filteredlist);
+        }
+    }
 
 }

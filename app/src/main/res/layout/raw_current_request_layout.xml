@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvNameCurrentReq"
+                android:id="@+id/tvFarmerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Freya Tana"
@@ -30,7 +30,7 @@
                 android:fontFamily="@font/poppins_bold"/>
 
             <TextView
-                android:id="@+id/tvPumpNameCurrentReq"
+                android:id="@+id/tvRequestName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Abc Solar Pump"

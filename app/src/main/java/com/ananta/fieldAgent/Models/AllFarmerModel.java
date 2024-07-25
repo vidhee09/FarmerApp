@@ -29,7 +29,6 @@ public class AllFarmerModel {
 
     ArrayList<AllFarmerModel> farmer = new ArrayList<>();
 
-
     farmer farmers;
 
     public com.ananta.fieldAgent.Models.farmer getFarmers() {
@@ -48,7 +47,6 @@ public class AllFarmerModel {
     public void setFarmer(ArrayList<AllFarmerModel> farmer) {
         this.farmer = farmer;
     }
-
 
 
     public String getId() {

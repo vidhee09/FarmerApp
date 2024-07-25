@@ -43,13 +43,14 @@ public class FarmerDashboardActivity extends AppCompatActivity {
     TabFragmentAdapter adapter;
     private Preference preference;
     ApiInterface apiInterface;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityFarmerDashboardBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
+
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -101,34 +102,35 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         getFarmerData(preference.getFarmerLoginId());
     }
 
-    public void getFarmerData(String id){
+    public void getFarmerData(String id) {
 
-        Utils.showCustomProgressDialog(this,true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("id",id);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("id", id);
 
-        Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap);
+        Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap ,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<FarmerServiceResponseModel>() {
             @Override
             public void onResponse(Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
 
-                if (response.body() != null){
-                    if (response.isSuccessful()){
-                        Utils.hideProgressDialog(FarmerDashboardActivity.this);
+                if (response.body() != null) {
+                    if (response.isSuccessful()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
                         adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrentServiceData()), "Current Request");
                         adapter.addFragment(new PastRequestFarmerFragment(response.body().getPastServiceData()), "Past Request");
                         binding.viewPager.setAdapter(adapter);
                         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
-                    }else {
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(FarmerDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
 
-                }else {
-                    Utils.showCustomProgressDialog(FarmerDashboardActivity.this,true);
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(FarmerDashboardActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
                 }
             }

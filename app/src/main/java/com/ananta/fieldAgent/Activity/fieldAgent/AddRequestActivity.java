@@ -74,21 +74,27 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         if (preference.getFarmerName() != null){
             binding.rlFarmerName.setVisibility(View.GONE);
             binding.tvFarmerName.setVisibility(View.VISIBLE);
             binding.tvFarmerName.setText(preference.getFarmerName());
+        }else {
+            binding.rlFarmerName.setVisibility(View.VISIBLE);
+            binding.tvFarmerName.setVisibility(View.GONE);
+//            binding.tvFarmerName.setText(preference.getFarmerName());
+            getAllFarmerData();
         }
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
-        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
 
-        getAllFarmerData();
+        Const.AGENT_NAME = preference.getAgentName();
+
         loadData();
 
         ArrayList<String> categories = new ArrayList<>();
@@ -165,8 +171,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 reason = binding.spSpinnerIcReason.getSelectedItem().toString();
-
-//                Toast.makeText(AddRequestActivity.this, reason, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -274,16 +278,16 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public boolean validation() {
         boolean isvalid = true;
-       if (binding.spSpinner.getSelectedItem().equals("Select type")) {
+        if (binding.spSpinner.getSelectedItem().equals("Select type")) {
             isvalid = false;
             binding.tvErrorText.setVisibility(View.VISIBLE);
         } else if (binding.spSpinnerRequest.getSelectedItem().equals("Select request")) {
             isvalid = false;
             binding.tvReqErrorText.setVisibility(View.VISIBLE);
         }else if (binding.edReqDescription.getText().toString().isEmpty()) {
-           isvalid = false;
-           Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
-       }
+            isvalid = false;
+            Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
+        }
         return isvalid;
     }
 
@@ -309,14 +313,19 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void getAllFarmerData() {
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+
         HashMap<String, String> hashMap = new HashMap<>();
-        Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap);
+
+        Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap,"Bearer "+preference.getToken());
         call.enqueue(new Callback<AllFarmerModel>() {
             @Override
             public void onResponse(Call<AllFarmerModel> call, Response<AllFarmerModel> response) {
 
                 if (response.isSuccessful()) {
 
+                    binding.pbProgressBar.setVisibility(View.GONE);
                     allFarmersList.addAll(response.body().getFarmer());
 
                     for (int i = 0; i < allFarmersList.size(); i++) {
@@ -327,12 +336,15 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     setFarmerList();
 
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AllFarmerModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 Log.d("Addrequest", "=" + t.getMessage());
             }
         });
@@ -366,7 +378,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void getAddRequestData() {
-        Utils.showCustomProgressDialog(this, true);
+       binding.pbProgressBar.setVisibility(View.VISIBLE);
+
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
@@ -387,25 +400,27 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         hashMap.put("incident_date", binding.tvRequestDate.getText().toString());
         hashMap.put("insaurance_claim", binding.spSpinnerInsuranceClaim.getSelectedItem().toString());
 
-        Call<AddServiceModel> call = apiInterface.getAddServiceRequest(hashMap);
+        Call<AddServiceModel> call = apiInterface.getAddServiceRequest(hashMap,"Bearer "+preference.getToken());
         call.enqueue(new Callback<AddServiceModel>() {
             @Override
             public void onResponse(Call<AddServiceModel> call, Response<AddServiceModel> response) {
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
-                        Utils.hideProgressDialog(AddRequestActivity.this);
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         finish();
                     } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(AddRequestActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
-                Utils.hideProgressDialog(AddRequestActivity.this);
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(AddRequestActivity.this, "Data not Found" + t, Toast.LENGTH_SHORT).show();
             }
         });

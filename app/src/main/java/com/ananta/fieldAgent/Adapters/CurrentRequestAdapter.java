@@ -10,17 +10,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ananta.fieldAgent.Fragments.CurrentRequestFragment;
 import com.ananta.fieldAgent.Models.CurrentReqModel;
+import com.ananta.fieldAgent.Models.CurrentServiceDatum;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<CurrentReqModel>currentReqList;
+    ArrayList<CurrentServiceDatum>currentReqList;
 
-    public CurrentRequestAdapter(Context context, ArrayList<CurrentReqModel> currentReqList) {
+    public CurrentRequestAdapter(Context context, ArrayList<CurrentServiceDatum> currentReqList) {
         this.context = context;
         this.currentReqList = currentReqList;
     }
@@ -35,9 +39,11 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
     @Override
     public void onBindViewHolder(@NonNull CurrentRequestAdapter.ViewHolder holder, int position) {
 
-        CurrentReqModel model = currentReqList.get(position);
-
-        holder.tvNameCurrentReq.setText(model.getName());
+        CurrentServiceDatum model = currentReqList.get(position);
+        holder.tvFarmerName.setText(model.getFarmer_name());
+        holder.tvRequestName.setText(model.getServiceRequest());
+        holder.tvAddressCurrentReq.setText(model.getFarmer_address());
+        Glide.with(context).load(Const.IMAGE_URL+model.getImageName()).error(R.drawable.placeholder).into(holder.ivCurrentReqImage);
 
     }
 
@@ -46,18 +52,29 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
         return currentReqList.size();
     }
 
+    public void filterList(ArrayList<CurrentServiceDatum> filteredlist) {
+        currentReqList = filteredlist;
+        notifyDataSetChanged();
+    }
+
+    public CurrentRequestFragment getFilter() {
+        return null;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvNameCurrentReq,tvPumpNameCurrentReq,tvAddressCurrentReq;
+        TextView tvFarmerName,tvRequestName,tvAddressCurrentReq;
         ImageView ivCurrentReqImage;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNameCurrentReq= itemView.findViewById(R.id.tvNameCurrentReq);
-            tvPumpNameCurrentReq= itemView.findViewById(R.id.tvPumpNameCurrentReq);
+            tvFarmerName= itemView.findViewById(R.id.tvFarmerName);
+            tvRequestName= itemView.findViewById(R.id.tvRequestName);
             tvAddressCurrentReq= itemView.findViewById(R.id.tvAddressCurrentReq);
             ivCurrentReqImage= itemView.findViewById(R.id.ivCurrentReqImage);
 
         }
     }
+
+
 
 }

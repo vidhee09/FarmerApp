@@ -1,5 +1,7 @@
 package com.ananta.fieldAgent.Models;
 
+import java.util.ArrayList;
+
 public class DeliveryDataModel {
 
     String success,message;
@@ -18,5 +20,15 @@ public class DeliveryDataModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+   Data data ;
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
     }
 }

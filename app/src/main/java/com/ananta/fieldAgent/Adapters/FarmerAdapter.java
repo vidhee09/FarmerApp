@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.FarmerDetailActivity;
 import com.ananta.fieldAgent.Activity.fieldAgent.MainActivity;
+import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
+import com.ananta.fieldAgent.Models.FarmerDatum;
 import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
@@ -23,9 +25,9 @@ import java.util.ArrayList;
 public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<FarmerModel> farmerList;
+    ArrayList<FarmerDatum> farmerList;
 
-    public FarmerAdapter(Context context, ArrayList<FarmerModel> farmerList) {
+    public FarmerAdapter(Context context, ArrayList<FarmerDatum> farmerList) {
         this.context = context;
         this.farmerList = farmerList;
 
@@ -41,11 +43,12 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull FarmerAdapter.ViewHolder holder, int position) {
 
-        FarmerModel model = farmerList.get(position);
+        FarmerDatum model = farmerList.get(position);
         holder.tvFarmerName.setText(model.getName());
         holder.tvAddressName.setText(model.getAddress());
-//        holder.tvPumpName.setText(model.getName());
-//        holder.tvAddressName.setText(model.getName());
+
+//      holder.tvPumpName.setText(model.getName());
+//      holder.tvAddressName.setText(model.getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +60,8 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
                 intent.putExtra("FarmerName",model.getName());
                 intent.putExtra("CompanyName",model.getAddress());
                 context.startActivity(intent);
+
+                Const.FARMER_ID = String.valueOf(model.getId());
             }
         });
 
@@ -65,6 +70,12 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return farmerList.size();
+    }
+
+    public void filterList(ArrayList<FarmerDatum> filteredlist) {
+        farmerList = filteredlist;
+        notifyDataSetChanged();
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

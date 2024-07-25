@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ananta.fieldAgent.Activity.fieldAgent.ShowComplaintActivity;
 import com.ananta.fieldAgent.Models.PastReqModel;
+import com.ananta.fieldAgent.Models.PastServiceDatum;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<PastReqModel> pastReqModelsList;
+    ArrayList<PastServiceDatum> pastReqModelsList;
 
-    public PastReqAdapter(Context context, ArrayList<PastReqModel> pastReqModelsList) {
+    public PastReqAdapter(Context context, ArrayList<PastServiceDatum> pastReqModelsList) {
         this.context = context;
         this.pastReqModelsList = pastReqModelsList;
     }
@@ -34,8 +40,24 @@ public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull PastReqAdapter.ViewHolder holder, int position) {
 
-        PastReqModel model = pastReqModelsList.get(position);
-        holder.tvNamePastReq.setText(model.getName());
+        PastServiceDatum model = pastReqModelsList.get(position);
+        holder.tvNameFarmer.setText(model.getFarmer_name());
+        holder.tvAddressPastReq.setText(model.getFarmer_address());
+        holder.tvPastReqName.setText(model.getServiceRequest());
+
+        Glide.with(context).load(Const.IMAGE_URL+model.getImageName()).error(R.drawable.placeholder).into(holder.ivPastReqImage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ShowComplaintActivity.class);
+                intent.putExtra("position",position);
+                intent.putExtra("FName",model.getFarmer_name());
+                intent.putExtra("ComplaintID",model.getComplaint_id());
+                intent.putExtra("ComplaintName",model.getServiceRequest());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -43,19 +65,23 @@ public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHold
         return pastReqModelsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void filterList(ArrayList<PastServiceDatum> filteredlist) {
+        pastReqModelsList = filteredlist;
+        notifyDataSetChanged();
+    }
 
-        TextView tvNamePastReq,tvPumpNamePastReq,tvAddressPastReq;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvNameFarmer,tvPastReqName,tvAddressPastReq;
         ImageView ivPastReqImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvNamePastReq = itemView.findViewById(R.id.tvNamePastReq);
-            tvPumpNamePastReq = itemView.findViewById(R.id.tvPumpNamePastReq);
+            tvNameFarmer = itemView.findViewById(R.id.tvNameFarmer);
+            tvPastReqName = itemView.findViewById(R.id.tvPastReqName);
             tvAddressPastReq = itemView.findViewById(R.id.tvAddressPastReq);
             ivPastReqImage = itemView.findViewById(R.id.ivPastReqImage);
-
 
         }
     }

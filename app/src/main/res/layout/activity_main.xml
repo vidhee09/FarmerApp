@@ -61,40 +61,6 @@
 
         </LinearLayout>
 
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_44sdp"
-            app:tabBackground="@drawable/tab_select"
-            app:tabIndicator="@null"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            app:tabIndicatorHeight="0dp"
-            app:tabIndicatorFullWidth="false"
-            app:tabMode="fixed"
-            android:background="@android:color/transparent"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/black"
-            app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-        <SearchView
-            android:id="@+id/svSearchView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/round_background"
-            android:iconifiedByDefault="false"
-            android:layout_marginHorizontal="@dimen/_18sdp"
-            android:queryHint="Search"/>
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"/>
-
-
     </LinearLayout>
 
 

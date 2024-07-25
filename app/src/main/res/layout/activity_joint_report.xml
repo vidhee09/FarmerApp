@@ -37,1012 +37,1027 @@
 
     </RelativeLayout>
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/_10sdp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Name of Surveyor" />
-
-                <TextView
-                    android:id="@+id/tvSurveyorNameJoint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/fill_round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:inputType="text"
-                    android:padding="@dimen/_10sdp"
-                    android:text="Surveyor Name"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Surveyor Date &amp; Time" />
-
-                <TextView
-                    android:id="@+id/tvSurveyorDateTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/fill_round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:text="04-07-2024 , 10:20AM"
-                    android:inputType="text"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Lat,Long" />
-
-                <TextView
-                    android:id="@+id/tvSurveyorAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/fill_round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:inputType="text"
-                    android:padding="@dimen/_10sdp"
-                    android:text="22.333--34.50"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Alternative Mobile Number" />
-
-                <EditText
-                    android:id="@+id/edSurveyorAlternativeNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="9963229985"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="IMEI Id" />
-
-                <EditText
-                    android:id="@+id/edSurveyorIMEIId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="45632299885"
-                    android:inputType="textCapCharacters|textEmailAddress"
-                    android:maxLength="10"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center"
-                    android:text="Wether water source is available" />
-
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_10sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
 
-                    <RadioGroup
-                        android:id="@+id/rgRadioWaterSource"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Name of Surveyor" />
+
+                    <TextView
+                        android:id="@+id/tvSurveyorNameJoint"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <RadioButton
-                            android:id="@+id/rbYesWaterBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Yes" />
-
-                        <RadioButton
-                            android:id="@+id/rbNoWaterBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="No" />
-
-                    </RadioGroup>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/fill_round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center_vertical"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        android:text="Surveyor Name"
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/_10sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Type of water source for" />
-
-                <CheckBox
-                    android:id="@+id/checkboxBoreWell"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Borewell"
-                    android:textColor="@color/black" />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
 
-                <CheckBox
-                    android:id="@+id/checkboxRiver"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="River"
-                    android:textColor="@color/black" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Surveyor Date &amp; Time" />
 
-                <CheckBox
-                    android:id="@+id/checkboxLake"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lake"
-                    android:textColor="@color/black" />
+                    <TextView
+                        android:id="@+id/tvSurveyorDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/fill_round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center_vertical"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        android:text="04-07-2024 , 10:20AM"
+                        android:textColor="@color/black" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Depth of water source" />
-
-                <EditText
-                    android:id="@+id/edDepthWaterSource"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="200 feet"
-                    android:inputType="number"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Constant water level" />
-
-                <EditText
-                    android:id="@+id/edConstantWaterLevel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="100 feet"
-                    android:inputType="number"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Water delivery point from water source" />
-
-                <EditText
-                    android:id="@+id/edWaterDeliveryPoint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="150 feet"
-                    android:inputType="number"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Lat,Long" />
+
+                    <TextView
+                        android:id="@+id/tvSurveyorAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/fill_round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center_vertical"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        android:text="22.333--34.50"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Alternative Mobile Number" />
+
+                    <EditText
+                        android:id="@+id/edSurveyorAlternativeNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="9963229985"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="IMEI Id" />
+
+                    <EditText
+                        android:id="@+id/edSurveyorIMEIId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="45632299885"
+                        android:inputType="textCapCharacters|textEmailAddress"
+                        android:maxLength="10"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:text="Wether water source is available" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/rgRadioWaterSource"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/rbYesWaterBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Yes" />
+
+                            <RadioButton
+                                android:id="@+id/rbNoWaterBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/round_background"
                     android:orientation="vertical"
-                    android:paddingStart="10dp">
+                    android:paddingStart="@dimen/_10sdp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Pump Type" />
+                        android:text="Type of water source for" />
 
-                    <RadioGroup
-                        android:id="@+id/rgPumpType"
+                    <CheckBox
+                        android:id="@+id/checkboxBoreWell"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Borewell"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/checkboxRiver"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="River"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/checkboxLake"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lake"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Depth of water source" />
+
+                    <EditText
+                        android:id="@+id/edDepthWaterSource"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="200 feet"
+                        android:inputType="number"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Constant water level" />
+
+                    <EditText
+                        android:id="@+id/edConstantWaterLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="100 feet"
+                        android:inputType="number"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Water delivery point from water source" />
+
+                    <EditText
+                        android:id="@+id/edWaterDeliveryPoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="150 feet"
+                        android:inputType="number"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_background"
+                        android:orientation="vertical"
+                        android:paddingStart="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Pump Type" />
+
+                        <RadioGroup
+                            android:id="@+id/rgPumpType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/rbSubmarsible"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Submarsible" />
+
+                            <RadioButton
+                                android:id="@+id/rbSurface"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Surface" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/_10sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Pump head recommanded by surveyor" />
+
+                    <CheckBox
+                        android:id="@+id/cbPumpHead1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/cbPumpHead2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="50"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/cbPumpHead3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="70"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/cbPumpHead4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="100"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/_10sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Pump head recommanded by Baneficiary" />
+
+                    <CheckBox
+                        android:id="@+id/cbPumpHeadBeneficiary1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/cbPumpHeadBeneficiary2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="50"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/cbPumpHeadBeneficiary3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="70"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/cbPumpHeadBeneficiary4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="100"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Whether AG pump electricity connection is available on site" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/rgAGPumpConnection"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/rbAgYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Yes" />
+
+                            <RadioButton
+                                android:id="@+id/rbAgNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Whether solar pump installed under any Govt. scheme" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/rgSolarGovtPump"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/rbSolarYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Yes" />
+
+                            <RadioButton
+                                    android:id="@+id/rbSolarNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Whether shadow free area is available" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/rgShadowArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/rbShadowYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Yes" />
+
+                            <RadioButton
+                                android:id="@+id/rbShadowNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Whether mobile network is available" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/rgNetworkAvailable"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/rbNetworkYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Yes" />
+
+                            <RadioButton
+                                android:id="@+id/rbNetworkNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/_10sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="All Available person" />
+
+                    <CheckBox
+                        android:id="@+id/cbFieldEng"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Field Engineer"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/cbFarmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Farmer"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/cbGovtFarmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Govt. Farmer"
+                        android:textColor="@color/black" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Remark" />
+
+                    <EditText
+                        android:id="@+id/edRemark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/round_background"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:hint="Good work"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Photo of water source: :" />
+
+                    <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <RadioButton
-                            android:id="@+id/rbSubmarsible"
+                        <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Submarsible" />
+                            app:cardCornerRadius="@dimen/_10sdp">
 
-                        <RadioButton
-                            android:id="@+id/rbSurface"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Surface" />
+                            <ImageView
+                                android:id="@+id/ivWaterPhoto"
+                                android:layout_width="@dimen/_70sdp"
+                                android:layout_height="@dimen/_70sdp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder" />
 
-                    </RadioGroup>
+                        </androidx.cardview.widget.CardView>
+
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/ivWaterSourceCamera"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginStart="-10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_camera" />
 
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/_10sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Pump head recommanded by surveyor" />
-
-                <CheckBox
-                    android:id="@+id/cbPumpHead1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="30"
-                    android:textColor="@color/black" />
-
-                <CheckBox
-                    android:id="@+id/cbPumpHead2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="50"
-                    android:textColor="@color/black" />
-
-                <CheckBox
-                    android:id="@+id/cbPumpHead3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="70"
-                    android:textColor="@color/black" />
-
-                <CheckBox
-                    android:id="@+id/cbPumpHead4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="100"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/_10sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Pump head recommanded by Baneficiary" />
-
-                <CheckBox
-                    android:id="@+id/cbPumpHeadBeneficiary1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="30"
-                    android:textColor="@color/black" />
-
-                <CheckBox
-                    android:id="@+id/cbPumpHeadBeneficiary2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="50"
-                    android:textColor="@color/black" />
-
-                <CheckBox
-                    android:id="@+id/cbPumpHeadBeneficiary3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="70"
-                    android:textColor="@color/black" />
-
-                <CheckBox
-                    android:id="@+id/cbPumpHeadBeneficiary4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="100"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Whether AG pump electricity connection is available on site" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginVertical="@dimen/_10sdp"
                     android:orientation="horizontal">
 
-                    <RadioGroup
-                        android:id="@+id/rgAGPumpConnection"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Photo of Landmaek : : " />
 
-                        <RadioButton
-                            android:id="@+id/rbAgYes"
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Yes" />
+                            app:cardCornerRadius="@dimen/_10sdp">
 
-                        <RadioButton
-                            android:id="@+id/rbAgNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="No" />
+                            <ImageView
+                                android:id="@+id/ivLandmarkPhoto"
+                                android:layout_width="@dimen/_70sdp"
+                                android:layout_height="@dimen/_70sdp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder" />
 
-                    </RadioGroup>
+                        </androidx.cardview.widget.CardView>
+
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/ivLandmarkCamera"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginStart="-10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_camera" />
 
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Whether solar pump installed under any Govt. scheme" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginVertical="@dimen/_10sdp"
                     android:orientation="horizontal">
 
-                    <RadioGroup
-                        android:id="@+id/rgSolarGovtPump"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Photo of Beneficiary : :" />
 
-                        <RadioButton
-                            android:id="@+id/rbSolarYes"
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Yes" />
+                            app:cardCornerRadius="@dimen/_10sdp">
 
-                        <RadioButton
-                            android:id="@+id/rbSolarNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="No" />
+                            <ImageView
+                                android:id="@+id/ivBeneficiaryPhotoJoint"
+                                android:layout_width="@dimen/_70sdp"
+                                android:layout_height="@dimen/_70sdp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder" />
 
-                    </RadioGroup>
+                        </androidx.cardview.widget.CardView>
+
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/ivBeneficiaryCameraJoint"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginStart="-10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_camera" />
 
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Whether shadow free area is available" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:orientation="horizontal">
-
-                    <RadioGroup
-                        android:id="@+id/rgShadowArea"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <RadioButton
-                            android:id="@+id/rbShadowYes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Yes" />
-
-                        <RadioButton
-                            android:id="@+id/rbShadowNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="No" />
-
-                    </RadioGroup>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Whether mobile network is available" />
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:orientation="horizontal">
-
-                    <RadioGroup
-                        android:id="@+id/rgNetworkAvailable"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <RadioButton
-                            android:id="@+id/rbNetworkYes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Yes" />
-
-                        <RadioButton
-                            android:id="@+id/rbNetworkNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="No" />
-
-                    </RadioGroup>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/_10sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="All Available person" />
-
-                <CheckBox
-                    android:id="@+id/cbFieldEng"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Field Engineer"
-                    android:textColor="@color/black" />
-
-                <CheckBox
-                    android:id="@+id/cbFarmer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Farmer"
-                    android:textColor="@color/black" />
-
-                <CheckBox
-                    android:id="@+id/cbGovtFarmer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Govt. Farmer"
-                    android:textColor="@color/black" />
-
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Remark" />
-
-                <EditText
-                    android:id="@+id/edRemark"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:hint="Good work"
-                    android:inputType="text"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/black" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Photo of water source: :" />
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_10sdp">
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Beneficiary Sign :"
+                            android:textSize="@dimen/_12ssp" />
 
                         <ImageView
-                            android:id="@+id/ivWaterPhoto"
-                            android:layout_width="@dimen/_70sdp"
-                            android:layout_height="@dimen/_70sdp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/placeholder" />
+                            android:id="@+id/ivBeneficiarySignImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/round_background" />
 
-                    </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
-                </FrameLayout>
 
-                <ImageView
-                    android:id="@+id/ivWaterSourceCamera"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginStart="-10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Photo of Landmaek : : " />
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_10sdp">
-
-                        <ImageView
-                            android:id="@+id/ivLandmarkPhoto"
-                            android:layout_width="@dimen/_70sdp"
-                            android:layout_height="@dimen/_70sdp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/placeholder" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </FrameLayout>
-
-                <ImageView
-                    android:id="@+id/ivLandmarkCamera"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginStart="-10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Photo of Beneficiary : :" />
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_10sdp">
-
-                        <ImageView
-                            android:id="@+id/ivBeneficiaryPhotoJoint"
-                            android:layout_width="@dimen/_70sdp"
-                            android:layout_height="@dimen/_70sdp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/placeholder" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </FrameLayout>
-
-                <ImageView
-                    android:id="@+id/ivBeneficiaryCameraJoint"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginStart="-10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_background"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Beneficiary Sign :"
-                        android:textSize="@dimen/_12ssp" />
+                        android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/ivBeneficiarySignImage"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/round_background"/>
+
+                        <com.github.gcacace.signaturepad.views.SignaturePad
+                            android:id="@+id/signaturePadBeneficiary"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:background="@drawable/bg_signature_pad"
+                            app:penColor="@color/black" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnClearBeneficiary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:text="@string/clear" />
+
+                        <Button
+                            android:id="@+id/btnCompletedBeneficiary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/complete" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/round_background"
+                    android:orientation="vertical">
 
-
-                    <com.github.gcacace.signaturepad.views.SignaturePad
-                        android:id="@+id/signaturePadBeneficiary"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:background="@drawable/bg_signature_pad"
-                        app:penColor="@color/black"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btnClearBeneficiary"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:text="@string/clear"/>
+                        android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/btnCompletedBeneficiary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/complete"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Sign :"
+                            android:textSize="@dimen/_12ssp" />
 
-                </LinearLayout>
+                        <ImageView
+                            android:id="@+id/ivSignImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/round_background" />
 
-            </LinearLayout>
+                    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_background"
-                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Sign :"
-                        android:textSize="@dimen/_12ssp" />
+                        android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/ivSignImage"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/round_background"/>
+                        <com.github.gcacace.signaturepad.views.SignaturePad
+                            android:id="@+id/signaturePadSign"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:background="@drawable/bg_signature_pad"
+                            app:penColor="@color/black" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnClearSign"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:text="@string/clear" />
+
+                        <Button
+                            android:id="@+id/btnCompletedSign"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/complete" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-
                 <LinearLayout
+                    android:id="@+id/llJointSubmit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:orientation="horizontal">
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/round_fill_background"
+                    android:orientation="vertical">
 
-                    <com.github.gcacace.signaturepad.views.SignaturePad
-                        android:id="@+id/signaturePadSign"
+                    <TextView
+                        android:id="@+id/tvSubmit"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:background="@drawable/bg_signature_pad"
-                        app:penColor="@color/black"/>
-
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:text="Submit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btnClearSign"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:text="@string/clear"/>
-
-                    <Button
-                        android:id="@+id/btnCompletedSign"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/complete"/>
-
-                </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llJointSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_fill_background"
-                android:orientation="vertical">
+        </ScrollView>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center"
-                    android:text="Submit"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14ssp" />
-            </LinearLayout>
+        <ProgressBar
+            android:id="@+id/pbProgressBar"
+            style="@style/progressbar"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
-
-        </LinearLayout>
-
-    </ScrollView>
+    </RelativeLayout>
 
 </LinearLayout>

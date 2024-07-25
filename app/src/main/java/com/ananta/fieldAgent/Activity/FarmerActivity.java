@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
@@ -19,12 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
 import com.ananta.fieldAgent.Adapters.FarmerAdapter;
+import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
+import com.ananta.fieldAgent.Models.FarmerDatum;
 import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
+import com.ananta.fieldAgent.databinding.ActivityFarmerBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,49 +40,74 @@ import retrofit2.Response;
 
 public class FarmerActivity extends AppCompatActivity {
 
+    ActivityFarmerBinding binding;
     FarmerAdapter farmerAdapter;
-    ArrayList<FarmerModel> farmerModelArrayList = new ArrayList<>();
+    ArrayList<FarmerDatum> farmerModelArrayList = new ArrayList<>();
     ApiInterface apiInterface;
-    private RecyclerView rcvFarmer;
-    private ImageView ivBackPress, ivAddReqImage;
+    Preference preference = new Preference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_farmer);
+        binding = ActivityFarmerBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        bindView();
+
         addListener();
+
+        binding.svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
     }
 
-    private void bindView() {
-        rcvFarmer = findViewById(R.id.rcvFarmer);
-        ivBackPress = findViewById(R.id.ivBackPress);
-        ivAddReqImage = findViewById(R.id.ivAddReqImage);
+    private void filter(String text) {
+        ArrayList<FarmerDatum> filteredlist = new ArrayList<>();
+
+        for (FarmerDatum item : farmerModelArrayList) {
+            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+
+        if (filteredlist.isEmpty()) {
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            farmerAdapter.filterList(filteredlist);
+        }
     }
 
     private void initView() {
         LinearLayoutManager manager = new LinearLayoutManager(FarmerActivity.this,LinearLayoutManager.VERTICAL,false);
-        rcvFarmer.setLayoutManager(manager);
+        binding.rcvFarmer.setLayoutManager(manager);
 
         farmerAdapter = new FarmerAdapter(FarmerActivity.this,farmerModelArrayList);
-        rcvFarmer.setAdapter(farmerAdapter);
+        binding.rcvFarmer.setAdapter(farmerAdapter);
     }
 
     private void addListener() {
-        ivBackPress.setOnClickListener(new View.OnClickListener() {
+        binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
 
-        ivAddReqImage.setOnClickListener(new View.OnClickListener() {
+        binding.ivAddReqImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FarmerActivity.this, AddRequestActivity.class);
@@ -93,37 +123,41 @@ public class FarmerActivity extends AppCompatActivity {
     }
 
     private void getFarmerData(String agentId) {
-        Utils.showCustomProgressDialog(FarmerActivity.this,true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("id",agentId);
 
-        Call<FarmerModel> call = apiInterface.getDashboardData(hashMap);
+        Log.d("token=====","=token="+ preference.getToken());
+
+        Call<FarmerModel> call = apiInterface.getDashboardData(hashMap,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<FarmerModel>() {
             @Override
             public void onResponse(Call<FarmerModel> call, @NonNull Response<FarmerModel> response) {
-
                 if (response.body() != null){
                     if (response.isSuccessful()){
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.clear();
-                        Utils.hideProgressDialog(FarmerActivity.this);
-                        farmerModelArrayList.addAll(response.body().getFarmer_data());
-                        Const.FARMER_ID = response.body().getFarmer_data().get(0).getId();
+                        farmerModelArrayList.addAll(response.body().getFarmerData());
                         initView();
                     }else {
+                        Log.d("response===","=else="+response.body().getSuccess());
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(FarmerActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
-
                 }else {
-                    Utils.showCustomProgressDialog(FarmerActivity.this,true);
-                    Toast.makeText(FarmerActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Log.d("response===","=null="+response.body().getSuccess());
+                    Toast.makeText(FarmerActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerModel> call, Throwable t) {
-                Toast.makeText(FarmerActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Log.d("response===","=fail="+t.getMessage());
+                Toast.makeText(FarmerActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
             }
         });
     }

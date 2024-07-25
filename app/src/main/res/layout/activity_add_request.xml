@@ -59,466 +59,489 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Types of Request" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp">
-
-                    <Spinner
-                        android:id="@+id/spSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        style="@style/spinner_style"
-                        android:background="@drawable/round_background" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:src="@drawable/ic_dropdown" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/tvErrorText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Please select type"
-                    android:textColor="@color/red"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <!--  farmer name for both common -->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="@string/farmer_name" />
-
-                <RelativeLayout
-                    android:id="@+id/rlFarmerName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/spFarmerName"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        style="@style/spinner_style"
-                        android:background="@drawable/round_background" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:src="@drawable/ic_dropdown"/>
-
-                </RelativeLayout>
-
-
-                <TextView
-                    android:id="@+id/tvFarmerName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_background"
-                    android:drawableTint="@color/appColor"
-                    android:visibility="gone"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/poppins_regular"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/_10sdp" />
-
-
-
-            </LinearLayout>
-
-            <!--   service request layout  -->
-
-            <LinearLayout
-                android:id="@+id/llServiceRequestLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Service Request" />
-
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp">
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="vertical">
 
-                        <Spinner
-                            android:id="@+id/spSpinnerRequest"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Types of Request" />
+
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            style="@style/spinner_style"
-                            android:background="@drawable/round_background" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:src="@drawable/ic_dropdown" />
-                    </RelativeLayout>
+                            android:layout_marginTop="@dimen/_5sdp">
 
-                    <TextView
-                        android:id="@+id/tvReqErrorText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Please Select Service"
-                        android:textColor="@color/red"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Description" />
-
-                    <EditText
-                        android:id="@+id/edReqDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="90dp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@drawable/round_background"
-                        android:fontFamily="@font/poppins_regular"
-                        android:gravity="center_vertical"
-                        android:hint="@string/add_description"
-                        android:inputType="textEmailAddress"
-                        android:padding="@dimen/_10sdp"
-                        android:textColor="@color/black" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_10sdp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvPhotoRequest"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Photo of Service Request : " />
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="@dimen/_10sdp">
+                            <Spinner
+                                android:id="@+id/spSpinner"
+                                style="@style/spinner_style"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="@drawable/round_background" />
 
                             <ImageView
-                                android:id="@+id/ivRequestPhoto"
-                                android:layout_width="@dimen/_70sdp"
-                                android:layout_height="@dimen/_70sdp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/placeholder" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:src="@drawable/ic_dropdown" />
+                        </RelativeLayout>
 
-                        </androidx.cardview.widget.CardView>
+                        <TextView
+                            android:id="@+id/tvErrorText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Please select type"
+                            android:textColor="@color/red"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
-                    </FrameLayout>
+                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/ivReqCamera"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="end|bottom"
-                        android:layout_marginStart="-10dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_camera" />
+                    <!--  farmer name for both common -->
 
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!---   insurance claim layout  -->
-
-            <LinearLayout
-                android:id="@+id/llInsauranceClaimLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Insaurance Claim" />
-
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp">
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="vertical">
 
-                        <Spinner
-                            android:id="@+id/spSpinnerInsuranceClaim"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="@string/farmer_name" />
+
+                        <RelativeLayout
+                            android:id="@+id/rlFarmerName"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            style="@style/spinner_style"
-                            android:background="@drawable/round_background" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:src="@drawable/ic_dropdown" />
-                    </RelativeLayout>
+                            android:orientation="horizontal">
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Reason" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp">
-
-                        <Spinner
-                            android:id="@+id/spSpinnerIcReason"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            style="@style/spinner_style"
-                            android:background="@drawable/round_background" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:src="@drawable/ic_dropdown" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Description" />
-
-                    <EditText
-                        android:id="@+id/edInsuranceDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="90dp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@drawable/round_background"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:gravity="center_vertical"
-                        android:inputType="textEmailAddress"
-                        android:hint="@string/add_description"
-                        android:padding="@dimen/_10sdp"
-                        android:textColor="@color/black" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_10sdp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Photo of Service Request : " />
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="@dimen/_10sdp">
+                            <Spinner
+                                android:id="@+id/spFarmerName"
+                                style="@style/spinner_style"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="@drawable/round_background" />
 
                             <ImageView
-                                android:id="@+id/ivInsurancePhoto"
-                                android:layout_width="@dimen/_70sdp"
-                                android:layout_height="@dimen/_70sdp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/placeholder" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:src="@drawable/ic_dropdown" />
 
-                        </androidx.cardview.widget.CardView>
+                        </RelativeLayout>
 
-                    </FrameLayout>
 
-                    <ImageView
-                        android:id="@+id/ivInsuranceCamera"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="end|bottom"
-                        android:layout_marginStart="-10dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_camera" />
+                        <TextView
+                            android:id="@+id/tvFarmerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/round_background"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:drawableTint="@color/appColor"
+                            android:fontFamily="@font/poppins_regular"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_10sdp"
+                            android:textColor="@color/black"
+                            android:visibility="gone" />
 
-                </LinearLayout>
 
-               <!-- <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!--   service request layout  -->
+
+                    <LinearLayout
+                        android:id="@+id/llServiceRequestLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Incident Date" />
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/tvDateInsurance"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Service Request" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp">
+
+                                <Spinner
+                                    android:id="@+id/spSpinnerRequest"
+                                    style="@style/spinner_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:background="@drawable/round_background" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="@dimen/_10sdp"
+                                    android:src="@drawable/ic_dropdown" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/tvReqErrorText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:layout_marginTop="5dp"
+                                android:text="Please Select Service"
+                                android:textColor="@color/red"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Description" />
+
+                            <EditText
+                                android:id="@+id/edReqDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@drawable/round_background"
+                                android:fontFamily="@font/poppins_regular"
+                                android:gravity="center_vertical"
+                                android:hint="@string/add_description"
+                                android:inputType="textEmailAddress"
+                                android:padding="@dimen/_10sdp"
+                                android:textColor="@color/black" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvPhotoRequest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Photo of Service Request : " />
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:cardCornerRadius="@dimen/_10sdp">
+
+                                    <ImageView
+                                        android:id="@+id/ivRequestPhoto"
+                                        android:layout_width="@dimen/_70sdp"
+                                        android:layout_height="@dimen/_70sdp"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/placeholder" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </FrameLayout>
+
+                            <ImageView
+                                android:id="@+id/ivReqCamera"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_gravity="end|bottom"
+                                android:layout_marginStart="-10dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_camera" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!---   insurance claim layout  -->
+
+                    <LinearLayout
+                        android:id="@+id/llInsauranceClaimLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Insaurance Claim" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp">
+
+                                <Spinner
+                                    android:id="@+id/spSpinnerInsuranceClaim"
+                                    style="@style/spinner_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:background="@drawable/round_background" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="@dimen/_10sdp"
+                                    android:src="@drawable/ic_dropdown" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Reason" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp">
+
+                                <Spinner
+                                    android:id="@+id/spSpinnerIcReason"
+                                    style="@style/spinner_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:background="@drawable/round_background" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="@dimen/_10sdp"
+                                    android:src="@drawable/ic_dropdown" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Description" />
+
+                            <EditText
+                                android:id="@+id/edInsuranceDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@drawable/round_background"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:fontFamily="@font/poppins_regular"
+                                android:gravity="center_vertical"
+                                android:hint="@string/add_description"
+                                android:inputType="textEmailAddress"
+                                android:padding="@dimen/_10sdp"
+                                android:textColor="@color/black" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Photo of Service Request : " />
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:cardCornerRadius="@dimen/_10sdp">
+
+                                    <ImageView
+                                        android:id="@+id/ivInsurancePhoto"
+                                        android:layout_width="@dimen/_70sdp"
+                                        android:layout_height="@dimen/_70sdp"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/placeholder" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </FrameLayout>
+
+                            <ImageView
+                                android:id="@+id/ivInsuranceCamera"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_gravity="end|bottom"
+                                android:layout_marginStart="-10dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_camera" />
+
+                        </LinearLayout>
+
+                        <!-- <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="@dimen/_10sdp"
+                             android:orientation="vertical">
+
+                             <TextView
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:fontFamily="@font/poppins_bold"
+                                 android:text="Incident Date" />
+
+                             <TextView
+                                 android:id="@+id/tvDateInsurance"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="@dimen/_5sdp"
+                                 android:background="@drawable/round_background"
+                                 android:drawablePadding="@dimen/_5sdp"
+                                 android:fontFamily="@font/poppins_regular"
+                                 android:gravity="center_vertical"
+                                 android:maxLength="10"
+                                 android:padding="@dimen/_10sdp"
+                                 android:text="Date"
+                                 android:textColor="@color/black" />
+
+                         </LinearLayout>-->
+
+                    </LinearLayout>
+
+                    <!--   date for both common  -->
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@drawable/round_background"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:gravity="center_vertical"
-                        android:maxLength="10"
-                        android:padding="@dimen/_10sdp"
-                        android:text="Date"
-                        android:textColor="@color/black" />
+                        android:orientation="vertical">
 
-                </LinearLayout>-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Incident Date" />
 
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvRequestDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@drawable/fill_round_background"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_10sdp"
+                            android:text="Date"
+                            android:textColor="@color/black" />
 
-            <!--   date for both common  -->
+                    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:orientation="vertical">
+                    <!-- add request button -->
 
-                <TextView
+                    <LinearLayout
+                        android:id="@+id/llAddReqBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:background="@drawable/round_fill_background"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvAddReqText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:text="Add Request"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/pbProgressBar"
+                    style="@style/progressbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Incident Date" />
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/tvRequestDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/fill_round_background"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/_10sdp"
-                    android:text="Date"
-                    android:textColor="@color/black" />
+            </RelativeLayout>
 
-            </LinearLayout>
-
-            <!-- add request button -->
-
-            <LinearLayout
-                android:id="@+id/llAddReqBtn"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:background="@drawable/round_fill_background"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvAddReqText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center"
-                    android:text="Add Request"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14ssp" />
-            </LinearLayout>
 
         </LinearLayout>
 
