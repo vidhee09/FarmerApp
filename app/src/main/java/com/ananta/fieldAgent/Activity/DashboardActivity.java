@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.Utils.CustomDialogAlert;
 
@@ -22,12 +23,15 @@ public class DashboardActivity extends AppCompatActivity {
 
     private LinearLayout llFarmer, llService;
     private ImageView ivAddReqImage, ivSignOut, ivPersonalDetail;
+    Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        preference = Preference.getInstance(DashboardActivity.this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -65,10 +69,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         ivSignOut.setOnClickListener(v -> {
-            SharedPreferences sharedPreferences = getSharedPreferences("sharedData",MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("agentLogin","");
-            editor.commit();
+            preference.putAgentID("");
             Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
             startActivity(intent);
             finishAffinity();

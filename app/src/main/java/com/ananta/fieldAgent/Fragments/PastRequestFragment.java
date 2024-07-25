@@ -17,6 +17,7 @@ import com.ananta.fieldAgent.Models.PastServiceDatum;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.databinding.FragmentPastRequestBinding;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class PastRequestFragment extends Fragment {
     ArrayList<PastServiceDatum> pastReqModelArrayList = new ArrayList<>();
 
     ApiInterface apiInterface;
+    Preference preference;
 
     public static Fragment newInstance() {
         return new PastRequestFragment();
@@ -43,6 +45,7 @@ public class PastRequestFragment extends Fragment {
         binding = FragmentPastRequestBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
+        preference = Preference.getInstance(getActivity());
         getPastRequestData();
         return view;
     }
@@ -66,7 +69,7 @@ public class PastRequestFragment extends Fragment {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", Const.AGENT_ID);
 
-        Call<CurrentReqModel> call = apiInterface.getPastRequest(hashMap);
+        Call<CurrentReqModel> call = apiInterface.getPastRequest(hashMap,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<CurrentReqModel>() {
             @Override

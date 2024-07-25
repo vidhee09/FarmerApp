@@ -93,8 +93,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             getAllFarmerData();
         }
 
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
-        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+        Const.AGENT_NAME = preference.getAgentName();
 
         loadData();
 
@@ -319,7 +318,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
         HashMap<String, String> hashMap = new HashMap<>();
 
-        Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap);
+        Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap,"Bearer "+preference.getToken());
         call.enqueue(new Callback<AllFarmerModel>() {
             @Override
             public void onResponse(Call<AllFarmerModel> call, Response<AllFarmerModel> response) {
@@ -401,7 +400,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         hashMap.put("incident_date", binding.tvRequestDate.getText().toString());
         hashMap.put("insaurance_claim", binding.spSpinnerInsuranceClaim.getSelectedItem().toString());
 
-        Call<AddServiceModel> call = apiInterface.getAddServiceRequest(hashMap);
+        Call<AddServiceModel> call = apiInterface.getAddServiceRequest(hashMap,"Bearer "+preference.getToken());
         call.enqueue(new Callback<AddServiceModel>() {
             @Override
             public void onResponse(Call<AddServiceModel> call, Response<AddServiceModel> response) {

@@ -31,6 +31,7 @@ import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityPumpInstallationBinding;
@@ -78,6 +79,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     ArrayList<String> panelIdList = new ArrayList<>();
     private int SpannedLength = 0, chipLength = 4;
     Chip chip;
+    Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         binding = ActivityPumpInstallationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preference = Preference.getInstance(PumpInstallationActivity.this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -114,7 +117,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
 
-        Call<GetPumpData> call = apiInterface.getPumpReport(hashMap);
+        Call<GetPumpData> call = apiInterface.getPumpReport(hashMap ,"Bearer "+preference.getToken());
         call.enqueue(new Callback<GetPumpData>() {
             @Override
             public void onResponse(Call<GetPumpData> call, Response<GetPumpData> response) {
@@ -126,7 +129,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                     binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
                     chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
                     binding.chipGroup.addView(chip);
-                    Log.d("chipp-======","="+ chip);
+                    Log.d("chipp-======", "=" + chip);
 
                     reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
                     Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
@@ -148,8 +151,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     }
 
     public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
-        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+        Const.AGENT_NAME = preference.getAgentName();
         pump_report = getIntent().getStringExtra("pump_report");
         binding.tvSurveyorNamePump.setText(Const.AGENT_NAME);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -157,7 +159,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         datePick();
         chip = new Chip(PumpInstallationActivity.this);
         fetchData();
-
     }
 
     public boolean validation() {
@@ -367,20 +368,20 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("imei_no", binding.edIMEIId.getText().toString());
         hashMap.put("structure_id", binding.edStructureId.getText().toString());
         hashMap.put("policy_no", binding.edPolicyNumberPumpInstall.getText().toString());
-        Log.d("imagee===","="+pumpPath+"=="+baneficiarypath+"="+workingPumpPath);
-        if ( pumpPath == null || !pumpPath.isEmpty()) {
+        Log.d("imagee===", "=" + pumpPath + "==" + baneficiarypath + "=" + workingPumpPath);
+        if (pumpPath == null || !pumpPath.isEmpty()) {
             hashMap.put("install_image", pumpPath);
         }
-        if ( baneficiarypath == null || !baneficiarypath.isEmpty()) {
+        if (baneficiarypath == null || !baneficiarypath.isEmpty()) {
             hashMap.put("pump_benifi_image", baneficiarypath);
         }
-        if ( workingPumpPath == null || !workingPumpPath.isEmpty()) {
+        if (workingPumpPath == null || !workingPumpPath.isEmpty()) {
             hashMap.put("pump_work_image", workingPumpPath);
         }
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-        Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap);
+        Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap ,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<PumpInstallModel>() {
             @Override
@@ -432,7 +433,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-        Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap);
+        Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap, "Bearer "+preference.getToken());
 
         call.enqueue(new Callback<PumpInstallModel>() {
             @Override
@@ -504,7 +505,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     private void addMorePanelId(String txet) {
 
-         chip = new Chip(PumpInstallationActivity.this);
+        chip = new Chip(PumpInstallationActivity.this);
         chip.setText(txet);
         binding.chipGroup.addView(chip);
 
@@ -548,7 +549,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -562,7 +563,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                     Log.w("ImageName", imageName[0]);
                     if (fromWhere == 1) {
                         pumpPath = imageModel.getFileUploadData().getImage_name();
-                    }else  if (fromWhere == 2) {
+                    } else if (fromWhere == 2) {
                         baneficiarypath = imageModel.getFileUploadData().getImage_name();
                     } else {
                         workingPumpPath = imageModel.getFileUploadData().getImage_name();
@@ -591,7 +592,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {

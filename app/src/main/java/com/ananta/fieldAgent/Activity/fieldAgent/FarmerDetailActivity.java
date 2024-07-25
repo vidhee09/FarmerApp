@@ -20,6 +20,7 @@ import com.ananta.fieldAgent.Models.DetailModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDetailBinding;
 import com.permissionx.guolindev.PermissionX;
@@ -37,7 +38,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
     ApiInterface apiInterface;
     String FarmerPosition = "", CompanyName = "", FarmerName = "";
     public static final int PERMISSION_FOR_LOCATION = 2;
-
+    Preference preference;
     String site_report, delivery_report, joint_report, pump_report;
 
     @Override
@@ -46,6 +47,8 @@ public class FarmerDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityFarmerDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        preference = Preference.getInstance(FarmerDetailActivity.this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -185,7 +188,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
         Log.d("FARMER_ID==", "=" + Const.FARMER_ID + "aid===" + Const.AGENT_ID);
 
-        Call<CheckStatusModel> call = apiInterface.checkReportStatus(hashMap);
+        Call<CheckStatusModel> call = apiInterface.checkReportStatus(hashMap ,"Bearer "+preference.getToken());
         call.enqueue(new Callback<CheckStatusModel>() {
             @Override
             public void onResponse(Call<CheckStatusModel> call, Response<CheckStatusModel> response) {

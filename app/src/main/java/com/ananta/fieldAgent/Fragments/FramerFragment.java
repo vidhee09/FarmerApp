@@ -23,6 +23,7 @@ import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.databinding.FragmentFramerBinding;
 
@@ -39,6 +40,7 @@ public class FramerFragment extends Fragment {
     FarmerAdapter farmerAdapter;
     ArrayList<FarmerDatum> farmerModelArrayList = new ArrayList<>();
     ApiInterface apiInterface;
+    Preference preference;
 
     public static FramerFragment newInstance() {
         return new FramerFragment();
@@ -50,6 +52,7 @@ public class FramerFragment extends Fragment {
         binding = FragmentFramerBinding.inflate(inflater);
         View view = binding.getRoot();
 
+        preference = Preference.getInstance(getActivity());
         return view;
     }
 
@@ -78,7 +81,7 @@ public class FramerFragment extends Fragment {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", id);
 
-        Call<FarmerModel> call = apiInterface.getDashboardData(hashMap);
+        Call<FarmerModel> call = apiInterface.getDashboardData(hashMap,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<FarmerModel>() {
             @Override

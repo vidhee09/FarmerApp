@@ -95,9 +95,6 @@ public class VerifyOTPScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
 
-                SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     pinView.getText().clear();
@@ -108,10 +105,16 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         Const.AGENT_NAME = response.body().getUser_name();
                         Const.COMPANY_NAME = response.body().getUser_companyname();
                         Const.MOBILE_NUMBER = response.body().getMobile_number();
-                        editor.putString("agentLogin", Const.AGENT_ID);
-                        editor.putString("agentName", Const.AGENT_NAME);
-                        editor.putString("MOBILE_NUMBER", response.body().getMobile_number());
-                        editor.commit();
+
+                        preference.putAgentName(response.body().getUser_name());
+                        preference.putAgentID(response.body().getUser_id());
+                        preference.putAgentNumber(response.body().getMobile_number());
+                        preference.putToken(response.body().getToken());
+                        Const.SERVER_TOKEN = response.body().getToken();
+                        String token = preference.putToken(response.body().getToken());
+                        ApiClient.setLoginDetail(response.body().getToken());
+
+                        Log.d("token==", "=agent==" + token);
                         startActivity(intent1);
                         finish();
 
@@ -121,6 +124,10 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         preference.putFarmerLoginId(response.body().getUser_id());
                         preference.putFarmerName(response.body().getUser_name());
                         preference.putFarmerNum(response.body().getMobile_number());
+                        Const.SERVER_TOKEN = response.body().getToken();
+                        ApiClient.setLoginDetail(response.body().getToken());
+                        String token =  preference.putToken(response.body().getToken());
+                        Log.d("token==", "=" + token);
                         startActivity(intent3);
                         finish();
                     }
@@ -134,7 +141,6 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(VerifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
 

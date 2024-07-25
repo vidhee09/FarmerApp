@@ -109,7 +109,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", id);
 
-        Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap);
+        Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap ,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<FarmerServiceResponseModel>() {
             @Override

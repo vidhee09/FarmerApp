@@ -18,6 +18,7 @@ import com.ananta.fieldAgent.Models.CurrentServiceDatum;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.databinding.FragmentCurrentRequestBinding;
 import com.ananta.fieldAgent.Adapters.CurrentRequestAdapter;
 import com.ananta.fieldAgent.Models.CurrentReqModel;
@@ -36,6 +37,7 @@ public class CurrentRequestFragment extends Fragment {
     CurrentRequestAdapter adapter;
     ArrayList<CurrentServiceDatum> currentReqList = new ArrayList<>();
     ApiInterface apiInterface;
+    Preference preference;
 
     public static Fragment newInstance() {
         return new CurrentRequestFragment();
@@ -46,6 +48,7 @@ public class CurrentRequestFragment extends Fragment {
 
         binding = FragmentCurrentRequestBinding.inflate(inflater);
         View view = binding.getRoot();
+        preference = Preference.getInstance(getActivity());
 
         getCurrentRequestData();
         return view;
@@ -71,7 +74,7 @@ public class CurrentRequestFragment extends Fragment {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", Const.AGENT_ID);
 
-        Call<CurrentReqModel> call = apiInterface.getCurrentRequest(hashMap);
+        Call<CurrentReqModel> call = apiInterface.getCurrentRequest(hashMap ,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<CurrentReqModel>() {
             @Override

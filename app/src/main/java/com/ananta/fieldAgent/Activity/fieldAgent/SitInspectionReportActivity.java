@@ -117,8 +117,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     }
 
     public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
-        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+        Const.AGENT_NAME = preference.getAgentName();
         Log.d("Name===", "=site==" + Const.AGENT_NAME);
         site_report = getIntent().getStringExtra("site_report");
         binding.tvSurveyorName.setText(Const.AGENT_NAME);
@@ -162,7 +161,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         hashMap.put("longitude", String.valueOf(longitude));
 
 
-        Call<SiteReportModel> call = apiInterface.updateSiteReport(hashMap);
+        Call<SiteReportModel> call = apiInterface.updateSiteReport(hashMap,"Bearer "+preference.getToken());
         call.enqueue(new Callback<SiteReportModel>() {
             @Override
             public void onResponse(Call<SiteReportModel> call, Response<SiteReportModel> response) {
@@ -207,7 +206,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
 
-        Call<SiteReportModel> call = apiInterface.addSiteInspection(hashMap);
+        Call<SiteReportModel> call = apiInterface.addSiteInspection(hashMap, "Bearer "+preference.getToken());
         call.enqueue(new Callback<SiteReportModel>() {
             @Override
             public void onResponse(Call<SiteReportModel> call, Response<SiteReportModel> response) {
@@ -246,13 +245,12 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
 
-        Call<GetSiteData> call = apiInterface.getSiteReport(hashMap);
+        Call<GetSiteData> call = apiInterface.getSiteReport(hashMap ,"Bearer "+preference.getToken());
         call.enqueue(new Callback<GetSiteData>() {
             @Override
             public void onResponse(Call<GetSiteData> call, Response<GetSiteData> response) {
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-
                     assert response.body() != null;
                     Log.d("sitemodel===>", "==success=>" + response.body().getMessage());
                     binding.edInspectionOfficerName.setText(response.body().getSiteInpections().get(0).getInspectionOfficerName());
@@ -264,7 +262,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Log.d("sitemodel===>", "==success=false=>" + response.body().getMessage());
                     Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -435,10 +432,12 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
-                Log.d("siteins", "==> Gallery " + Imagepath);
+                Log.d("siteins", "==> Gallery " + contentURI);
                 try {
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                        Imagepath = String.valueOf(contentURI);
+                        Log.w("Imagepath==sdgvsdg==", "photo 1" + Imagepath);
                         uploadImage(contentURI, 1);
                         Log.w("siteins", "photo 1" + Imagepath);
                         binding.ivPumpPhoto.setImageBitmap(bitmap);
@@ -585,12 +584,12 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             throw new RuntimeException(e);
         }
         File file = new File(uri.getPath());
-        Log.w("FilePath", file.getPath());
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        Log.w("Imagepath==sdgvsdg==", "img" + file.getName());
 
         Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
 
@@ -603,15 +602,19 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    Log.w("ImageName", imageName[0]);
+                    Log.d("ImageName", imageName[0]);
                     if (fromWhere == 1) {
+                        Log.d("ImageName==", Imagepath);
                         Imagepath = imageModel.getFileUploadData().getImage_name();
                     } else {
+                        Log.d("ImageName==", baneficiarypath);
                         baneficiarypath = imageModel.getFileUploadData().getImage_name();
                     }
+
                 } else {
+                    Log.d("ImageName==","else"+ Imagepath);
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -629,7 +632,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         String fName = "";
         Log.w("FilePath", file.getPath());
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
+        Log.w("FilePath==", file.getPath());
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
@@ -648,7 +651,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                     FilepathName = imageModel.getFileUploadData().getImage_name();
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override

@@ -26,6 +26,7 @@ import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityFarmerBinding;
@@ -43,6 +44,7 @@ public class FarmerActivity extends AppCompatActivity {
     FarmerAdapter farmerAdapter;
     ArrayList<FarmerDatum> farmerModelArrayList = new ArrayList<>();
     ApiInterface apiInterface;
+    Preference preference = new Preference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +128,9 @@ public class FarmerActivity extends AppCompatActivity {
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("id",agentId);
 
-        Call<FarmerModel> call = apiInterface.getDashboardData(hashMap);
+        Log.d("token=====","=token="+ preference.getToken());
+
+        Call<FarmerModel> call = apiInterface.getDashboardData(hashMap,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<FarmerModel>() {
             @Override
@@ -138,12 +142,13 @@ public class FarmerActivity extends AppCompatActivity {
                         farmerModelArrayList.addAll(response.body().getFarmerData());
                         initView();
                     }else {
+                        Log.d("response===","=else="+response.body().getSuccess());
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(FarmerActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
-
                 }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Log.d("response===","=null="+response.body().getSuccess());
                     Toast.makeText(FarmerActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -151,6 +156,7 @@ public class FarmerActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<FarmerModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Log.d("response===","=fail="+t.getMessage());
                 Toast.makeText(FarmerActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
             }
         });

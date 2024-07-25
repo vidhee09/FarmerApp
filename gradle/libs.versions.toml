@@ -3,6 +3,7 @@ agp = "8.4.1"
 converterGson = "2.1.0"
 glide = "4.16.0"
 gson = "2.10.1"
+gsonVersion = "2.8.6"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -31,6 +32,7 @@ converter-gson-v210 = { module = "com.squareup.retrofit2:converter-gson", versio
 converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+gson-v286 = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

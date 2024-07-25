@@ -36,6 +36,7 @@ import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityJointReportBinding;
@@ -81,6 +82,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     ArrayList<String> checkbox_pump_surveyor = new ArrayList<>();
     ArrayList<String> checkbox_pump_beneficiary = new ArrayList<>();
     ArrayList<String> checkbox_available_person = new ArrayList<>();
+    Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,8 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         binding = ActivityJointReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        preference = Preference.getInstance(JointReportActivity.this);
 
         loadData();
         View view = binding.getRoot();
@@ -104,8 +108,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
-        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
+        Const.AGENT_NAME = preference.getAgentName();
         joint_report = getIntent().getStringExtra("joint_report");
         binding.tvSurveyorNameJoint.setText(Const.AGENT_NAME);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -132,7 +135,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
 
-        Call<GetJointData> call = apiInterface.getJointReport(hashMap);
+        Call<GetJointData> call = apiInterface.getJointReport(hashMap ,"Bearer "+preference.getToken());
         call.enqueue(new Callback<GetJointData>() {
             @Override
             public void onResponse(Call<GetJointData> call, Response<GetJointData> response) {
@@ -316,7 +319,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("beneficiary_sign", signatureBeneficiary);
         hashMap.put("survey_sign", signatureSurveyor);
 
-        Call<JointSurveyorModel> call = apiInterface.updateJointReport(hashMap);
+        Call<JointSurveyorModel> call = apiInterface.updateJointReport(hashMap ,"Bearer "+preference.getToken());
         call.enqueue(new Callback<JointSurveyorModel>() {
             @Override
             public void onResponse(Call<JointSurveyorModel> call, Response<JointSurveyorModel> response) {
@@ -380,7 +383,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("beneficiary_sign", signatureBeneficiary);
         hashMap.put("survey_sign", signatureSurveyor);
 
-        Call<JointSurveyorModel> call = apiInterface.addJointSurveyorData(hashMap);
+        Call<JointSurveyorModel> call = apiInterface.addJointSurveyorData(hashMap,"Bearer "+preference.getToken());
         call.enqueue(new Callback<JointSurveyorModel>() {
             @Override
             public void onResponse(Call<JointSurveyorModel> call, Response<JointSurveyorModel> response) {
@@ -886,7 +889,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {

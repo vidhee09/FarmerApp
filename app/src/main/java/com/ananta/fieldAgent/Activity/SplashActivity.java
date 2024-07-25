@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Activity.farmer.FarmerDashboardActivity;
+import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
@@ -29,7 +30,9 @@ public class SplashActivity extends AppCompatActivity {
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         preference = Preference.getInstance(this);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -38,9 +41,9 @@ public class SplashActivity extends AppCompatActivity {
         binding.main.postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
-                if (!sharedPreferences.getString("agentLogin", "").equals("")) {
-                    Const.AGENT_ID = sharedPreferences.getString("agentLogin", "");
+                if (!preference.getAgentId().equals("")) {
+                    Const.AGENT_ID = preference.getAgentId();
+                    ApiClient.setLoginDetail(preference.getToken());
                     // old screen
 //                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);

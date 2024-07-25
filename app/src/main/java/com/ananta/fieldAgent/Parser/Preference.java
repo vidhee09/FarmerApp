@@ -15,11 +15,11 @@ public class Preference {
     private static String MOBILE_NUMBER = "Mobile_number";
     private static String NAME = "name";
     public static Siteinspectionn siteinspectionn;
-//    SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
     private final String IS_WELCOME = "is_welcome";
     public  String FARMER_LOGIN_ID = "farmer_login_id";
     public  String FARMER_NAME = "farmer_name";
     public  String FARMER_NUM = "farmer_num";
+    public  String TOKEN = "token";
 
 
     public Preference() {}
@@ -88,6 +88,17 @@ public class Preference {
 
     public static String getString(String name){
         return app_preferences.getString(NAME, "");
+    }
+
+    public String getToken(){
+        return app_preferences.getString(TOKEN, "");
+    }
+
+    public String putToken(String token) {
+        SharedPreferences.Editor edit = app_preferences.edit();
+        edit.putString(TOKEN, token);
+        edit.apply();
+        return token;
     }
 
 

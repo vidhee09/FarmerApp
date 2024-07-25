@@ -31,6 +31,7 @@ import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityDeliveryReportBinding;
 import com.bumptech.glide.Glide;
@@ -66,6 +67,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private String signatureName,delivery_report,reportId,Imagepath;
     double latitude, longitude;
+    Preference preference;
 
     @Override
     public void onBackPressed() {
@@ -79,13 +81,15 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         binding = ActivityDeliveryReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        preference = Preference.getInstance(DeliveryReportActivity.this);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         loadData();
+        fetchData();
         initView();
         setClickListener();
         clickListener();
@@ -93,24 +97,11 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     }
 
     public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedData", MODE_PRIVATE);
-        Const.AGENT_NAME = sharedPreferences.getString("agentName", "");
-
+        Const.AGENT_NAME = preference.getAgentName();
         delivery_report = getIntent().getStringExtra("delivery_report");
-
-        Log.d("delivery==","="+delivery_report);
-
-        if (delivery_report.isEmpty()){
-            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
-        }else {
-            fetchData();
-        }
-
         binding.edSurveyorNameDelivery.setText(Const.AGENT_NAME);
-
         getLocation();
         datePick();
-
     }
 
     public void fetchData() {
@@ -127,7 +118,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
 
-        Call<GetDeliveryData> call = apiInterface.getDeliveryReport(hashMap);
+        Call<GetDeliveryData> call = apiInterface.getDeliveryReport(hashMap, "Bearer "+preference.getToken());
         call.enqueue(new Callback<GetDeliveryData>() {
             @Override
             public void onResponse(Call<GetDeliveryData> call, Response<GetDeliveryData> response) {
@@ -201,7 +192,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
 
-      Call<DeliveryDataModel> call = apiInterface.updateDeliveryReport(hashMap);
+        Call<DeliveryDataModel> call = apiInterface.updateDeliveryReport(hashMap, "Bearer "+preference.getToken());
         call.enqueue(new Callback<DeliveryDataModel>() {
             @Override
             public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
@@ -224,8 +215,8 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     /*   add report */
     public void addDeliveryReportData() {
 
-       binding.pbProgressBar.setVisibility(View.VISIBLE);
-       apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("surveyor_name", Const.AGENT_NAME);
@@ -238,7 +229,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
 
-        Call<DeliveryDataModel> call = apiInterface.addDeliveryReport(hashMap);
+        Call<DeliveryDataModel> call = apiInterface.addDeliveryReport(hashMap, "Bearer "+preference.getToken());
         call.enqueue(new Callback<DeliveryDataModel>() {
             @Override
             public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
