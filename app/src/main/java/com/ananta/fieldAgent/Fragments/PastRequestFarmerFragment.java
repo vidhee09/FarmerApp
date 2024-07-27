@@ -17,6 +17,7 @@ import com.ananta.fieldAgent.Adapters.FarmServiceAdapter;
 import com.ananta.fieldAgent.Models.PastFarmerRequestModel;
 
 import com.ananta.fieldAgent.Models.PastServiceDatum;
+import com.ananta.fieldAgent.Models.PastServiceDatumFarmer;
 import com.ananta.fieldAgent.databinding.FragmentServiceFarmBinding;
 
 import java.util.ArrayList;
@@ -27,12 +28,13 @@ public class PastRequestFarmerFragment extends Fragment {
 
     FragmentServiceFarmBinding binding;
     FarmServiceAdapter serviceAdapter;
-    List<PastServiceDatum> serviceArrayList = new ArrayList<>();
+    List<PastServiceDatumFarmer> serviceArrayList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentServiceFarmBinding.inflate(inflater);
         View view = binding.getRoot();
+
         binding.svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -48,7 +50,7 @@ public class PastRequestFarmerFragment extends Fragment {
         return view;
     }
 
-    public PastRequestFarmerFragment(List<PastServiceDatum> serviceArrayList) {
+    public PastRequestFarmerFragment(List<PastServiceDatumFarmer> serviceArrayList) {
         this.serviceArrayList = serviceArrayList;
     }
 
@@ -69,10 +71,10 @@ public class PastRequestFarmerFragment extends Fragment {
 
     private void filter(String text) {
         // creating a new array list to filter data
-        ArrayList<PastServiceDatum> filteredlist = new ArrayList<>();
+        ArrayList<PastServiceDatumFarmer> filteredlist = new ArrayList<>();
 
         // running a for loop to compare elements
-        for (PastServiceDatum item : serviceArrayList) {
+        for (PastServiceDatumFarmer item : serviceArrayList) {
             // checking if the entered string matches any item of our recycler view
             if (item.getRequest_type().toLowerCase().contains(text.toLowerCase())) {
                 // adding matched item to the filtered list

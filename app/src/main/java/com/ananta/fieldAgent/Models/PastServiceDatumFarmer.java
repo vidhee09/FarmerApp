@@ -1,66 +1,19 @@
 package com.ananta.fieldAgent.Models;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class PastServiceDatum {
-
+public class PastServiceDatumFarmer {
     public int id;
     public String request_type;
     public int farmer_id;
-    public String farmer_name;
-    public String farmer_address;
     public String description;
-    public Object image_name;
-    public String image_url;
+    public String image_name;
     public String service_request;
-    public String complaint_id;
     public String reason;
+    public String complaint_id;
     public String incident_date;
-    public int agent_id;
+    public Object agent_id;
     public int status;
     public String created_at;
     public String updated_at;
-
-    public String getFarmer_name() {
-        return farmer_name;
-    }
-
-    public void setFarmer_name(String farmer_name) {
-        this.farmer_name = farmer_name;
-    }
-
-    public String getFarmer_address() {
-        return farmer_address;
-    }
-
-    public void setFarmer_address(String farmer_address) {
-        this.farmer_address = farmer_address;
-    }
-
-    public Object getImage_name() {
-        return image_name;
-    }
-
-    public void setImage_name(Object image_name) {
-        this.image_name = image_name;
-    }
-
-    public String getImage_url() {
-        return image_url;
-    }
-
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
-
-    public int getAgent_id() {
-        return agent_id;
-    }
-
-    public void setAgent_id(int agent_id) {
-        this.agent_id = agent_id;
-    }
 
     public int getId() {
         return id;
@@ -94,6 +47,13 @@ public class PastServiceDatum {
         this.description = description;
     }
 
+    public String getImage_name() {
+        return image_name;
+    }
+
+    public void setImage_name(String image_name) {
+        this.image_name = image_name;
+    }
 
     public String getService_request() {
         return service_request;
@@ -125,6 +85,14 @@ public class PastServiceDatum {
 
     public void setIncident_date(String incident_date) {
         this.incident_date = incident_date;
+    }
+
+    public Object getAgent_id() {
+        return agent_id;
+    }
+
+    public void setAgent_id(Object agent_id) {
+        this.agent_id = agent_id;
     }
 
     public int getStatus() {

@@ -118,8 +118,10 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
 
+                Log.d("farmerData===TOKEN","dash="+response.code());
+
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
                         adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrent_service_data()), "Current Request");
@@ -129,14 +131,14 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Log.d("farmerData===","=else="+response.body().isSuccess());
-                        Toast.makeText(FarmerDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+//                        Log.d("farmerData===","=else="+response.body().isSuccess());
+                        Toast.makeText(FarmerDashboardActivity.this, "No Data Found"+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
-                    Log.d("farmerData===","nll="+response.body().isSuccess());
+//                    Log.d("farmerData===","nll="+response.body().isSuccess());
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(FarmerDashboardActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FarmerDashboardActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                 }
             }
 

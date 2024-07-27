@@ -8,13 +8,16 @@ public class CurrentServiceDatum {
     public int id;
     public String request_type;
     public int farmer_id;
+    public String farmer_name;
+    public String farmer_address;
     public String description;
     public String image_name;
+    public String image_url;
     public String service_request;
-    public String reason;
     public String complaint_id;
+    public String reason;
     public String incident_date;
-    public Object agent_id;
+    public int agent_id;
     public int status;
     public String created_at;
     public String updated_at;
@@ -43,6 +46,22 @@ public class CurrentServiceDatum {
         this.farmer_id = farmer_id;
     }
 
+    public String getFarmer_name() {
+        return farmer_name;
+    }
+
+    public void setFarmer_name(String farmer_name) {
+        this.farmer_name = farmer_name;
+    }
+
+    public String getFarmer_address() {
+        return farmer_address;
+    }
+
+    public void setFarmer_address(String farmer_address) {
+        this.farmer_address = farmer_address;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -59,20 +78,20 @@ public class CurrentServiceDatum {
         this.image_name = image_name;
     }
 
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
     public String getService_request() {
         return service_request;
     }
 
     public void setService_request(String service_request) {
         this.service_request = service_request;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
     }
 
     public String getComplaint_id() {
@@ -83,6 +102,14 @@ public class CurrentServiceDatum {
         this.complaint_id = complaint_id;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     public String getIncident_date() {
         return incident_date;
     }
@@ -91,11 +118,11 @@ public class CurrentServiceDatum {
         this.incident_date = incident_date;
     }
 
-    public Object getAgent_id() {
+    public int getAgent_id() {
         return agent_id;
     }
 
-    public void setAgent_id(Object agent_id) {
+    public void setAgent_id(int agent_id) {
         this.agent_id = agent_id;
     }
 

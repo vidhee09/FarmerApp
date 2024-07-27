@@ -78,18 +78,24 @@ public class CurrentRequestFragment extends Fragment {
 
         call.enqueue(new Callback<CurrentReqModel>() {
             @Override
-            public void onResponse(Call<CurrentReqModel> call, Response<CurrentReqModel> response) {
+            public void onResponse(@NonNull Call<CurrentReqModel> call, @NonNull Response<CurrentReqModel> response) {
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    assert response.body() != null;
-//                    Log.d("response===","="+response.body().getCurrent_service_data());
-                    currentReqList.addAll(response.body().getCurrent_service_data());
-                    bindRcv();
-                } else {
+                Log.d("response===","=current"+response.code());
+                if (response.body() != null){
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        assert response.body() != null;
+                        currentReqList.addAll(response.body().getCurrent_service_data());
+                        bindRcv();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), "not success", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), "not success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), ""+response.body().getSuccess(), Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override

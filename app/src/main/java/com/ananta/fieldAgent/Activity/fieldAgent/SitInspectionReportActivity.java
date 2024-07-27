@@ -168,7 +168,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    Siteinspectionn siteinspectionn = response.body().getSiteinspectionn();
+                    Siteinspectionn siteinspectionn = response.body().getSiteinspection();
                     Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -211,13 +211,15 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             @Override
             public void onResponse(Call<SiteReportModel> call, @NonNull Response<SiteReportModel> response) {
 
+                Log.d("response==","="+response.code());
+
                 if (response.body() != null){
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        Const.SiteReport = response.body().getSuccess();
-                        siteinspectionnModel = response.body().getSiteinspectionn();
-                        Const.ID = response.body().getSiteinspectionn().getId();
+                        Const.SiteReport = response.body().isSuccess();
+                        siteinspectionnModel = response.body().getSiteinspection();
+                        Const.ID = response.body().getSiteinspection().getId();
                         Log.d("SiteInspection ==>", "===>" + Const.SiteReport);
                         finish();
 
@@ -225,13 +227,11 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 }else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    Log.d("response==","dfgfdf="+response.body().getMessage());
+//                    Toast.makeText(SitInspectionReportActivity.this, "svfsdvgd"+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                 }
-
-
             }
 
             @Override
@@ -254,21 +254,26 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             @Override
             public void onResponse(Call<GetSiteData> call, Response<GetSiteData> response) {
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    assert response.body() != null;
-                    Log.d("sitemodel===>", "==success=>" + response.body().getMessage());
-                    binding.edInspectionOfficerName.setText(response.body().getSiteInpections().get(0).getInspectionOfficerName());
-                    binding.edPresentPersonName.setText(response.body().getSiteInpections().get(0).getPresentPersonName());
-                    reportId = String.valueOf(response.body().getSiteInpections().get(0).getId());
+                if (response.body() != null){
+                    if (response.isSuccessful()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        assert response.body() != null;
+                        Log.d("sitemodel===>", "==success=>" + response.body().getMessage());
+                        binding.edInspectionOfficerName.setText(response.body().getSiteInpections().get(0).getInspectionOfficerName());
+                        binding.edPresentPersonName.setText(response.body().getSiteInpections().get(0).getPresentPersonName());
+                        reportId = String.valueOf(response.body().getSiteInpections().get(0).getId());
 
-                    Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSiteInpections().get(0).getPumpImage()).into(binding.ivPumpPhoto);
-                    Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSiteInpections().get(0).getPumpBenificiaryimage()).into(binding.ivBenificiaryPhoto);
+                        Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSiteInpections().get(0).getPumpImage()).into(binding.ivPumpPhoto);
+                        Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSiteInpections().get(0).getPumpBenificiaryimage()).into(binding.ivBenificiaryPhoto);
 
-                } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+
                 }
+
             }
 
             @Override
@@ -605,14 +610,14 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    imageName[0] = imageModel.getUploadimage().getImage_name();
                     Log.d("ImageName", imageName[0]);
                     if (fromWhere == 1) {
                         Log.d("ImageName==", Imagepath);
-                        Imagepath = imageModel.getFileUploadData().getImage_name();
+                        Imagepath = imageModel.getUploadimage().getImage_name();
                     } else {
                         Log.d("ImageName==", baneficiarypath);
-                        baneficiarypath = imageModel.getFileUploadData().getImage_name();
+                        baneficiarypath = imageModel.getUploadimage().getImage_name();
                     }
                 } else {
                     Log.d("ImageName==","else"+ Imagepath);
@@ -650,8 +655,8 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    FilepathName = imageModel.getFileUploadData().getImage_name();
+                    imageName[0] = imageModel.getUploadimage().getImage_name();
+                    FilepathName = imageModel.getUploadimage().getImage_name();
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
 //                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();

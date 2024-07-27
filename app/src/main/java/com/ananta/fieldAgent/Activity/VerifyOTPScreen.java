@@ -45,6 +45,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityVerifyOtpscreen2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +76,7 @@ public class PastRequestFragment extends Fragment {
             @Override
             public void onResponse(Call<CurrentReqModel> call, Response<CurrentReqModel> response) {
 
+                Log.d("response====","===code="+response.code());
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     pastReqModelArrayList.addAll(response.body().getPastServiceData());

@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Models.AddServiceModel;
 import com.ananta.fieldAgent.Models.AllFarmerModel;
+import com.ananta.fieldAgent.Models.Farmer;
 import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
@@ -61,10 +62,10 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     String path = "", claim = "", reason = "", farmer_name="", farmer_id="", Imagepath ;
     ApiInterface apiInterface;
     int photos;
-    private int mYear, mMonth, mDay, mHour, mMinute;
-    ArrayList<AllFarmerModel> allFarmersList = new ArrayList<>();
+
+    ArrayList<Farmer> allFarmersList = new ArrayList<>();
     ArrayList<String> list = new ArrayList<>();
-    ArrayList<String> ids = new ArrayList<>();
+    ArrayList<Integer> ids = new ArrayList<>();
     private Preference preference;
 
     @Override
@@ -72,8 +73,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
 
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -229,9 +229,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private void datePick() {
 
         final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = sdf.format(c.getTime());
@@ -327,6 +327,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 if (response.isSuccessful()) {
 
                     binding.pbProgressBar.setVisibility(View.GONE);
+
                     allFarmersList.addAll(response.body().getFarmer());
 
                     for (int i = 0; i < allFarmersList.size(); i++) {
@@ -362,7 +363,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 farmer_name = list.get(position);
-                farmer_id = ids.get(position);
+                farmer_id = String.valueOf(ids.get(position));
 
                 Log.d("farmer id===>", "=list=" + farmer_name);
 
@@ -407,23 +408,26 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         call.enqueue(new Callback<AddServiceModel>() {
             @Override
             public void onResponse(Call<AddServiceModel> call, Response<AddServiceModel> response) {
+
+                Log.d("response===","=add=code="+response.code());
+
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         finish();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(AddRequestActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(AddRequestActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(AddRequestActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                binding.pbProgressBar.setVisibility(View.GONE);
                 Toast.makeText(AddRequestActivity.this, "Data not Found" + t, Toast.LENGTH_SHORT).show();
             }
         });
@@ -569,17 +573,23 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    Log.w("ImageName", imageName[0]);
-                    if (fromWhere == 1) {
-                        Imagepath = imageModel.getFileUploadData().getImage_name();
+                if (response.body() != null){
+                    if (response.body().isSuccess()) {
+
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        Log.w("ImageName", imageName[0]);
+                        if (fromWhere == 1) {
+                            Imagepath = imageModel.getUploadimage().getImage_name();
+                        } else {
+                            Imagepath = imageModel.getUploadimage().getImage_name();
+                        }
                     } else {
-                        Imagepath = imageModel.getFileUploadData().getImage_name();
+                        Toast.makeText(AddRequestActivity.this, "image not uploaded", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(AddRequestActivity.this, "image not uploaded", Toast.LENGTH_SHORT).show();
+                }else {
+
                 }
+
             }
 
             @Override

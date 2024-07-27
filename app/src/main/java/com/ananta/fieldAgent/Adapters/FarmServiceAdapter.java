@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ananta.fieldAgent.Activity.farmer.PastServiceDetailActivity;
 import com.ananta.fieldAgent.Models.PastFarmerRequestModel;
 import com.ananta.fieldAgent.Models.PastServiceDatum;
+import com.ananta.fieldAgent.Models.PastServiceDatumFarmer;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
 import com.bumptech.glide.Glide;
@@ -25,14 +26,14 @@ import java.util.List;
 public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.ViewHolder> {
 
     Context context;
-    List<PastServiceDatum> serviceList;
+    List<PastServiceDatumFarmer> serviceList;
 
-    public FarmServiceAdapter(Context context, List<PastServiceDatum> serviceList) {
+    public FarmServiceAdapter(Context context, List<PastServiceDatumFarmer> serviceList) {
         this.context = context;
         this.serviceList = serviceList;
     }
 
-    public void filterList(ArrayList<PastServiceDatum> filterlist) {
+    public void filterList(ArrayList<PastServiceDatumFarmer> filterlist) {
         serviceList = filterlist;
         notifyDataSetChanged();
     }
@@ -46,11 +47,11 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull FarmServiceAdapter.ViewHolder holder, int position) {
-        PastServiceDatum model = serviceList.get(position);
+        PastServiceDatumFarmer model = serviceList.get(position);
         holder.tvServiceName.setText(model.getRequest_type());
         holder.tvDescription.setText(model.getDescription());
         holder.tvCcomplaintId.setText(model.getComplaint_id());
-        if (model.getImage_name() == null || !model.getImage_name().isEmpty()){
+        if (model.getImage_name() == null || !model.getImage_name().toString().isEmpty()){
             Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).into(holder.ivServiceImage);
         }else {
             Glide.with(context).load(R.drawable.placeholder).into(holder.ivServiceImage);

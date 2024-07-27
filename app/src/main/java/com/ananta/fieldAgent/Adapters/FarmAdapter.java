@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
 import com.ananta.fieldAgent.Models.CurrentServiceDatum;
+import com.ananta.fieldAgent.Models.CurrentServiceDatumFarmer;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
 import com.bumptech.glide.Glide;
@@ -22,15 +23,15 @@ import java.util.List;
 public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
 
     Context context;
-    List<CurrentServiceDatum> farmerList;
+    List<CurrentServiceDatumFarmer> farmerList;
 
-    public FarmAdapter(Context context, List<CurrentServiceDatum> farmerList) {
+    public FarmAdapter(Context context, List<CurrentServiceDatumFarmer> farmerList) {
         this.context = context;
         this.farmerList = farmerList;
     }
 
     // method for filtering our recyclerview items.
-    public void filterList(ArrayList<CurrentServiceDatum> filterlist) {
+    public void filterList(ArrayList<CurrentServiceDatumFarmer> filterlist) {
         farmerList = filterlist;
         notifyDataSetChanged();
     }
@@ -44,7 +45,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull FarmAdapter.ViewHolder holder, int position) {
-        CurrentServiceDatum model = farmerList.get(position);
+        CurrentServiceDatumFarmer model = farmerList.get(position);
         holder.tvFarmerName.setText(model.getRequest_type());
         holder.tvAddressName.setText(model.getDescription());
         holder.tvPumpName.setText(model.getService_request());

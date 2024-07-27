@@ -564,14 +564,14 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    imageName[0] = imageModel.getUploadimage().getImage_name();
                     Log.w("ImageName", imageName[0]);
                     if (fromWhere == 1) {
-                        pumpPath = imageModel.getFileUploadData().getImage_name();
+                        pumpPath = imageModel.getUploadimage().getImage_name();
                     } else if (fromWhere == 2) {
-                        baneficiarypath = imageModel.getFileUploadData().getImage_name();
+                        baneficiarypath = imageModel.getUploadimage().getImage_name();
                     } else {
-                        workingPumpPath = imageModel.getFileUploadData().getImage_name();
+                        workingPumpPath = imageModel.getUploadimage().getImage_name();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -607,8 +607,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    signatureName = imageModel.getFileUploadData().getImage_name();
+                    imageName[0] = imageModel.getUploadimage().getImage_name();
+                    signatureName = imageModel.getUploadimage().getImage_name();
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();

@@ -9,8 +9,8 @@ import java.util.List;
 public class FarmerServiceResponseModel {
 
     public boolean success;
-    public ArrayList<CurrentServiceDatum> current_service_data;
-    public ArrayList<PastServiceDatum> past_service_data;
+    public ArrayList<CurrentServiceDatumFarmer> current_service_data;
+    public ArrayList<PastServiceDatumFarmer> past_service_data;
 
     public boolean isSuccess() {
         return success;
@@ -20,19 +20,19 @@ public class FarmerServiceResponseModel {
         this.success = success;
     }
 
-    public ArrayList<CurrentServiceDatum> getCurrent_service_data() {
+    public ArrayList<CurrentServiceDatumFarmer> getCurrent_service_data() {
         return current_service_data;
     }
 
-    public void setCurrent_service_data(ArrayList<CurrentServiceDatum> current_service_data) {
+    public void setCurrent_service_data(ArrayList<CurrentServiceDatumFarmer> current_service_data) {
         this.current_service_data = current_service_data;
     }
 
-    public ArrayList<PastServiceDatum> getPast_service_data() {
+    public ArrayList<PastServiceDatumFarmer> getPast_service_data() {
         return past_service_data;
     }
 
-    public void setPast_service_data(ArrayList<PastServiceDatum> past_service_data) {
+    public void setPast_service_data(ArrayList<PastServiceDatumFarmer> past_service_data) {
         this.past_service_data = past_service_data;
     }
 }

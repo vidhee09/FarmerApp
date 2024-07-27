@@ -184,7 +184,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("farmer_id", Const.FARMER_ID);
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
-        if ( Imagepath == null || !Imagepath.isEmpty()){
+        if (Imagepath != null || !Imagepath.toString().isEmpty()){
             hashMap.put("image", Imagepath);
         }
         hashMap.put("date", binding.tvDeliveryDate.getText().toString());
@@ -223,7 +223,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("farmer_id", Const.FARMER_ID);
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
-        hashMap.put("image_name", Imagepath);
+        hashMap.put("image", Imagepath);
         hashMap.put("date", binding.tvDeliveryDate.getText().toString());
         hashMap.put("sign", signatureName);
         hashMap.put("latitude", String.valueOf(latitude));
@@ -234,8 +234,10 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             @Override
             public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
 
+                Log.d("response===","delivery="+response.code());
+
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
@@ -536,10 +538,10 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    imageName[0] = imageModel.getUploadimage().getImage_name();
                     Log.w("ImageName", imageName[0]);
                     if (fromWhere == 1) {
-                        Imagepath = imageModel.getFileUploadData().getImage_name();
+                        Imagepath = imageModel.getUploadimage().getImage_name();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -577,8 +579,8 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    signatureName = imageModel.getFileUploadData().getImage_name();
+                    imageName[0] = imageModel.getUploadimage().getImage_name();
+                    signatureName = imageModel.getUploadimage().getImage_name();
                 } else {
                     Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
 

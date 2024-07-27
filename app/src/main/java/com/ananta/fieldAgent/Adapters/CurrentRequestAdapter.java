@@ -40,9 +40,9 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
     public void onBindViewHolder(@NonNull CurrentRequestAdapter.ViewHolder holder, int position) {
 
         CurrentServiceDatum model = currentReqList.get(position);
-        holder.tvFarmerName.setText(model.getFarmer_id());
+        holder.tvFarmerName.setText(model.getFarmer_name());
         holder.tvRequestName.setText(model.getService_request());
-        holder.tvAddressCurrentReq.setText(model.getId());
+        holder.tvAddressCurrentReq.setText(model.getFarmer_address());
         Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).error(R.drawable.placeholder).into(holder.ivCurrentReqImage);
 
     }

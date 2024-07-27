@@ -852,16 +852,18 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
+                Log.d("response===","==j=code=="+response.code());
+
+                if (response.body().isSuccess()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    imageName[0] = imageModel.getUploadimage().getImage_name();
                     Log.w("ImageName", imageName[0]);
                     if (fromWhere == 1) {
-                        pumpPath = imageModel.getFileUploadData().getImage_name();
+                        pumpPath = imageModel.getUploadimage().getImage_name();
                     } else if (fromWhere == 2) {
-                        landmarkPath = imageModel.getFileUploadData().getImage_name();
+                        landmarkPath = imageModel.getUploadimage().getImage_name();
                     } else {
-                        baneficiarypath = imageModel.getFileUploadData().getImage_name();
+                        baneficiarypath = imageModel.getUploadimage().getImage_name();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -899,11 +901,11 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
+                    imageName[0] = imageModel.getUploadimage().getImage_name();
                     if (fromWhere == 1) {
-                        signatureSurveyor = imageModel.getFileUploadData().getImage_name();
+                        signatureSurveyor = imageModel.getUploadimage().getImage_name();
                     } else {
-                        signatureBeneficiary = imageModel.getFileUploadData().getImage_name();
+                        signatureBeneficiary = imageModel.getUploadimage().getImage_name();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
