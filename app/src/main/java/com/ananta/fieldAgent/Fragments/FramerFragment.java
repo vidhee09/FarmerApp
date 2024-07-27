@@ -88,26 +88,29 @@ public class FramerFragment extends Fragment {
             public void onResponse(Call<FarmerModel> call, @NonNull Response<FarmerModel> response) {
 
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.addAll(response.body().getFarmerData());
                         Const.FARMER_ID = String.valueOf(response.body().getFarmerData().get(0).getId());
                         bindList();
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Farmer not available", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
 
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }

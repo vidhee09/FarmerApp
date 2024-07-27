@@ -29,6 +29,7 @@ import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
+import com.ananta.fieldAgent.Utils.CustomDialogAlert;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDashboardBinding;
 
 import java.util.ArrayList;
@@ -130,20 +131,41 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(FarmerDashboardActivity.this, "No Data Found"+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FarmerDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
-
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(FarmerDashboardActivity.this, "service not available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FarmerDashboardActivity.this, "Data not available", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerServiceResponseModel> call, Throwable t) {
-                Log.d("farmerData===","fail="+t.getMessage());
-                Toast.makeText(FarmerDashboardActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(FarmerDashboardActivity.this, " " +t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CustomDialogAlert customDialogAlert = new CustomDialogAlert(this, this.getResources().getString(R.string.close_application), this.getResources().getString(R.string.close_text), this.getResources().getString(R.string.yes)) {
+            @Override
+            public void onClickLeftButton() {
+                dismiss();
+            }
+
+            @Override
+            public void onClickRightButton() {
+                dismiss();
+                finish();
+            }
+        };
+        customDialogAlert.show();
+
     }
 }

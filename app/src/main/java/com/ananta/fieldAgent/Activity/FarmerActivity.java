@@ -134,9 +134,9 @@ public class FarmerActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<FarmerModel>() {
             @Override
-            public void onResponse(Call<FarmerModel> call, @NonNull Response<FarmerModel> response) {
+            public void onResponse(@NonNull Call<FarmerModel> call, @NonNull Response<FarmerModel> response) {
                 if (response.body() != null){
-                    if (response.isSuccessful()){
+                    if (response.body().getSuccess()){
                         binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.clear();
                         farmerModelArrayList.addAll(response.body().getFarmerData());
@@ -145,11 +145,13 @@ public class FarmerActivity extends AppCompatActivity {
                         Log.d("response===","=else="+response.body().getSuccess());
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(FarmerActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Log.d("response===","=null="+response.body().getSuccess());
                     Toast.makeText(FarmerActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
@@ -158,6 +160,7 @@ public class FarmerActivity extends AppCompatActivity {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Log.d("response===","=fail="+t.getMessage());
                 Toast.makeText(FarmerActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }

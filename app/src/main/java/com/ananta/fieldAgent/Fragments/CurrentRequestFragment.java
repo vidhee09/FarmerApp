@@ -89,11 +89,13 @@ public class CurrentRequestFragment extends Fragment {
                         bindRcv();
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(), "not success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Request not available", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), ""+response.body().getSuccess(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Request not available", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -101,7 +103,8 @@ public class CurrentRequestFragment extends Fragment {
             @Override
             public void onFailure(Call<CurrentReqModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(getActivity(), "fail ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), " "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 

@@ -156,7 +156,6 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 reason = binding.spSpinnerIcReasonFarmer.getSelectedItem().toString();
-
             }
 
             @Override
@@ -324,19 +323,22 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                         binding.pbProgressBar.setVisibility(View.GONE);
                         finish();
                     } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(AddNewRequestFarmer.this,  response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(AddNewRequestFarmer.this, "" + response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(AddNewRequestFarmer.this,  response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(AddNewRequestFarmer.this, "" + response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerServiceModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(AddNewRequestFarmer.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
-                Toast.makeText(AddNewRequestFarmer.this, "Data not Found" + t, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -482,31 +484,33 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
-
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         Log.w("ImageName", imageName[0]);
                         if (fromWhere == 1) {
-                            binding.pbProgressBar.setVisibility(View.GONE);
                             Imagepath = imageModel.getUploadimage().getImage_name();
                         } else {
-                            binding.pbProgressBar.setVisibility(View.GONE);
                             Imagepath = imageModel.getUploadimage().getImage_name();
                         }
                     } else {
-                        Toast.makeText(AddNewRequestFarmer.this, "image not uploaded", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
-                    Toast.makeText(AddNewRequestFarmer.this, "image not uploaded", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                Toast.makeText(AddNewRequestFarmer.this, "image not uploaded" + t, Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(AddNewRequestFarmer.this,"Image upload failed", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
 
             }
         });
     }
-
 
 }

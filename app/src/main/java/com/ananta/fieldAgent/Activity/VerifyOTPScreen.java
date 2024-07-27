@@ -97,9 +97,9 @@ public class VerifyOTPScreen extends AppCompatActivity {
             public void onResponse(@NonNull Call<OtpResponseModel> call, @NonNull Response<OtpResponseModel> response) {
 
                 if (response.body() != null) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    pinView.getText().clear();
                     if (response.body().getType().equals("agent")) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        pinView.getText().clear();
                         Intent intent1 = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
                         Const.AGENT_ID = String.valueOf(response.body().getUser_id());
                         Const.AGENT_NAME = response.body().getUser_name();
@@ -117,6 +117,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
                     } else if (response.body().getType().equals("farmer")) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        pinView.getText().clear();
                         preference.putToken("");
                         Intent intent3 = new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
                         Const.LOGIN_FARMER_ID = String.valueOf(response.body().getUser_id());
@@ -131,14 +132,17 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.GONE);
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(VerifyOTPScreen.this, "server not responding right now", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<OtpResponseModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(VerifyOTPScreen.this, "server not responding", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
 
         });

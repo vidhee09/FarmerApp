@@ -70,21 +70,30 @@ public class PastRequestFragment extends Fragment {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", Const.AGENT_ID);
 
-        Call<CurrentReqModel> call = apiInterface.getPastRequest(hashMap,"Bearer "+preference.getToken());
+        Call<CurrentReqModel> call = apiInterface.getPastRequest(hashMap, "Bearer " + preference.getToken());
 
         call.enqueue(new Callback<CurrentReqModel>() {
             @Override
             public void onResponse(Call<CurrentReqModel> call, Response<CurrentReqModel> response) {
 
-                Log.d("response====","===code="+response.code());
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    pastReqModelArrayList.addAll(response.body().getPastServiceData());
-                    bindRcv();
+                Log.d("response====", "===code=" + response.code());
+                if (response.body() != null) {
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        pastReqModelArrayList.addAll(response.body().getPastServiceData());
+                        bindRcv();
 
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), "Request not available", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                    }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(getActivity(), "Request not available", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override

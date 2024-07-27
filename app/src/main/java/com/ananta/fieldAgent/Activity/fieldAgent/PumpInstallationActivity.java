@@ -121,35 +121,44 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         call.enqueue(new Callback<GetPumpData>() {
             @Override
             public void onResponse(Call<GetPumpData> call, Response<GetPumpData> response) {
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    binding.edPumpId.setText(response.body().getPumpInstallation().get(0).getPumpId());
-                    binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
-                    binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
-                    binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
 
+                if (response.body() != null){
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        binding.edPumpId.setText(response.body().getPumpInstallation().get(0).getPumpId());
+                        binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
+                        binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
+                        binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
 //                    String panel = response.body().getPumpInstallation().get(0).getPanelId();
 //                    String[] panels = panel.split(",");
 //                    Log.d("chipp-===panel===", "=" + panels);
-                    chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
-                    binding.chipGroup.addView(chip);
-                    Log.d("chipp-======", "=" + chip);
+                        chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
+                        binding.chipGroup.addView(chip);
+                        Log.d("chipp-======", "=" + chip);
 
-                    reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
-                    Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
-                    Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpBenifiImage()).into(binding.ivBeneficiaryInstallPump);
-                    Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpWorkImage()).into(binding.ivPumpWorking);
+                        reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
+                        Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
+                        Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpBenifiImage()).into(binding.ivBeneficiaryInstallPump);
+                        Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpWorkImage()).into(binding.ivPumpWorking);
 
-                } else {
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                    }
+                }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
             public void onFailure(Call<GetPumpData> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -399,17 +408,20 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -443,26 +455,28 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             @Override
             public void onResponse(Call<PumpInstallModel> call, Response<PumpInstallModel> response) {
 
-                if (response.body() != null){
+                if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(PumpInstallationActivity.this,"" +response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(PumpInstallationActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(PumpInstallationActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.GONE);
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -562,26 +576,35 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getUploadimage().getImage_name();
-                    Log.w("ImageName", imageName[0]);
-                    if (fromWhere == 1) {
-                        pumpPath = imageModel.getUploadimage().getImage_name();
-                    } else if (fromWhere == 2) {
-                        baneficiarypath = imageModel.getUploadimage().getImage_name();
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        Log.w("ImageName", imageName[0]);
+                        if (fromWhere == 1) {
+                            pumpPath = imageModel.getUploadimage().getImage_name();
+                        } else if (fromWhere == 2) {
+                            baneficiarypath = imageModel.getUploadimage().getImage_name();
+                        } else {
+                            workingPumpPath = imageModel.getUploadimage().getImage_name();
+                        }
                     } else {
-                        workingPumpPath = imageModel.getUploadimage().getImage_name();
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "Data not found" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -605,20 +628,29 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getUploadimage().getImage_name();
-                    signatureName = imageModel.getUploadimage().getImage_name();
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        signatureName = imageModel.getUploadimage().getImage_name();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                    }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "-" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }

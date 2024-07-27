@@ -323,7 +323,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(AddRequestActivity.this, "Farmer not available", Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
                 }
-
             }
 
             @Override
@@ -408,7 +407,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.GONE);
-                Toast.makeText(AddRequestActivity.this, "Data not Found" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRequestActivity.this, "Data not Found" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -522,6 +521,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     /*-----  agent upload image  ----*/
 
     public void uploadImage(Uri contentURI, int fromWhere) {
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+
         Uri uri = null;
         String fName = "";
         try {
@@ -548,7 +549,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
-
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         Log.w("ImageName", imageName[0]);
                         if (fromWhere == 1) {
@@ -557,17 +558,23 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                             Imagepath = imageModel.getUploadimage().getImage_name();
                         }
                     } else {
-                        Toast.makeText(AddRequestActivity.this, "image not uploaded", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(AddRequestActivity.this, ""+ response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
-
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(AddRequestActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
 
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(AddRequestActivity.this, "image not uploaded" + t, Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
 
             }
         });
