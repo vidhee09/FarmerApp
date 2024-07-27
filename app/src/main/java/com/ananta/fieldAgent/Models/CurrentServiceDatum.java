@@ -5,105 +5,42 @@ import com.google.gson.annotations.SerializedName;
 
 public class CurrentServiceDatum {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("request_type")
-    @Expose
-    private String requestType;
-    @SerializedName("farmer_id")
-    @Expose
-    private Integer farmerId;
-    @SerializedName("description")
-    @Expose
-    private String description;
-    @SerializedName("image_name")
-    @Expose
-    private String imageName;
-    @SerializedName("service_request")
-    @Expose
-    private String serviceRequest;
-    @SerializedName("reason")
-    @Expose
-    private String reason;
+    public int id;
+    public String request_type;
+    public int farmer_id;
+    public String description;
+    public String image_name;
+    public String service_request;
+    public String reason;
+    public String complaint_id;
+    public String incident_date;
+    public Object agent_id;
+    public int status;
+    public String created_at;
+    public String updated_at;
 
-    @SerializedName("farmer_address")
-    @Expose
-    private String farmer_address;
-
-    public String getFarmer_address() {
-        return farmer_address;
-    }
-
-    public void setFarmer_address(String farmer_address) {
-        this.farmer_address = farmer_address;
-    }
-
-    public String getFarmer_name() {
-        return farmer_name;
-    }
-
-    public void setFarmer_name(String farmer_name) {
-        this.farmer_name = farmer_name;
-    }
-
-    @SerializedName("farmer_name")
-    @Expose
-    private String farmer_name;
-
-    @SerializedName("incident_date")
-    @Expose
-    private String incidentDate;
-    @SerializedName("agent_id")
-    @Expose
-    private Integer agentId;
-    @SerializedName("status")
-    @Expose
-    private Integer status;
-    @SerializedName("created_at")
-    @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
-    @Expose
-    private String updatedAt;
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public CurrentServiceDatum withId(Integer id) {
-        this.id = id;
-        return this;
+    public String getRequest_type() {
+        return request_type;
     }
 
-    public String getRequestType() {
-        return requestType;
+    public void setRequest_type(String request_type) {
+        this.request_type = request_type;
     }
 
-    public void setRequestType(String requestType) {
-        this.requestType = requestType;
+    public int getFarmer_id() {
+        return farmer_id;
     }
 
-    public CurrentServiceDatum withRequestType(String requestType) {
-        this.requestType = requestType;
-        return this;
-    }
-
-    public Integer getFarmerId() {
-        return farmerId;
-    }
-
-    public void setFarmerId(Integer farmerId) {
-        this.farmerId = farmerId;
-    }
-
-    public CurrentServiceDatum withFarmerId(Integer farmerId) {
-        this.farmerId = farmerId;
-        return this;
+    public void setFarmer_id(int farmer_id) {
+        this.farmer_id = farmer_id;
     }
 
     public String getDescription() {
@@ -114,35 +51,20 @@ public class CurrentServiceDatum {
         this.description = description;
     }
 
-    public CurrentServiceDatum withDescription(String description) {
-        this.description = description;
-        return this;
+    public String getImage_name() {
+        return image_name;
     }
 
-    public String getImageName() {
-        return imageName;
+    public void setImage_name(String image_name) {
+        this.image_name = image_name;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public String getService_request() {
+        return service_request;
     }
 
-    public CurrentServiceDatum withImageName(String imageName) {
-        this.imageName = imageName;
-        return this;
-    }
-
-    public String getServiceRequest() {
-        return serviceRequest;
-    }
-
-    public void setServiceRequest(String serviceRequest) {
-        this.serviceRequest = serviceRequest;
-    }
-
-    public CurrentServiceDatum withServiceRequest(String serviceRequest) {
-        this.serviceRequest = serviceRequest;
-        return this;
+    public void setService_request(String service_request) {
+        this.service_request = service_request;
     }
 
     public String getReason() {
@@ -153,73 +75,51 @@ public class CurrentServiceDatum {
         this.reason = reason;
     }
 
-    public CurrentServiceDatum withReason(String reason) {
-        this.reason = reason;
-        return this;
+    public String getComplaint_id() {
+        return complaint_id;
     }
 
-    public String getIncidentDate() {
-        return incidentDate;
+    public void setComplaint_id(String complaint_id) {
+        this.complaint_id = complaint_id;
     }
 
-    public void setIncidentDate(String incidentDate) {
-        this.incidentDate = incidentDate;
+    public String getIncident_date() {
+        return incident_date;
     }
 
-    public CurrentServiceDatum withIncidentDate(String incidentDate) {
-        this.incidentDate = incidentDate;
-        return this;
+    public void setIncident_date(String incident_date) {
+        this.incident_date = incident_date;
     }
 
-    public Integer getAgentId() {
-        return agentId;
+    public Object getAgent_id() {
+        return agent_id;
     }
 
-    public void setAgentId(Integer agentId) {
-        this.agentId = agentId;
+    public void setAgent_id(Object agent_id) {
+        this.agent_id = agent_id;
     }
 
-    public CurrentServiceDatum withAgentId(Integer agentId) {
-        this.agentId = agentId;
-        return this;
-    }
-
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public CurrentServiceDatum withStatus(Integer status) {
-        this.status = status;
-        return this;
+    public String getCreated_at() {
+        return created_at;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public String getUpdated_at() {
+        return updated_at;
     }
 
-    public CurrentServiceDatum withCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public CurrentServiceDatum withUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 }

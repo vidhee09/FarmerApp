@@ -3,6 +3,7 @@ package com.ananta.fieldAgent.Activity.farmer;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -90,6 +91,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             preference.putFarmerName(null);
             preference.putFarmerNum(null);
             preference.putFarmerLoginId(null);
+            preference.putFarmerName(null);
             Intent intent = new Intent(FarmerDashboardActivity.this, LoginScreen.class);
             startActivity(intent);
             finishAffinity();
@@ -110,26 +112,29 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         hashMap.put("id", id);
 
         Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap ,"Bearer "+preference.getToken());
+        Log.d("farmerData===TOKEN",""+preference.getToken());
 
         call.enqueue(new Callback<FarmerServiceResponseModel>() {
             @Override
-            public void onResponse(Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
+            public void onResponse(@NonNull Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
 
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
-                        adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrentServiceData()), "Current Request");
-                        adapter.addFragment(new PastRequestFarmerFragment(response.body().getPastServiceData()), "Past Request");
+                        adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrent_service_data()), "Current Request");
+                        adapter.addFragment(new PastRequestFarmerFragment(response.body().getPast_service_data()), "Past Request");
                         binding.viewPager.setAdapter(adapter);
                         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Log.d("farmerData===","=else="+response.body().isSuccess());
                         Toast.makeText(FarmerDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
+                    Log.d("farmerData===","nll="+response.body().isSuccess());
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(FarmerDashboardActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
                 }
@@ -137,6 +142,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<FarmerServiceResponseModel> call, Throwable t) {
+                Log.d("farmerData===","fail="+t.getMessage());
                 Toast.makeText(FarmerDashboardActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
             }
         });

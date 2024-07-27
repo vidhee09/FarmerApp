@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.ananta.fieldAgent.Adapters.FarmAdapter;
 import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
+import com.ananta.fieldAgent.Models.CurrentServiceDatum;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.databinding.FragmentFramerFarmBinding;
 
@@ -22,10 +23,10 @@ import java.util.List;
 public class CurrenRequestFarmerFragment extends Fragment {
 
     FragmentFramerFarmBinding binding;
-    List<CurrentRequestFarmerModel> FarmerServiceresponseModelArrayList = new ArrayList<>();
+    List<CurrentServiceDatum> FarmerServiceresponseModelArrayList = new ArrayList<>();
     FarmAdapter farmAdapter;
 
-    public CurrenRequestFarmerFragment(List<CurrentRequestFarmerModel> farmerServiceresponseModelArrayList) {
+    public CurrenRequestFarmerFragment(List<CurrentServiceDatum> farmerServiceresponseModelArrayList) {
         this.FarmerServiceresponseModelArrayList = farmerServiceresponseModelArrayList;
     }
 
@@ -64,10 +65,10 @@ public class CurrenRequestFarmerFragment extends Fragment {
 
     }
     private void filter(String text) {
-        ArrayList<CurrentRequestFarmerModel> filteredlist = new ArrayList<>();
+        ArrayList<CurrentServiceDatum> filteredlist = new ArrayList<>();
 
-        for (CurrentRequestFarmerModel item : FarmerServiceresponseModelArrayList) {
-            if (item.getRequestType().toLowerCase().contains(text.toLowerCase())) {
+        for (CurrentServiceDatum item : FarmerServiceresponseModelArrayList) {
+            if (item.getRequest_type().toLowerCase().contains(text.toLowerCase())) {
                 filteredlist.add(item);
             }
         }

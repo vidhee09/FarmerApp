@@ -14,6 +14,7 @@ import com.ananta.fieldAgent.Models.FarmerServiceResponseModel;
 import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Models.JointSurveyorModel;
 import com.ananta.fieldAgent.Models.LoginModel;
+import com.ananta.fieldAgent.Models.OtpResponseModel;
 import com.ananta.fieldAgent.Models.PumpInstallModel;
 import com.ananta.fieldAgent.Models.SiteReportModel;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public interface ApiInterface {
 
     /*--- Otp verify ---*/
     @POST("verify-otp")
-    Call<LoginModel> getOtpVerify(@Body HashMap<String, String> otp);
+    Call<OtpResponseModel> getOtpVerify(@Body HashMap<String, String> otp);
 
     /*--- Get Dashboard Data ---*/
     @Headers("Content-Type:application/json;charset=UTF-8")
@@ -73,9 +74,8 @@ public interface ApiInterface {
     /*---  upload Image  ---*/
 
     @Multipart
-    @Headers("Content-Type:application/json;charset=UTF-8")
     @POST("upload-image")
-    Call<ImageModel> uploadImage(@Part MultipartBody.Part image, @Part("type") String type);
+    Call<ImageModel> uploadImage(@Part MultipartBody.Part image, @Part("type") String type, @Header("Authorization") String auth );
 
     /*--- Get all farmer Data  ---*/
     @Headers("Content-Type:application/json;charset=UTF-8")

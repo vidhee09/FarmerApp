@@ -13,7 +13,8 @@ public class Const {
     public static Integer  ID ;
     public static String FARMER_ID = "";
     public static String SERVER_TOKEN = "";
-    public static String OS_ORIENTATION = "";
+    public static String LOGIN_FARMER_ID = "";
+
 
     public static String IMAGE_URL = "https://farmer.idglock.com/public/images/uploads/";
 

@@ -1,7 +1,6 @@
 package com.ananta.fieldAgent.Activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -9,13 +8,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Activity.farmer.FarmerDashboardActivity;
-import com.ananta.fieldAgent.Models.LoginModel;
+import com.ananta.fieldAgent.Models.OtpResponseModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
@@ -53,6 +53,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
         });
 
         OTP = getIntent().getStringExtra("OTP");
+        Log.d("Otp===", "ott=" + OTP);
         Number = getIntent().getStringExtra("NUMBER");
 
         binding.pinView.setFocusable(true);
@@ -65,6 +66,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
             public void onClick(View v) {
 
                 loginWithOtp(OTP, binding.pinView);
+                Log.d("Otp===", "=otp==" + OTP);
 
             }
         });
@@ -83,70 +85,68 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
     private void loginWithOtp(String otp, PinView pinView) {
 
-//        Utils.showCustomProgressDialog(VerifyOTPScreen.this,true);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("mobile_number", Number);
         hashMap.put("otp", otp);
+        Log.d("opt====", "=otp==" + otp);
 
-        Call<LoginModel> call = apiInterface.getOtpVerify(hashMap);
-        call.enqueue(new Callback<LoginModel>() {
+        Call<OtpResponseModel> call = apiInterface.getOtpVerify(hashMap);
+        call.enqueue(new Callback<OtpResponseModel>() {
             @Override
-            public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
-
-                if (response.isSuccessful()) {
+            public void onResponse(@NonNull Call<OtpResponseModel> call, @NonNull Response<OtpResponseModel> response) {
+                if (response.body()!=null) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     pinView.getText().clear();
-
                     if (response.body().getType().equals("agent")) {
                         Intent intent1 = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
-                        Const.AGENT_ID = response.body().getUser_id();
+                        Const.AGENT_ID = String.valueOf(response.body().getUser_id());
                         Const.AGENT_NAME = response.body().getUser_name();
                         Const.COMPANY_NAME = response.body().getUser_companyname();
                         Const.MOBILE_NUMBER = response.body().getMobile_number();
-
                         preference.putAgentName(response.body().getUser_name());
-                        preference.putAgentID(response.body().getUser_id());
+                        preference.putAgentID(String.valueOf(response.body().getUser_id()));
                         preference.putAgentNumber(response.body().getMobile_number());
                         preference.putToken(response.body().getToken());
                         Const.SERVER_TOKEN = response.body().getToken();
                         String token = preference.putToken(response.body().getToken());
                         ApiClient.setLoginDetail(response.body().getToken());
-
-                        Log.d("token==", "=agent==" + token);
                         startActivity(intent1);
                         finish();
 
                     } else if (response.body().getType().equals("farmer")) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        preference.putToken("");
                         Intent intent3 = new Intent(VerifyOTPScreen.this, FarmerDashboardActivity.class);
+                        Const.LOGIN_FARMER_ID = String.valueOf(response.body().getUser_id());
                         preference.putIsHideWelcomeScreen(true);
-                        preference.putFarmerLoginId(response.body().getUser_id());
+                        preference.putFarmerLoginId(String.valueOf(response.body().getUser_id()));
                         preference.putFarmerName(response.body().getUser_name());
                         preference.putFarmerNum(response.body().getMobile_number());
                         Const.SERVER_TOKEN = response.body().getToken();
                         ApiClient.setLoginDetail(response.body().getToken());
-                        String token =  preference.putToken(response.body().getToken());
-                        Log.d("token==", "=" + token);
+                        String token = preference.putToken(response.body().getToken());
                         startActivity(intent3);
                         finish();
                     }
 
-                } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(VerifyOTPScreen.this, "Invalid Otp, please enter valid otp", Toast.LENGTH_SHORT).show();
-
+                }
+                else {
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(VerifyOTPScreen.this, "" + response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                 }
             }
 
+
             @Override
-            public void onFailure(Call<LoginModel> call, Throwable t) {
+            public void onFailure(Call<OtpResponseModel> call, Throwable t) {
                 Toast.makeText(VerifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
 
         });
     }
-
 
     /*------------  CountDownTimer -----------*/
 

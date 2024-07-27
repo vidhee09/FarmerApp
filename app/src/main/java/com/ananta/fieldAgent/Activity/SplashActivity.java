@@ -57,9 +57,14 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Intent intent = new Intent(SplashActivity.this, FarmerDashboardActivity.class);
-                    startActivity(intent);
-                    finish();
+                    if (!preference.getFarmerLoginId().equals("")){
+                        Const.LOGIN_FARMER_ID = preference.getFarmerLoginId();
+                        ApiClient.setLoginDetail(preference.getToken());
+                        Intent intent = new Intent(SplashActivity.this, FarmerDashboardActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
                 }
             }
         }, 5000);

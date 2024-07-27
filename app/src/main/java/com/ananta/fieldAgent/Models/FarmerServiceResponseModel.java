@@ -3,42 +3,36 @@ package com.ananta.fieldAgent.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FarmerServiceResponseModel {
 
+    public boolean success;
+    public ArrayList<CurrentServiceDatum> current_service_data;
+    public ArrayList<PastServiceDatum> past_service_data;
 
-    @SerializedName("success")
-    @Expose
-    private Boolean success;
-    @SerializedName("current_service_data")
-    @Expose
-    private List<CurrentRequestFarmerModel> currentServiceData;
-    @SerializedName("past_service_data")
-    @Expose
-    private List<PastFarmerRequestModel> pastServiceData;
-
-    public Boolean getSuccess() {
+    public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(Boolean success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 
-    public List<CurrentRequestFarmerModel> getCurrentServiceData() {
-        return currentServiceData;
+    public ArrayList<CurrentServiceDatum> getCurrent_service_data() {
+        return current_service_data;
     }
 
-    public void setCurrentServiceData(List<CurrentRequestFarmerModel> currentServiceData) {
-        this.currentServiceData = currentServiceData;
+    public void setCurrent_service_data(ArrayList<CurrentServiceDatum> current_service_data) {
+        this.current_service_data = current_service_data;
     }
 
-    public List<PastFarmerRequestModel> getPastServiceData() {
-        return pastServiceData;
+    public ArrayList<PastServiceDatum> getPast_service_data() {
+        return past_service_data;
     }
 
-    public void setPastServiceData(List<PastFarmerRequestModel> pastServiceData) {
-        this.pastServiceData = pastServiceData;
+    public void setPast_service_data(ArrayList<PastServiceDatum> past_service_data) {
+        this.past_service_data = past_service_data;
     }
 }

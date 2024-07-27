@@ -117,7 +117,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
 
-        Call<GetPumpData> call = apiInterface.getPumpReport(hashMap ,"Bearer "+preference.getToken());
+        Call<GetPumpData> call = apiInterface.getPumpReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetPumpData>() {
             @Override
             public void onResponse(Call<GetPumpData> call, Response<GetPumpData> response) {
@@ -127,6 +127,10 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                     binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
                     binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
                     binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
+
+                    String panel = response.body().getPumpInstallation().get(0).getPanelId();
+                    String[] panels = panel.split(",");
+                    Log.d("chipp-===panel===", "=" + panels);
                     chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
                     binding.chipGroup.addView(chip);
                     Log.d("chipp-======", "=" + chip);
@@ -381,7 +385,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-        Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap ,"Bearer "+preference.getToken());
+        Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap, "Bearer " + preference.getToken());
 
         call.enqueue(new Callback<PumpInstallModel>() {
             @Override
@@ -433,30 +437,31 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-        Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap, "Bearer "+preference.getToken());
+        Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap, "Bearer " + preference.getToken());
 
         call.enqueue(new Callback<PumpInstallModel>() {
             @Override
             public void onResponse(Call<PumpInstallModel> call, Response<PumpInstallModel> response) {
 
-                if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                if (response.body() != null){
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PumpInstallationActivity.this,"" +response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(PumpInstallationActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                }else {
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(PumpInstallationActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                binding.pbProgressBar.setVisibility(View.GONE);
                 Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
             }
         });
@@ -549,7 +554,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer " + preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -592,7 +597,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer " + preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {

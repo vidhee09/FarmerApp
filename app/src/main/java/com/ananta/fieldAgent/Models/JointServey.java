@@ -3,159 +3,70 @@ package com.ananta.fieldAgent.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class JointServey {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("agent_id")
-    @Expose
-    private Integer agentId;
-    @SerializedName("farmer_id")
-    @Expose
-    private Integer farmerId;
-    @SerializedName("alternet_mo")
-    @Expose
-    private String alternetMo;
-    @SerializedName("imei_no")
-    @Expose
-    private String imeiNo;
-    @SerializedName("latitude")
-    @Expose
-    private String latitude;
-    @SerializedName("longitude")
-    @Expose
-    private String longitude;
-    @SerializedName("is_water_source_available")
-    @Expose
-    private String isWaterSourceAvailable;
-    @SerializedName("type_of_water_source")
-    @Expose
-    private String typeOfWaterSource;
-    @SerializedName("water_depth")
-    @Expose
-    private String waterDepth;
-    @SerializedName("constant_water")
-    @Expose
-    private String constantWater;
-    @SerializedName("water_delivery_point")
-    @Expose
-    private String waterDeliveryPoint;
-    @SerializedName("pump_type")
-    @Expose
-    private String pumpType;
-    @SerializedName("pump_recom_survey")
-    @Expose
-    private String pumpRecomSurvey;
-    @SerializedName("pump_recom_benefits")
-    @Expose
-    private String pumpRecomBenefits;
-    @SerializedName("is_pump_electricity")
-    @Expose
-    private String isPumpElectricity;
-    @SerializedName("is_solar_pump")
-    @Expose
-    private String isSolarPump;
-    @SerializedName("is_shadow_area")
-    @Expose
-    private String isShadowArea;
-    @SerializedName("is_mobile_network")
-    @Expose
-    private String isMobileNetwork;
-    @SerializedName("survey_person")
-    @Expose
-    private String surveyPerson;
-    @SerializedName("remark")
-    @Expose
-    private String remark;
-    @SerializedName("water_res_image")
-    @Expose
-    private String waterResImage;
-    @SerializedName("landmark_image")
-    @Expose
-    private String landmarkImage;
-    @SerializedName("beneficiary_image")
-    @Expose
-    private String beneficiaryImage;
-    @SerializedName("beneficiary_sign")
-    @Expose
-    private String beneficiarySign;
-    @SerializedName("survey_sign")
-    @Expose
-    private String surveySign;
-    @SerializedName("status")
-    @Expose
-    private Integer status;
-    @SerializedName("created_at")
-    @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
-    @Expose
-    private String updatedAt;
+    public String agent_id;
+    public String farmer_id;
+    public String alternet_mo;
+    public String imei_no;
+    public String latitude;
+    public String longitude;
+    public String is_water_source_available;
+    public String type_of_water_source;
+    public String water_depth;
+    public String constant_water;
+    public String water_delivery_point;
+    public String pump_type;
+    public String pump_recom_survey;
+    public String pump_recom_benefits;
+    public String is_pump_electricity;
+    public String is_solar_pump;
+    public String is_shadow_area;
+    public String is_mobile_network;
+    public String survey_person;
+    public String remark;
+    public String water_res_image;
+    public String landmark_image;
+    public String beneficiary_image;
+    public String beneficiary_sign;
+    public String survey_sign;
+    public int status;
+    public Date created_at;
+    public Date updated_at;
+    public int id;
 
-    public Integer getId() {
-        return id;
+    public String getAgent_id() {
+        return agent_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAgent_id(String agent_id) {
+        this.agent_id = agent_id;
     }
 
-    public JointServey withId(Integer id) {
-        this.id = id;
-        return this;
+    public String getFarmer_id() {
+        return farmer_id;
     }
 
-    public Integer getAgentId() {
-        return agentId;
+    public void setFarmer_id(String farmer_id) {
+        this.farmer_id = farmer_id;
     }
 
-    public void setAgentId(Integer agentId) {
-        this.agentId = agentId;
+    public String getAlternet_mo() {
+        return alternet_mo;
     }
 
-    public JointServey withAgentId(Integer agentId) {
-        this.agentId = agentId;
-        return this;
+    public void setAlternet_mo(String alternet_mo) {
+        this.alternet_mo = alternet_mo;
     }
 
-    public Integer getFarmerId() {
-        return farmerId;
+    public String getImei_no() {
+        return imei_no;
     }
 
-    public void setFarmerId(Integer farmerId) {
-        this.farmerId = farmerId;
-    }
-
-    public JointServey withFarmerId(Integer farmerId) {
-        this.farmerId = farmerId;
-        return this;
-    }
-
-    public String getAlternetMo() {
-        return alternetMo;
-    }
-
-    public void setAlternetMo(String alternetMo) {
-        this.alternetMo = alternetMo;
-    }
-
-    public JointServey withAlternetMo(String alternetMo) {
-        this.alternetMo = alternetMo;
-        return this;
-    }
-
-    public String getImeiNo() {
-        return imeiNo;
-    }
-
-    public void setImeiNo(String imeiNo) {
-        this.imeiNo = imeiNo;
-    }
-
-    public JointServey withImeiNo(String imeiNo) {
-        this.imeiNo = imeiNo;
-        return this;
+    public void setImei_no(String imei_no) {
+        this.imei_no = imei_no;
     }
 
     public String getLatitude() {
@@ -166,11 +77,6 @@ public class JointServey {
         this.latitude = latitude;
     }
 
-    public JointServey withLatitude(String latitude) {
-        this.latitude = latitude;
-        return this;
-    }
-
     public String getLongitude() {
         return longitude;
     }
@@ -179,178 +85,108 @@ public class JointServey {
         this.longitude = longitude;
     }
 
-    public JointServey withLongitude(String longitude) {
-        this.longitude = longitude;
-        return this;
+    public String getIs_water_source_available() {
+        return is_water_source_available;
     }
 
-    public String getIsWaterSourceAvailable() {
-        return isWaterSourceAvailable;
+    public void setIs_water_source_available(String is_water_source_available) {
+        this.is_water_source_available = is_water_source_available;
     }
 
-    public void setIsWaterSourceAvailable(String isWaterSourceAvailable) {
-        this.isWaterSourceAvailable = isWaterSourceAvailable;
+    public String getType_of_water_source() {
+        return type_of_water_source;
     }
 
-    public JointServey withIsWaterSourceAvailable(String isWaterSourceAvailable) {
-        this.isWaterSourceAvailable = isWaterSourceAvailable;
-        return this;
+    public void setType_of_water_source(String type_of_water_source) {
+        this.type_of_water_source = type_of_water_source;
     }
 
-    public String getTypeOfWaterSource() {
-        return typeOfWaterSource;
+    public String getWater_depth() {
+        return water_depth;
     }
 
-    public void setTypeOfWaterSource(String typeOfWaterSource) {
-        this.typeOfWaterSource = typeOfWaterSource;
+    public void setWater_depth(String water_depth) {
+        this.water_depth = water_depth;
     }
 
-    public JointServey withTypeOfWaterSource(String typeOfWaterSource) {
-        this.typeOfWaterSource = typeOfWaterSource;
-        return this;
+    public String getConstant_water() {
+        return constant_water;
     }
 
-    public String getWaterDepth() {
-        return waterDepth;
+    public void setConstant_water(String constant_water) {
+        this.constant_water = constant_water;
     }
 
-    public void setWaterDepth(String waterDepth) {
-        this.waterDepth = waterDepth;
+    public String getWater_delivery_point() {
+        return water_delivery_point;
     }
 
-    public JointServey withWaterDepth(String waterDepth) {
-        this.waterDepth = waterDepth;
-        return this;
+    public void setWater_delivery_point(String water_delivery_point) {
+        this.water_delivery_point = water_delivery_point;
     }
 
-    public String getConstantWater() {
-        return constantWater;
+    public String getPump_type() {
+        return pump_type;
     }
 
-    public void setConstantWater(String constantWater) {
-        this.constantWater = constantWater;
+    public void setPump_type(String pump_type) {
+        this.pump_type = pump_type;
     }
 
-    public JointServey withConstantWater(String constantWater) {
-        this.constantWater = constantWater;
-        return this;
+    public String getPump_recom_survey() {
+        return pump_recom_survey;
     }
 
-    public String getWaterDeliveryPoint() {
-        return waterDeliveryPoint;
+    public void setPump_recom_survey(String pump_recom_survey) {
+        this.pump_recom_survey = pump_recom_survey;
     }
 
-    public void setWaterDeliveryPoint(String waterDeliveryPoint) {
-        this.waterDeliveryPoint = waterDeliveryPoint;
+    public String getPump_recom_benefits() {
+        return pump_recom_benefits;
     }
 
-    public JointServey withWaterDeliveryPoint(String waterDeliveryPoint) {
-        this.waterDeliveryPoint = waterDeliveryPoint;
-        return this;
+    public void setPump_recom_benefits(String pump_recom_benefits) {
+        this.pump_recom_benefits = pump_recom_benefits;
     }
 
-    public String getPumpType() {
-        return pumpType;
+    public String getIs_pump_electricity() {
+        return is_pump_electricity;
     }
 
-    public void setPumpType(String pumpType) {
-        this.pumpType = pumpType;
+    public void setIs_pump_electricity(String is_pump_electricity) {
+        this.is_pump_electricity = is_pump_electricity;
     }
 
-    public JointServey withPumpType(String pumpType) {
-        this.pumpType = pumpType;
-        return this;
+    public String getIs_solar_pump() {
+        return is_solar_pump;
     }
 
-    public String getPumpRecomSurvey() {
-        return pumpRecomSurvey;
+    public void setIs_solar_pump(String is_solar_pump) {
+        this.is_solar_pump = is_solar_pump;
     }
 
-    public void setPumpRecomSurvey(String pumpRecomSurvey) {
-        this.pumpRecomSurvey = pumpRecomSurvey;
+    public String getIs_shadow_area() {
+        return is_shadow_area;
     }
 
-    public JointServey withPumpRecomSurvey(String pumpRecomSurvey) {
-        this.pumpRecomSurvey = pumpRecomSurvey;
-        return this;
+    public void setIs_shadow_area(String is_shadow_area) {
+        this.is_shadow_area = is_shadow_area;
     }
 
-    public String getPumpRecomBenefits() {
-        return pumpRecomBenefits;
+    public String getIs_mobile_network() {
+        return is_mobile_network;
     }
 
-    public void setPumpRecomBenefits(String pumpRecomBenefits) {
-        this.pumpRecomBenefits = pumpRecomBenefits;
+    public void setIs_mobile_network(String is_mobile_network) {
+        this.is_mobile_network = is_mobile_network;
     }
 
-    public JointServey withPumpRecomBenefits(String pumpRecomBenefits) {
-        this.pumpRecomBenefits = pumpRecomBenefits;
-        return this;
+    public String getSurvey_person() {
+        return survey_person;
     }
 
-    public String getIsPumpElectricity() {
-        return isPumpElectricity;
-    }
-
-    public void setIsPumpElectricity(String isPumpElectricity) {
-        this.isPumpElectricity = isPumpElectricity;
-    }
-
-    public JointServey withIsPumpElectricity(String isPumpElectricity) {
-        this.isPumpElectricity = isPumpElectricity;
-        return this;
-    }
-
-    public String getIsSolarPump() {
-        return isSolarPump;
-    }
-
-    public void setIsSolarPump(String isSolarPump) {
-        this.isSolarPump = isSolarPump;
-    }
-
-    public JointServey withIsSolarPump(String isSolarPump) {
-        this.isSolarPump = isSolarPump;
-        return this;
-    }
-
-    public String getIsShadowArea() {
-        return isShadowArea;
-    }
-
-    public void setIsShadowArea(String isShadowArea) {
-        this.isShadowArea = isShadowArea;
-    }
-
-    public JointServey withIsShadowArea(String isShadowArea) {
-        this.isShadowArea = isShadowArea;
-        return this;
-    }
-
-    public String getIsMobileNetwork() {
-        return isMobileNetwork;
-    }
-
-    public void setIsMobileNetwork(String isMobileNetwork) {
-        this.isMobileNetwork = isMobileNetwork;
-    }
-
-    public JointServey withIsMobileNetwork(String isMobileNetwork) {
-        this.isMobileNetwork = isMobileNetwork;
-        return this;
-    }
-
-    public String getSurveyPerson() {
-        return surveyPerson;
-    }
-
-    public void setSurveyPerson(String surveyPerson) {
-        this.surveyPerson = surveyPerson;
-    }
-
-    public JointServey withSurveyPerson(String surveyPerson) {
-        this.surveyPerson = surveyPerson;
-        return this;
+    public void setSurvey_person(String survey_person) {
+        this.survey_person = survey_person;
     }
 
     public String getRemark() {
@@ -361,113 +197,75 @@ public class JointServey {
         this.remark = remark;
     }
 
-    public JointServey withRemark(String remark) {
-        this.remark = remark;
-        return this;
+    public String getWater_res_image() {
+        return water_res_image;
     }
 
-    public String getWaterResImage() {
-        return waterResImage;
+    public void setWater_res_image(String water_res_image) {
+        this.water_res_image = water_res_image;
     }
 
-    public void setWaterResImage(String waterResImage) {
-        this.waterResImage = waterResImage;
+    public String getLandmark_image() {
+        return landmark_image;
     }
 
-    public JointServey withWaterResImage(String waterResImage) {
-        this.waterResImage = waterResImage;
-        return this;
+    public void setLandmark_image(String landmark_image) {
+        this.landmark_image = landmark_image;
     }
 
-    public String getLandmarkImage() {
-        return landmarkImage;
+    public String getBeneficiary_image() {
+        return beneficiary_image;
     }
 
-    public void setLandmarkImage(String landmarkImage) {
-        this.landmarkImage = landmarkImage;
+    public void setBeneficiary_image(String beneficiary_image) {
+        this.beneficiary_image = beneficiary_image;
     }
 
-    public JointServey withLandmarkImage(String landmarkImage) {
-        this.landmarkImage = landmarkImage;
-        return this;
+    public String getBeneficiary_sign() {
+        return beneficiary_sign;
     }
 
-    public String getBeneficiaryImage() {
-        return beneficiaryImage;
+    public void setBeneficiary_sign(String beneficiary_sign) {
+        this.beneficiary_sign = beneficiary_sign;
     }
 
-    public void setBeneficiaryImage(String beneficiaryImage) {
-        this.beneficiaryImage = beneficiaryImage;
+    public String getSurvey_sign() {
+        return survey_sign;
     }
 
-    public JointServey withBeneficiaryImage(String beneficiaryImage) {
-        this.beneficiaryImage = beneficiaryImage;
-        return this;
+    public void setSurvey_sign(String survey_sign) {
+        this.survey_sign = survey_sign;
     }
 
-    public String getBeneficiarySign() {
-        return beneficiarySign;
-    }
-
-    public void setBeneficiarySign(String beneficiarySign) {
-        this.beneficiarySign = beneficiarySign;
-    }
-
-    public JointServey withBeneficiarySign(String beneficiarySign) {
-        this.beneficiarySign = beneficiarySign;
-        return this;
-    }
-
-    public String getSurveySign() {
-        return surveySign;
-    }
-
-    public void setSurveySign(String surveySign) {
-        this.surveySign = surveySign;
-    }
-
-    public JointServey withSurveySign(String surveySign) {
-        this.surveySign = surveySign;
-        return this;
-    }
-
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public JointServey withStatus(Integer status) {
-        this.status = status;
-        return this;
+    public Date getCreated_at() {
+        return created_at;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public Date getUpdated_at() {
+        return updated_at;
     }
 
-    public JointServey withCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-        return this;
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public int getId() {
+        return id;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setId(int id) {
+        this.id = id;
     }
-
-    public JointServey withUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
 }

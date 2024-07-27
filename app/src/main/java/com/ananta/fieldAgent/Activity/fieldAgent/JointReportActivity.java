@@ -22,6 +22,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -145,14 +146,14 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
                     assert response.body() != null;
                     reportId = String.valueOf(response.body().getJointServey().get(0).getId());
-                    binding.edSurveyorIMEIId.setText(response.body().getJointServey().get(0).getImeiNo());
-                    binding.edConstantWaterLevel.setText(response.body().getJointServey().get(0).getConstantWater());
-                    binding.edSurveyorAlternativeNumber.setText(response.body().getJointServey().get(0).getAlternetMo());
-                    binding.edDepthWaterSource.setText(response.body().getJointServey().get(0).getWaterDepth());
-                    binding.edWaterDeliveryPoint.setText(response.body().getJointServey().get(0).getWaterDeliveryPoint());
+                    binding.edSurveyorIMEIId.setText(response.body().getJointServey().get(0).getImei_no());
+                    binding.edConstantWaterLevel.setText(response.body().getJointServey().get(0).getConstant_water());
+                    binding.edSurveyorAlternativeNumber.setText(response.body().getJointServey().get(0).getAlternet_mo());
+                    binding.edDepthWaterSource.setText(response.body().getJointServey().get(0).getWater_depth());
+                    binding.edWaterDeliveryPoint.setText(response.body().getJointServey().get(0).getWater_delivery_point());
                     binding.edRemark.setText(response.body().getJointServey().get(0).getRemark());
 
-                    selectedWater = response.body().getJointServey().get(0).getIsWaterSourceAvailable();
+                    selectedWater = response.body().getJointServey().get(0).getIs_water_source_available();
 
                     if (selectedWater.equals("Yes")){
                         binding.rbYesWaterBtn.setChecked(true);
@@ -160,43 +161,43 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         binding.rbNoWaterBtn.setChecked(true);
                     }
 
-                    selectedPumpType = response.body().getJointServey().get(0).getPumpType();
+                    selectedPumpType = response.body().getJointServey().get(0).getPump_type();
                     if (selectedPumpType.equals("Submarsible")){
                         binding.rbSubmarsible.setChecked(true);
                     }else {
                         binding.rbSurface.setChecked(true);
                     }
 
-                    selectAgPump = response.body().getJointServey().get(0).getIsPumpElectricity();
+                    selectAgPump = response.body().getJointServey().get(0).getIs_pump_electricity();
                     if (selectAgPump.equals("Yes")){
                         binding.rbAgYes.setChecked(true);
                     }else {
                         binding.rbAgNo.setChecked(true);
                     }
 
-                    selectGovt = response.body().getJointServey().get(0).getIsPumpElectricity();
+                    selectGovt = response.body().getJointServey().get(0).getIs_pump_electricity();
                     if (selectGovt.equals("Yes")){
                         binding.rbSolarYes.setChecked(true);
                     }else {
                         binding.rbSolarNo.setChecked(true);
                     }
 
-                    selectShaow = response.body().getJointServey().get(0).getIsShadowArea();
+                    selectShaow = response.body().getJointServey().get(0).getIs_shadow_area();
                     if (selectShaow.equals("Yes")){
                         binding.rbShadowYes.setChecked(true);
                     }else {
                         binding.rbShadowNo.setChecked(true);
                     }
 
-                    networkSelect =  response.body().getJointServey().get(0).getIsMobileNetwork();
+                    networkSelect =  response.body().getJointServey().get(0).getIs_mobile_network();
                     if (networkSelect.equals("Yes")){
                         binding.rbNetworkYes.setChecked(true);
                     }else {
                         binding.rbNetworkNo.setChecked(true);
                     }
 
-                    String seperate = response.body().getJointServey().get(0).getTypeOfWaterSource();
-                    Log.d("check====>","="+response.body().getJointServey().get(0).getTypeOfWaterSource());
+                    String seperate = response.body().getJointServey().get(0).getType_of_water_source();
+                    Log.d("check====>","="+response.body().getJointServey().get(0).getType_of_water_source());
                     String[] items = seperate.split(",");
                     for (String item : items)
                     {
@@ -210,7 +211,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
 
-                    String pumpSurveyor = response.body().getJointServey().get(0).getPumpRecomSurvey();
+                    String pumpSurveyor = response.body().getJointServey().get(0).getPump_recom_survey();
                     String[] pumpHead = pumpSurveyor.split(",");
                     for (String pump : pumpHead)
                     {
@@ -226,7 +227,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
 
-                    String pumpBeneficiary = response.body().getJointServey().get(0).getPumpRecomBenefits();
+                    String pumpBeneficiary = response.body().getJointServey().get(0).getPump_recom_benefits();
                     String[] Beneficiary = pumpBeneficiary.split(",");
                     for (String benefit : Beneficiary)
                     {
@@ -242,7 +243,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
 
-                    String persons = response.body().getJointServey().get(0).getSurveyPerson();
+                    String persons = response.body().getJointServey().get(0).getSurvey_person();
                     String[] person = persons.split(",");
                     for (String per : person)
                     {
@@ -259,9 +260,9 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
 
 
-                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getWaterResImage()).into(binding.ivWaterPhoto);
-                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getLandmarkImage()).into(binding.ivBeneficiaryPhotoJoint);
-                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getBeneficiaryImage()).into(binding.ivLandmarkPhoto);
+                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getWater_res_image()).into(binding.ivWaterPhoto);
+                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getLandmark_image()).into(binding.ivBeneficiaryPhotoJoint);
+                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getBeneficiary_image()).into(binding.ivLandmarkPhoto);
 
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -386,7 +387,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         Call<JointSurveyorModel> call = apiInterface.addJointSurveyorData(hashMap,"Bearer "+preference.getToken());
         call.enqueue(new Callback<JointSurveyorModel>() {
             @Override
-            public void onResponse(Call<JointSurveyorModel> call, Response<JointSurveyorModel> response) {
+            public void onResponse(@NonNull Call<JointSurveyorModel> call, @NonNull Response<JointSurveyorModel> response) {
 
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
@@ -400,7 +401,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JointReportActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -844,7 +845,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer "+preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -889,7 +890,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer "+preference.getToken() );
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {

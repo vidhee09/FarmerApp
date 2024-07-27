@@ -58,7 +58,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private static final int GALLERY = 101;
     private static final int CAMERA = 102;
     ActivityAddRequestBinding binding;
-    String path = "", claim = "", reason = "", farmer_name="", farmer_id="" ;
+    String path = "", claim = "", reason = "", farmer_name="", farmer_id="", Imagepath ;
     ApiInterface apiInterface;
     int photos;
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -82,18 +82,19 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             return insets;
         });
 
-        if (preference.getFarmerName() != null){
+        if (preference.getFarmerName().isEmpty() || preference.getFarmerName() == null){
+            Log.d("name====>","else="+ preference.getFarmerName());
+            binding.rlFarmerName.setVisibility(View.VISIBLE);
+            binding.tvFarmerName.setVisibility(View.GONE);
+            getAllFarmerData();
+
+        }else {
+            Log.d("name====>","="+ preference.getFarmerName());
             binding.rlFarmerName.setVisibility(View.GONE);
             binding.tvFarmerName.setVisibility(View.VISIBLE);
             binding.tvFarmerName.setText(preference.getFarmerName());
-        }else {
-            binding.rlFarmerName.setVisibility(View.VISIBLE);
-            binding.tvFarmerName.setVisibility(View.GONE);
 //            binding.tvFarmerName.setText(preference.getFarmerName());
-            getAllFarmerData();
         }
-
-        Const.AGENT_NAME = preference.getAgentName();
 
         loadData();
 
@@ -144,7 +145,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void loadData() {
-
+//        Const.AGENT_NAME = preference.getAgentName();
         clickListener();
         datePick();
         getInsuranceReasonData();
@@ -238,7 +239,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -317,6 +317,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         binding.pbProgressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("agent_id",Const.AGENT_ID);
 
         Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap,"Bearer "+preference.getToken());
         call.enqueue(new Callback<AllFarmerModel>() {
@@ -331,8 +332,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     for (int i = 0; i < allFarmersList.size(); i++) {
                         list.add(allFarmersList.get(i).getName());
                         ids.add(allFarmersList.get(i).getId());
-
                     }
+
                     setFarmerList();
 
                 } else {
@@ -383,11 +384,13 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
+
         if (preference.getFarmerLoginId() != null){
             hashMap.put("farmer_id", preference.getFarmerLoginId());
-        }else {
-            hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
         }
+//        else {
+            hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
+//        }
         hashMap.put("request_type", binding.spSpinner.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequest.getSelectedItem().toString());
         if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")){
@@ -395,7 +398,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         }else {
             hashMap.put("description", binding.edReqDescription.getText().toString());
         }
-        hashMap.put("image_name", path);
+        hashMap.put("image_name", Imagepath);
         hashMap.put("reason", reason);
         hashMap.put("incident_date", binding.tvRequestDate.getText().toString());
         hashMap.put("insaurance_claim", binding.spSpinnerInsuranceClaim.getSelectedItem().toString());
@@ -477,12 +480,12 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         uploadImage(contentURI, 1);
-                        path = String.valueOf(contentURI);
+//                        path = String.valueOf(contentURI);
                         binding.ivRequestPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         uploadImage(contentURI, 2);
-                        path = String.valueOf(contentURI);
+//                        path = String.valueOf(contentURI);
                         binding.ivInsurancePhoto.setImageBitmap(bitmap);
                     }
 
@@ -498,7 +501,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
             Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
 
-            path = String.valueOf(tempUri);
+//            path = String.valueOf(tempUri);
 
             saveImage(thumbnail);
             Log.d("path===>", "=2=" + path);
@@ -558,7 +561,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer "+preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -570,9 +573,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     imageName[0] = imageModel.getFileUploadData().getImage_name();
                     Log.w("ImageName", imageName[0]);
                     if (fromWhere == 1) {
-                        path = imageModel.getFileUploadData().getImage_name();
+                        Imagepath = imageModel.getFileUploadData().getImage_name();
                     } else {
-                        path = imageModel.getFileUploadData().getImage_name();
+                        Imagepath = imageModel.getFileUploadData().getImage_name();
                     }
                 } else {
                     Toast.makeText(AddRequestActivity.this, "image not uploaded", Toast.LENGTH_SHORT).show();

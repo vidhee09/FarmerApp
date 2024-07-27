@@ -209,8 +209,9 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         Call<SiteReportModel> call = apiInterface.addSiteInspection(hashMap, "Bearer "+preference.getToken());
         call.enqueue(new Callback<SiteReportModel>() {
             @Override
-            public void onResponse(Call<SiteReportModel> call, Response<SiteReportModel> response) {
-                if (response.body() != null) {
+            public void onResponse(Call<SiteReportModel> call, @NonNull Response<SiteReportModel> response) {
+
+                if (response.body() != null){
                     if (response.isSuccessful()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -224,10 +225,13 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
+
+                }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
+
             }
 
             @Override
@@ -249,6 +253,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         call.enqueue(new Callback<GetSiteData>() {
             @Override
             public void onResponse(Call<GetSiteData> call, Response<GetSiteData> response) {
+
                 if (response.isSuccessful()) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     assert response.body() != null;
@@ -279,7 +284,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.ivCameraPump) {
-            checkAndRequestPermissions();
+//            checkAndRequestPermissions();
             showPictureDialog(1);
         } else if (id == R.id.ivBenificiaryCameraSite) {
             showPictureDialog(2);
@@ -436,7 +441,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 try {
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        Imagepath = String.valueOf(contentURI);
                         Log.w("Imagepath==sdgvsdg==", "photo 1" + Imagepath);
                         uploadImage(contentURI, 1);
                         Log.w("siteins", "photo 1" + Imagepath);
@@ -588,10 +592,10 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        Log.w("Imagepath==sdgvsdg==", "img" + file.getName());
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getPath(), requestFile);
+        Log.w("Imagepath==sdgvsdg==", "img==" + file.getName());
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer "+preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -610,7 +614,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                         Log.d("ImageName==", baneficiarypath);
                         baneficiarypath = imageModel.getFileUploadData().getImage_name();
                     }
-
                 } else {
                     Log.d("ImageName==","else"+ Imagepath);
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -637,7 +640,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer "+preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {

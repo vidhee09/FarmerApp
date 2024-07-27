@@ -184,7 +184,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("farmer_id", Const.FARMER_ID);
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
-        if (!Imagepath.isEmpty()){
+        if ( Imagepath == null || !Imagepath.isEmpty()){
             hashMap.put("image", Imagepath);
         }
         hashMap.put("date", binding.tvDeliveryDate.getText().toString());
@@ -223,7 +223,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("farmer_id", Const.FARMER_ID);
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
-        hashMap.put("image", Imagepath);
+        hashMap.put("image_name", Imagepath);
         hashMap.put("date", binding.tvDeliveryDate.getText().toString());
         hashMap.put("sign", signatureName);
         hashMap.put("latitude", String.valueOf(latitude));
@@ -526,7 +526,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture","Bearer "+preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -567,7 +567,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer "+preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {

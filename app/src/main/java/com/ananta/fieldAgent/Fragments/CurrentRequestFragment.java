@@ -117,7 +117,7 @@ public class CurrentRequestFragment extends Fragment {
         ArrayList<CurrentServiceDatum> filteredlist = new ArrayList<>();
 
         for (CurrentServiceDatum item : currentReqList) {
-            if (item.getFarmer_name().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getRequest_type().toLowerCase().contains(text.toLowerCase())) {
                 filteredlist.add(item);
             }
         }

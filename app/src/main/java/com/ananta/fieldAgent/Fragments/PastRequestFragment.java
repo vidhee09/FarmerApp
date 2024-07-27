@@ -110,7 +110,7 @@ public class PastRequestFragment extends Fragment {
         ArrayList<PastServiceDatum> filteredlist = new ArrayList<>();
 
         for (PastServiceDatum item : pastReqModelArrayList) {
-            if (item.getFarmer_name().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getService_request().toLowerCase().contains(text.toLowerCase())) {
                 filteredlist.add(item);
             }
         }

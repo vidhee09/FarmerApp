@@ -3,95 +3,53 @@ package com.ananta.fieldAgent.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Data {
 
-    @SerializedName("surveyor_name")
-    @Expose
-    private String surveyorName;
-    @SerializedName("present_person_name")
-    @Expose
-    private String presentPersonName;
-    @SerializedName("farmer_id")
-    @Expose
-    private Integer farmerId;
-    @SerializedName("agent_id")
-    @Expose
-    private Integer agentId;
-    @SerializedName("image")
-    @Expose
-    private String image;
-    @SerializedName("sign")
-    @Expose
-    private String sign;
-    @SerializedName("latitude")
-    @Expose
-    private Double latitude;
-    @SerializedName("longitude")
-    @Expose
-    private Double longitude;
-    @SerializedName("status")
-    @Expose
-    private Integer status;
-    @SerializedName("created_at")
-    @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
-    @Expose
-    private String updatedAt;
-    @SerializedName("id")
-    @Expose
-    private Integer id;
+    public String surveyor_name;
+    public String present_person_name;
+    public int farmer_id;
+    public int agent_id;
+    public String image;
+    public String sign;
+    public double latitude;
+    public double longitude;
+    public int status;
+    public Date created_at;
+    public Date updated_at;
+    public int id;
 
-    public String getSurveyorName() {
-        return surveyorName;
+    public String getSurveyor_name() {
+        return surveyor_name;
     }
 
-    public void setSurveyorName(String surveyorName) {
-        this.surveyorName = surveyorName;
+    public void setSurveyor_name(String surveyor_name) {
+        this.surveyor_name = surveyor_name;
     }
 
-    public Data withSurveyorName(String surveyorName) {
-        this.surveyorName = surveyorName;
-        return this;
+    public String getPresent_person_name() {
+        return present_person_name;
     }
 
-    public String getPresentPersonName() {
-        return presentPersonName;
+    public void setPresent_person_name(String present_person_name) {
+        this.present_person_name = present_person_name;
     }
 
-    public void setPresentPersonName(String presentPersonName) {
-        this.presentPersonName = presentPersonName;
+    public int getFarmer_id() {
+        return farmer_id;
     }
 
-    public Data withPresentPersonName(String presentPersonName) {
-        this.presentPersonName = presentPersonName;
-        return this;
+    public void setFarmer_id(int farmer_id) {
+        this.farmer_id = farmer_id;
     }
 
-    public Integer getFarmerId() {
-        return farmerId;
+    public int getAgent_id() {
+        return agent_id;
     }
 
-    public void setFarmerId(Integer farmerId) {
-        this.farmerId = farmerId;
-    }
-
-    public Data withFarmerId(Integer farmerId) {
-        this.farmerId = farmerId;
-        return this;
-    }
-
-    public Integer getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Integer agentId) {
-        this.agentId = agentId;
-    }
-
-    public Data withAgentId(Integer agentId) {
-        this.agentId = agentId;
-        return this;
+    public void setAgent_id(int agent_id) {
+        this.agent_id = agent_id;
     }
 
     public String getImage() {
@@ -102,11 +60,6 @@ public class Data {
         this.image = image;
     }
 
-    public Data withImage(String image) {
-        this.image = image;
-        return this;
-    }
-
     public String getSign() {
         return sign;
     }
@@ -115,87 +68,51 @@ public class Data {
         this.sign = sign;
     }
 
-    public Data withSign(String sign) {
-        this.sign = sign;
-        return this;
-    }
-
-    public Double getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public Data withLatitude(Double latitude) {
-        this.latitude = latitude;
-        return this;
-    }
-
-    public Double getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public Data withLongitude(Double longitude) {
-        this.longitude = longitude;
-        return this;
-    }
-
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Data withStatus(Integer status) {
-        this.status = status;
-        return this;
+    public Date getCreated_at() {
+        return created_at;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public Date getUpdated_at() {
+        return updated_at;
     }
 
-    public Data withCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-        return this;
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Data withUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
-
-    public Data withId(Integer id) {
-        this.id = id;
-        return this;
-    }
-
 }
