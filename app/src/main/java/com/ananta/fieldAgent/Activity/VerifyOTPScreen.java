@@ -65,10 +65,8 @@ public class VerifyOTPScreen extends AppCompatActivity {
         binding.btnOTPVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 loginWithOtp(OTP, binding.pinView);
                 Log.d("Otp===", "=otp==" + OTP);
-
             }
         });
 
@@ -77,7 +75,6 @@ public class VerifyOTPScreen extends AppCompatActivity {
             binding.tvResend.setVisibility(View.GONE);
             binding.pinView.getText().clear();
 
-//            callResendApi();
         });
 
         countDownTimerFun();
@@ -98,7 +95,8 @@ public class VerifyOTPScreen extends AppCompatActivity {
         call.enqueue(new Callback<OtpResponseModel>() {
             @Override
             public void onResponse(@NonNull Call<OtpResponseModel> call, @NonNull Response<OtpResponseModel> response) {
-                if (response.body()!=null) {
+
+                if (response.body() != null) {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     pinView.getText().clear();
                     if (response.body().getType().equals("agent")) {
@@ -132,18 +130,15 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         startActivity(intent3);
                         finish();
                     }
-
-                }
-                else {
+                } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(VerifyOTPScreen.this, "" + response.body().isSuccess(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerifyOTPScreen.this, "server not responding right now", Toast.LENGTH_SHORT).show();
                 }
             }
 
-
             @Override
             public void onFailure(Call<OtpResponseModel> call, Throwable t) {
-                Toast.makeText(VerifyOTPScreen.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VerifyOTPScreen.this, "server not responding", Toast.LENGTH_SHORT).show();
             }
 
         });

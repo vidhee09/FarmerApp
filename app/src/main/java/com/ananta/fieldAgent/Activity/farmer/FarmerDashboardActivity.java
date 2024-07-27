@@ -79,9 +79,8 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             }
         });
 
-
         binding.ivAddReqImage.setOnClickListener(v -> {
-            Intent intent = new Intent(FarmerDashboardActivity.this, AddRequestActivity.class);
+            Intent intent = new Intent(FarmerDashboardActivity.this, AddNewRequestFarmer.class);
             startActivity(intent);
 
         });
@@ -131,14 +130,12 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
-//                        Log.d("farmerData===","=else="+response.body().isSuccess());
                         Toast.makeText(FarmerDashboardActivity.this, "No Data Found"+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
-//                    Log.d("farmerData===","nll="+response.body().isSuccess());
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(FarmerDashboardActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FarmerDashboardActivity.this, "service not available", Toast.LENGTH_SHORT).show();
                 }
             }
 

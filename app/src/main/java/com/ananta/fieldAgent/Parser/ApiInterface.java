@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Parser;
 
 import com.ananta.fieldAgent.Models.AddServiceModel;
+import com.ananta.fieldAgent.Models.FarmerServiceModel;
 import com.ananta.fieldAgent.Models.AllFarmerModel;
 import com.ananta.fieldAgent.Models.CheckStatusModel;
 import com.ananta.fieldAgent.Models.CurrentReqModel;
@@ -47,8 +48,13 @@ public interface ApiInterface {
 
     /*--- Get service request Data  ---*/
     @Headers("Content-Type:application/json;charset=UTF-8")
-    @POST("service-requests")
+    @POST("agent/service-requests")
     Call<AddServiceModel> getAddServiceRequest(@Body HashMap<String, String> serviceRequest, @Header("Authorization") String auth);
+
+    /*--- Get farmer service request Data  ---*/
+    @Headers("Content-Type:application/json;charset=UTF-8")
+    @POST("farmer/service-requests")
+    Call<FarmerServiceModel> addFarmerServiceRequest(@Body HashMap<String, String> farmerServiceRequest, @Header("Authorization") String auth);
 
     /*--- Get delivery request Data  ---*/
     @Headers("Content-Type:application/json;charset=UTF-8")
@@ -76,6 +82,10 @@ public interface ApiInterface {
     @Multipart
     @POST("upload-image")
     Call<ImageModel> uploadImage(@Part MultipartBody.Part image, @Part("type") String type, @Header("Authorization") String auth );
+
+    @Multipart
+    @POST("farmer/upload-image")
+    Call<ImageModel> farmerUploadImage(@Part MultipartBody.Part image, @Part("type") String type, @Header("Authorization") String auth );
 
     /*--- Get all farmer Data  ---*/
     @Headers("Content-Type:application/json;charset=UTF-8")

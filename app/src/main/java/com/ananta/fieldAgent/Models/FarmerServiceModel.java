@@ -1,11 +1,10 @@
 package com.ananta.fieldAgent.Models;
 
-
-public class AddServiceModel {
+public class FarmerServiceModel {
 
     public boolean success;
     public String message;
-    public Agentservice agentservice;
+    public Farmerservice farmerservice;
 
     public boolean isSuccess() {
         return success;
@@ -23,11 +22,11 @@ public class AddServiceModel {
         this.message = message;
     }
 
-    public Agentservice getAgentservice() {
-        return agentservice;
+    public Farmerservice getFarmerservice() {
+        return farmerservice;
     }
 
-    public void setAgentservice(Agentservice agentservice) {
-        this.agentservice = agentservice;
+    public void setFarmerservice(Farmerservice farmerservice) {
+        this.farmerservice = farmerservice;
     }
 }

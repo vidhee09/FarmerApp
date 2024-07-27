@@ -74,7 +74,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     int imagePhoto;
     private FusedLocationProviderClient fusedLocationClient;
 
-
     double latitude, longitude;
     ArrayList<String> panelIdList = new ArrayList<>();
     private int SpannedLength = 0, chipLength = 4;
@@ -87,6 +86,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         binding = ActivityPumpInstallationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         preference = Preference.getInstance(PumpInstallationActivity.this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -128,9 +128,9 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                     binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
                     binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
 
-                    String panel = response.body().getPumpInstallation().get(0).getPanelId();
-                    String[] panels = panel.split(",");
-                    Log.d("chipp-===panel===", "=" + panels);
+//                    String panel = response.body().getPumpInstallation().get(0).getPanelId();
+//                    String[] panels = panel.split(",");
+//                    Log.d("chipp-===panel===", "=" + panels);
                     chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
                     binding.chipGroup.addView(chip);
                     Log.d("chipp-======", "=" + chip);
@@ -392,7 +392,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             public void onResponse(Call<PumpInstallModel> call, Response<PumpInstallModel> response) {
 
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
@@ -446,15 +446,15 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 if (response.body() != null){
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(PumpInstallationActivity.this,"" +response.body().isSuccess(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PumpInstallationActivity.this,"" +response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(PumpInstallationActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PumpInstallationActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(PumpInstallationActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PumpInstallationActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
