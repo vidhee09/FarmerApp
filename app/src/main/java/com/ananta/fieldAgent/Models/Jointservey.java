@@ -1,11 +1,8 @@
 package com.ananta.fieldAgent.Models;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Date;
 
-public class JointServey {
+public class Jointservey {
 
     public String agent_id;
     public String farmer_id;
@@ -36,6 +33,7 @@ public class JointServey {
     public Date created_at;
     public Date updated_at;
     public int id;
+
 
     public String getAgent_id() {
         return agent_id;

@@ -29,16 +29,15 @@ public class AllFarmerModel {
 
     ArrayList<AllFarmerModel> farmer = new ArrayList<>();
 
-    farmer farmers;
+    Farmer farmers;
 
-    public com.ananta.fieldAgent.Models.farmer getFarmers() {
+    public Farmer getFarmers() {
         return farmers;
     }
 
-    public void setFarmers(com.ananta.fieldAgent.Models.farmer farmers) {
+    public void setFarmers(Farmer farmers) {
         this.farmers = farmers;
     }
-
 
     public ArrayList<AllFarmerModel> getFarmer() {
         return farmer;

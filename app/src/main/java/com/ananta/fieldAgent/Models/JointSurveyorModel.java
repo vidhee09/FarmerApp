@@ -1,9 +1,10 @@
 package com.ananta.fieldAgent.Models;
 
 public class JointSurveyorModel {
+
     public boolean success;
     public String message;
-    public JointServey jointservey;
+    public Jointservey jointservey;
 
     public boolean isSuccess() {
         return success;
@@ -21,11 +22,11 @@ public class JointSurveyorModel {
         this.message = message;
     }
 
-    public JointServey getJointservey() {
+    public Jointservey getJointservey() {
         return jointservey;
     }
 
-    public void setJointservey(JointServey jointservey) {
+    public void setJointservey(Jointservey jointservey) {
         this.jointservey = jointservey;
     }
 }

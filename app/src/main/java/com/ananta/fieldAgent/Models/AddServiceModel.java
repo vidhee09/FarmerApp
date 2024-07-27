@@ -1,22 +1,25 @@
 package com.ananta.fieldAgent.Models;
 
+import java.util.ArrayList;
+
 public class AddServiceModel {
 
-    String success,message;
+    public boolean success;
+    public ArrayList<Farmer> farmer;
 
-    public String getSuccess() {
+    public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 
-    public String getMessage() {
-        return message;
+    public ArrayList<Farmer> getFarmer() {
+        return farmer;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setFarmer(ArrayList<Farmer> farmer) {
+        this.farmer = farmer;
     }
 }

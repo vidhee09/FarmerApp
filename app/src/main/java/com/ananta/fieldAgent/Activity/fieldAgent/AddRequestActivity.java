@@ -93,7 +93,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             binding.rlFarmerName.setVisibility(View.GONE);
             binding.tvFarmerName.setVisibility(View.VISIBLE);
             binding.tvFarmerName.setText(preference.getFarmerName());
-//            binding.tvFarmerName.setText(preference.getFarmerName());
+//          binding.tvFarmerName.setText(preference.getFarmerName());
         }
 
         loadData();
@@ -145,7 +145,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void loadData() {
-//        Const.AGENT_NAME = preference.getAgentName();
+//      Const.AGENT_NAME = preference.getAgentName();
         clickListener();
         datePick();
         getInsuranceReasonData();
@@ -413,7 +413,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                         finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(AddRequestActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddRequestActivity.this, ""+response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
