@@ -2,6 +2,7 @@ package com.ananta.fieldAgent.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -24,10 +25,12 @@ import com.ananta.fieldAgent.Adapters.ServiceAdapter;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.CurrentRequestFragment;
 import com.ananta.fieldAgent.Fragments.PastRequestFragment;
+import com.ananta.fieldAgent.Models.CurrentReqModel;
 import com.ananta.fieldAgent.Models.ServiceModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityServiceBinding;
@@ -44,7 +47,8 @@ public class ServiceActivity extends AppCompatActivity {
 
     ActivityServiceBinding binding;
     TabFragmentAdapter adapter;
-
+    ApiInterface apiInterface;
+    Preference preference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
@@ -58,11 +62,7 @@ public class ServiceActivity extends AppCompatActivity {
             return insets;
         });
 
-        adapter = new TabFragmentAdapter(getSupportFragmentManager());
-        adapter.addFragment(CurrentRequestFragment.newInstance(), "Current Request");
-        adapter.addFragment(PastRequestFragment.newInstance(), "Past Request");
-        binding.vpViewPager.setAdapter(adapter);
-        binding.tbTabLayout.setupWithViewPager(binding.vpViewPager);
+        preference = Preference.getInstance(ServiceActivity.this);
 
         binding.vpViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -95,6 +95,73 @@ public class ServiceActivity extends AppCompatActivity {
         });
 
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getCurrentRequestData();
+
+    }
+
+    public void getCurrentRequestData() {
+
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("id", Const.AGENT_ID);
+
+        Call<CurrentReqModel> call = apiInterface.getCurrentRequest(hashMap ,"Bearer "+preference.getToken());
+
+        call.enqueue(new Callback<CurrentReqModel>() {
+            @Override
+            public void onResponse(@NonNull Call<CurrentReqModel> call, @NonNull Response<CurrentReqModel> response) {
+
+                Log.d("response===","=current"+response.code());
+                if (response.body() != null){
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        adapter = new TabFragmentAdapter(getSupportFragmentManager());
+                        adapter.addFragment(new CurrentRequestFragment(response.body().getCurrent_service_data()), "Current Request");
+                        adapter.addFragment(new PastRequestFragment(response.body().getPastServiceData()), "Past Request");
+                        binding.vpViewPager.setAdapter(adapter);
+                        binding.tbTabLayout.setupWithViewPager(binding.vpViewPager);
+
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(ServiceActivity.this, "Request not available", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(ServiceActivity.this, "Request not available", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CurrentReqModel> call, Throwable t) {
+//                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(ServiceActivity.this, " "+t.getMessage(), Toast.LENGTH_SHORT).show();
+//                binding.pbProgressBar.setVisibility(View.GONE);
+            }
+        });
+
+        /*binding.svSearchViewCurrent.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });*/
+    }
+
 
     @Override
     public void onBackPressed() {

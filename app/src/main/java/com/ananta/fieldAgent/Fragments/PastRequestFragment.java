@@ -34,73 +34,15 @@ public class PastRequestFragment extends Fragment {
     PastReqAdapter adapter;
     ArrayList<PastServiceDatum> pastReqModelArrayList = new ArrayList<>();
 
-    ApiInterface apiInterface;
-    Preference preference;
 
-    public static Fragment newInstance() {
-        return new PastRequestFragment();
+    public PastRequestFragment(ArrayList<PastServiceDatum> pastReqModelArrayList) {
+        this.pastReqModelArrayList = pastReqModelArrayList;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPastRequestBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-
-        preference = Preference.getInstance(getActivity());
-        getPastRequestData();
-        return view;
-    }
-
-    public void bindRcv() {
-
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        binding.rcvPastReqView.setLayoutManager(manager);
-
-        adapter = new PastReqAdapter(getActivity(), pastReqModelArrayList);
-        binding.rcvPastReqView.setAdapter(adapter);
-
-        adapter.notifyDataSetChanged();
-    }
-
-    public void getPastRequestData() {
-
-        binding.pbProgressBar.setVisibility(View.VISIBLE);
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("id", Const.AGENT_ID);
-
-        Call<CurrentReqModel> call = apiInterface.getPastRequest(hashMap, "Bearer " + preference.getToken());
-
-        call.enqueue(new Callback<CurrentReqModel>() {
-            @Override
-            public void onResponse(Call<CurrentReqModel> call, Response<CurrentReqModel> response) {
-
-                Log.d("response====", "===code=" + response.code());
-                if (response.body() != null) {
-                    if (response.body().getSuccess()) {
-                        binding.pbProgressBar.setVisibility(View.GONE);
-                        pastReqModelArrayList.addAll(response.body().getPastServiceData());
-                        bindRcv();
-
-                    } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(), "Request not available", Toast.LENGTH_SHORT).show();
-                        binding.pbProgressBar.setVisibility(View.GONE);
-                    }
-                } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), "Request not available", Toast.LENGTH_SHORT).show();
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CurrentReqModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-            }
-        });
 
         binding.svSearchViewPast.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -114,8 +56,30 @@ public class PastRequestFragment extends Fragment {
                 return false;
             }
         });
-
+        return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bindRcv();
+    }
+
+    public void bindRcv() {
+        if (pastReqModelArrayList.isEmpty()){
+            binding.llData.setVisibility(View.GONE);
+            binding.rlNoData.setVisibility(View.VISIBLE);
+        }
+        else{
+            binding.llData.setVisibility(View.VISIBLE);
+            binding.rlNoData.setVisibility(View.GONE);
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            binding.rcvPastReqView.setLayoutManager(manager);
+            adapter = new PastReqAdapter(getActivity(), pastReqModelArrayList);
+            binding.rcvPastReqView.setAdapter(adapter);
+        }
+    }
+
 
     private void filter(String text) {
         ArrayList<PastServiceDatum> filteredlist = new ArrayList<>();

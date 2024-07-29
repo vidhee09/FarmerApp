@@ -132,6 +132,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 //                    String panel = response.body().getPumpInstallation().get(0).getPanelId();
 //                    String[] panels = panel.split(",");
 //                    Log.d("chipp-===panel===", "=" + panels);
+
                         chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
                         binding.chipGroup.addView(chip);
                         Log.d("chipp-======", "=" + chip);
@@ -535,13 +536,14 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         Log.d("chipgroup====", "=" + countChipsInChipGroup(binding.chipGroup));
 
         /*  if remove chip   */
-       /* chip.setCloseIconVisible(true);
+
+        chip.setCloseIconVisible(true);
         chip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.chipGroup.removeView(chip);
             }
-        });*/
+        });
 
     }
 

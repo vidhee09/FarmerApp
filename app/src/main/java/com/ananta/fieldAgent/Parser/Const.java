@@ -16,7 +16,8 @@ public class Const {
     public static String LOGIN_FARMER_ID = "";
 
 
-    public static String IMAGE_URL = "https://farmer.idglock.com/public/images/uploads/";
+//    public static String IMAGE_URL = "https://farmer.idglock.com/public/images/uploads/";
+    public static String IMAGE_URL = "http://192.168.31.145:8000/api/images/uploads/";
 
 
 }

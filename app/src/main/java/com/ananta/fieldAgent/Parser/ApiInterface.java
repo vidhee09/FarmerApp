@@ -49,7 +49,7 @@ public interface ApiInterface {
     /*--- Get service request Data  ---*/
     @Headers("Content-Type:application/json;charset=UTF-8")
     @POST("agent/service-requests")
-    Call<AddServiceModel> getAddServiceRequest(@Body HashMap<String, String> serviceRequest, @Header("Authorization") String auth);
+    Call<AddServiceModel> addServiceRequest(@Body HashMap<String, String> serviceRequest, @Header("Authorization") String auth);
 
     /*--- Get farmer service request Data  ---*/
     @Headers("Content-Type:application/json;charset=UTF-8")
@@ -63,7 +63,7 @@ public interface ApiInterface {
 
     /*--- Get site inspection request Data  ---*/
     @Headers("Content-Type:application/json;charset=UTF-8")
-    @POST("site-requests")
+    @POST("agent/site-requests")
     Call<SiteReportModel> addSiteInspection(@Body HashMap<String, String> site,  @Header("Authorization") String auth);
 
     /*--- Get Pump installation Data  ---*/

@@ -6,6 +6,7 @@
     tools:context="com.ananta.fieldAgent.Fragments.CurrentRequestFragment">
 
     <RelativeLayout
+        android:id="@+id/rlData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -42,5 +43,30 @@
             android:visibility="gone" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rlNoData"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivNoData"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:src="@drawable/no_data"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivNoData"
+            android:textColor="@color/appColor"
+            android:text="No Data Found"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_20ssp"/>
+    </RelativeLayout>
 
 </FrameLayout>

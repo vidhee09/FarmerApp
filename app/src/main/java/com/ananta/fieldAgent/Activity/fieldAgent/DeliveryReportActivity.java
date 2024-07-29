@@ -126,7 +126,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             @Override
             public void onResponse(Call<GetDeliveryData> call, Response<GetDeliveryData> response) {
 
-                if (response.body() != null){
+                if (response.body() != null) {
                     if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
 
@@ -139,12 +139,13 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
                     }
-                }else {
+                } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
+
             @Override
             public void onFailure(Call<GetDeliveryData> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
@@ -177,12 +178,37 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         } else if (binding.tvAddressDelivery.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvErrorAddress.setVisibility(View.VISIBLE);
-        } /*else if (signatureName.isEmpty()) {
+        } else if (signatureName.isEmpty()) {
             isValid = false;
             binding.tvErrorAddress.setVisibility(View.VISIBLE);
             binding.tvErrorAddress.setText("please add signature");
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
-        }*/
+        } else if (Imagepath == null || Imagepath.isEmpty()) {
+            isValid = false;
+            binding.tvErrorAddress.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "please Select Image", Toast.LENGTH_SHORT).show();
+        }
+        return isValid;
+    }
+
+    /*  -- update report validation --     */
+    public boolean updateValidation() {
+        boolean isValid = true;
+        if (binding.edSurveyorNameDelivery.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.tvErrorSurveyorName.setVisibility(View.VISIBLE);
+        } else if (binding.edPresentPersonNameDelivery.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.tvErrorPresentPersonName.setVisibility(View.VISIBLE);
+        } else if (binding.tvAddressDelivery.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.tvErrorAddress.setVisibility(View.VISIBLE);
+        } else if (signatureName.isEmpty()) {
+            isValid = false;
+            binding.tvErrorAddress.setVisibility(View.VISIBLE);
+            binding.tvErrorAddress.setText("please add signature");
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
+        }
         return isValid;
     }
 
@@ -476,14 +502,18 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         if (id == R.id.ivMaterialCamera) {
             showPictureDialog();
         } else if (id == R.id.llDeliverySubmit) {
-            if (validation()) {
-                if (delivery_report.equals("0")) {
+            if (delivery_report.equals("0")) {
+                if (validation()) {
                     addDeliveryReportData();
                 } else {
-                    updateSiteReport(reportId);
+                    Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                if (updateValidation()) {
+                    updateSiteReport(reportId);
+                } else {
+                    Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                }
             }
         } else if (id == R.id.ivBackPress) {
             onBackPressed();

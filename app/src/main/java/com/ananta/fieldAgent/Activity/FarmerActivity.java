@@ -135,6 +135,7 @@ public class FarmerActivity extends AppCompatActivity {
         call.enqueue(new Callback<FarmerModel>() {
             @Override
             public void onResponse(@NonNull Call<FarmerModel> call, @NonNull Response<FarmerModel> response) {
+
                 if (response.body() != null){
                     if (response.body().getSuccess()){
                         binding.pbProgressBar.setVisibility(View.GONE);

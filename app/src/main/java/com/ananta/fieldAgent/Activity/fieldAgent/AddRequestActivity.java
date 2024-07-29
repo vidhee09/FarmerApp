@@ -73,7 +73,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         binding = ActivityAddRequestBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
         preference = Preference.getInstance(this);
 
         binding.rlFarmerName.setVisibility(View.VISIBLE);
@@ -240,10 +244,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 if (validationIns()) {
                     getAddRequestData();
                 } else {
-                    Toast.makeText(this, "Please filled all field and try again+ inssssssss", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 if (validation()) {
+                    Log.d("Imagepath==","="+Imagepath);
                     getAddRequestData();
                 } else {
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
@@ -267,10 +272,12 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         } else if (binding.edReqDescription.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
+        }else if (Imagepath == null || Imagepath.isEmpty()) {
+            isvalid = false;
+            Toast.makeText(this, "Please select Image", Toast.LENGTH_SHORT).show();
         }
         return isvalid;
     }
-
 
     public boolean validationIns() {
         boolean isvalid = true;
@@ -286,6 +293,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         } else if (binding.edInsuranceDescription.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
+        } else if (Imagepath == null || Imagepath.isEmpty()) {
+            isvalid = false;
+            Toast.makeText(this, "Please select Image", Toast.LENGTH_SHORT).show();
         }
         return isvalid;
     }
@@ -381,7 +391,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         hashMap.put("incident_date", binding.tvRequestDate.getText().toString());
         hashMap.put("insaurance_claim", binding.spSpinnerInsuranceClaim.getSelectedItem().toString());
 
-        Call<AddServiceModel> call = apiInterface.getAddServiceRequest(hashMap, "Bearer " + preference.getToken());
+        Call<AddServiceModel> call = apiInterface.addServiceRequest(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<AddServiceModel>() {
             @Override
             public void onResponse(Call<AddServiceModel> call, Response<AddServiceModel> response) {
@@ -390,6 +400,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
+                        Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
                         finish();
                     } else {
@@ -406,8 +417,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.GONE);
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(AddRequestActivity.this, "Data not Found" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 

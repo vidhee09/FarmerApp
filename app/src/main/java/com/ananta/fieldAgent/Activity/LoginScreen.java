@@ -100,7 +100,7 @@ public class LoginScreen extends AppCompatActivity {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
                     }
-                 /*   if (response.body().getSuccess()) {
+                 /* if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Intent intent = new Intent(LoginScreen.this, VerifyOTPScreen.class);
                         intent.putExtra("OTP", response.body().getOtp());
@@ -111,6 +111,7 @@ public class LoginScreen extends AppCompatActivity {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
                     }*/
+
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(LoginScreen.this, "You are not approve by admin", Toast.LENGTH_SHORT).show();
@@ -122,6 +123,8 @@ public class LoginScreen extends AppCompatActivity {
             public void onFailure(Call<LoginModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
+
             }
 
         });

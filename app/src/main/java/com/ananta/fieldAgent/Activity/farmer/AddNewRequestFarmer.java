@@ -241,7 +241,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                 if (validationIns()) {
                     addRequestDataFarmer();
                 } else {
-                    Toast.makeText(this, "Please filled all field and try again+ inssssssss", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 if (validation()) {

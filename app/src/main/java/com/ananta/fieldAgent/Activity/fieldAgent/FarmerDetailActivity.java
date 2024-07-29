@@ -175,10 +175,11 @@ public class FarmerDetailActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
     public void checkReportStatus() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+
+
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();

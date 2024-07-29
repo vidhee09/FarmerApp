@@ -79,6 +79,17 @@ public class VerifyOTPScreen extends AppCompatActivity {
 
         countDownTimerFun();
 
+        binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void loginWithOtp(String otp, PinView pinView) {

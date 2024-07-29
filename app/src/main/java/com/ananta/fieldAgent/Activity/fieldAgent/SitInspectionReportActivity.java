@@ -248,7 +248,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             @Override
             public void onFailure(Call<SiteReportModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(SitInspectionReportActivity.this, " "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SitInspectionReportActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
@@ -308,16 +308,22 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         } else if (id == R.id.ivBenificiaryCameraSite) {
             showPictureDialog(2);
         } else if (id == R.id.llSiteSubmit) {
-            if (validation()) {
-                if (Utils.isInternetAvailable(SitInspectionReportActivity.this)) {
-                    if (site_report.equals("0")) {
+            if (Utils.isInternetAvailable(SitInspectionReportActivity.this)) {
+                if (site_report.equals("0")) {
+                    if (validation()) {
                         addSiteReportData();
                     } else {
+                        Toast.makeText(this, "Please fill all field", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (updateValidation()) {
                         updateSiteReport(reportId);
+                    } else {
+                        Toast.makeText(this, "Please fill all field", Toast.LENGTH_SHORT).show();
                     }
                 }
             } else {
-                Toast.makeText(this, "Please fill all field", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
@@ -352,8 +358,28 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         } else if (signImage.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
+        } else if (Imagepath == null || Imagepath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
         }
+        return isValid;
+    }
 
+    public boolean updateValidation() {
+        boolean isValid = true;
+        if (binding.edInspectionOfficerName.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edInspectionOfficerName.setError("please fill name here");
+        } else if (binding.edPresentPersonName.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edPresentPersonName.setError("please fill name here");
+        } else if (binding.tvDateSiteReport.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.tvAddressSite.setError("please enter date");
+        } else if (signImage.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
+        }
         return isValid;
     }
 
@@ -620,23 +646,32 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getUploadimage().getImage_name();
-                    Log.d("ImageName", imageName[0]);
-                    if (fromWhere == 1) {
-                        Log.d("ImageName==", Imagepath);
-                        Imagepath = imageModel.getUploadimage().getImage_name();
+                Log.d("ImageName-Code=", "="+response.code());
+                if (response.body() != null){
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        Log.d("ImageName", imageName[0]);
+                        if (fromWhere == 1) {
+                            Log.d("ImageName==", Imagepath);
+                            Imagepath = imageModel.getUploadimage().getImage_name();
+                        } else {
+                            Log.d("ImageName==", baneficiarypath);
+                            baneficiarypath = imageModel.getUploadimage().getImage_name();
+                        }
                     } else {
-                        Log.d("ImageName==", baneficiarypath);
-                        baneficiarypath = imageModel.getUploadimage().getImage_name();
+                        Log.d("ImageName==", "else" + Imagepath);
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
-                } else {
+                }else {
                     Log.d("ImageName==", "else" + Imagepath);
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
