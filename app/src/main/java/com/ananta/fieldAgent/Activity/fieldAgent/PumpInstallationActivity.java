@@ -74,7 +74,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     int imagePhoto;
     private FusedLocationProviderClient fusedLocationClient;
 
-
     double latitude, longitude;
     ArrayList<String> panelIdList = new ArrayList<>();
     private int SpannedLength = 0, chipLength = 4;
@@ -87,6 +86,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         binding = ActivityPumpInstallationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         preference = Preference.getInstance(PumpInstallationActivity.this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -117,35 +117,49 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
 
-        Call<GetPumpData> call = apiInterface.getPumpReport(hashMap ,"Bearer "+preference.getToken());
+        Call<GetPumpData> call = apiInterface.getPumpReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetPumpData>() {
             @Override
             public void onResponse(Call<GetPumpData> call, Response<GetPumpData> response) {
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    binding.edPumpId.setText(response.body().getPumpInstallation().get(0).getPumpId());
-                    binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
-                    binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
-                    binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
-                    chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
-                    binding.chipGroup.addView(chip);
-                    Log.d("chipp-======", "=" + chip);
 
-                    reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
-                    Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
-                    Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpBenifiImage()).into(binding.ivBeneficiaryInstallPump);
-                    Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpWorkImage()).into(binding.ivPumpWorking);
+                if (response.body() != null) {
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        binding.edPumpId.setText(response.body().getPumpInstallation().get(0).getPumpId());
+                        binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
+                        binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
+                        binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
+//                    String panel = response.body().getPumpInstallation().get(0).getPanelId();
+//                    String[] panels = panel.split(",");
+//                    Log.d("chipp-===panel===", "=" + panels);
 
+                        chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
+                        binding.chipGroup.addView(chip);
+                        Log.d("chipp-======", "=" + chip);
+
+                        reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
+                        Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
+                        Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpBenifiImage()).into(binding.ivBeneficiaryInstallPump);
+                        Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpWorkImage()).into(binding.ivPumpWorking);
+
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                    }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
             public void onFailure(Call<GetPumpData> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -162,6 +176,36 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     }
 
     public boolean validation() {
+        boolean isValid = true;
+        if (binding.edPumpId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edPumpId.setError("please enter pump id");
+
+        } else if (binding.edIMEIId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edIMEIId.setError("please enter IMEI Id");
+
+        } else if (binding.edStructureId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edStructureId.setError("please enter structure id ");
+
+        } else if (binding.edControllerId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edControllerId.setError("please enter controller id ");
+        } else if (pumpPath == null || pumpPath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        } else if (baneficiarypath == null || baneficiarypath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        } else if (workingPumpPath == null || workingPumpPath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }
+        return isValid;
+    }
+
+    public boolean updateValidation() {
         boolean isValid = true;
         if (binding.edPumpId.getText().toString().isEmpty()) {
             isValid = false;
@@ -381,31 +425,34 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-        Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap ,"Bearer "+preference.getToken());
+        Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap, "Bearer " + preference.getToken());
 
         call.enqueue(new Callback<PumpInstallModel>() {
             @Override
             public void onResponse(Call<PumpInstallModel> call, Response<PumpInstallModel> response) {
 
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -433,24 +480,26 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-        Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap, "Bearer "+preference.getToken());
+        Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap, "Bearer " + preference.getToken());
 
         call.enqueue(new Callback<PumpInstallModel>() {
             @Override
             public void onResponse(Call<PumpInstallModel> call, Response<PumpInstallModel> response) {
 
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
@@ -458,6 +507,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -473,25 +523,32 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         } else if (id == R.id.ivWorkingPumpCamera) {
             showPictureDialog(3);
         } else if (id == R.id.llSubmitPumpInstall) {
-            if (validation()) {
-                if (pump_report.equals("0")) {
-                    if (countChipsInChipGroup(binding.chipGroup) >= 9) {
+            if (pump_report.equals("0")) {
+                if (countChipsInChipGroup(binding.chipGroup) >= 9) {
+                    if (validation()) {
                         addPumpInstallationData();
                     } else {
-                        Toast.makeText(this, "Panel id minimum 9 required", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "please filled all details", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    updatePumpInstallReport(reportId);
+                    Toast.makeText(this, "Panel id minimum 9 required", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (countChipsInChipGroup(binding.chipGroup) >= 9) {
+                    if (updateValidation()) {
+                        updatePumpInstallReport(reportId);
+                    } else {
+                        Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Panel id minimum 9 required", Toast.LENGTH_SHORT).show();
                 }
 
-            } else {
-                Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.ivAddMoreId) {
             if (!binding.edPanelId.getText().toString().isEmpty()) {
                 addMorePanelId(binding.edPanelId.getText().toString());
                 binding.edPanelId.setText("");
-
             }
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
@@ -516,13 +573,14 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         Log.d("chipgroup====", "=" + countChipsInChipGroup(binding.chipGroup));
 
         /*  if remove chip   */
-       /* chip.setCloseIconVisible(true);
+
+        chip.setCloseIconVisible(true);
         chip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.chipGroup.removeView(chip);
             }
-        });*/
+        });
 
     }
 
@@ -549,7 +607,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer " + preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -557,26 +615,35 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    Log.w("ImageName", imageName[0]);
-                    if (fromWhere == 1) {
-                        pumpPath = imageModel.getFileUploadData().getImage_name();
-                    } else if (fromWhere == 2) {
-                        baneficiarypath = imageModel.getFileUploadData().getImage_name();
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        Log.w("ImageName", imageName[0]);
+                        if (fromWhere == 1) {
+                            pumpPath = imageModel.getUploadimage().getImage_name();
+                        } else if (fromWhere == 2) {
+                            baneficiarypath = imageModel.getUploadimage().getImage_name();
+                        } else {
+                            workingPumpPath = imageModel.getUploadimage().getImage_name();
+                        }
                     } else {
-                        workingPumpPath = imageModel.getFileUploadData().getImage_name();
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "Data not found" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -592,7 +659,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer " + preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -600,20 +667,29 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    signatureName = imageModel.getFileUploadData().getImage_name();
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        signatureName = imageModel.getUploadimage().getImage_name();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                    }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "-" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -38,14 +39,12 @@ public class LoginScreen extends AppCompatActivity {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityLoginScreenBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView( binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         binding.tvSendOtpLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,28 +85,16 @@ public class LoginScreen extends AppCompatActivity {
 
         call.enqueue(new Callback<LoginModel>() {
             @Override
-            public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
+            public void onResponse(@NonNull Call<LoginModel> call, @NonNull Response<LoginModel> response) {
+
                 if (response.body() != null) {
                     if (response.body().getSuccess()) {
-                        binding.pbProgressBar.setVisibility(View.GONE);
-                        Intent intent = new Intent(LoginScreen.this, VerifyOTPScreen.class);
-                        intent.putExtra("OTP", response.body().getOtp());
-                        intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginScreen.this, "You are not approve by admin", Toast.LENGTH_SHORT).show();
-
-                    if (response.isSuccessful()) {
+                        String otp = response.body().getOtp().toString();
+                        Log.d("otp===","=ooo=="+otp);
                         binding.pbProgressBar.setVisibility(View.GONE);
                         binding.tvErrorMobileNumber.setVisibility(View.GONE);
                         Intent intent = new Intent(LoginScreen.this, VerifyOTPScreen.class);
-                        intent.putExtra("OTP", response.body().getOtp());
+                        intent.putExtra("OTP", otp);
                         intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
                         startActivity(intent);
                         finish();
@@ -117,6 +104,22 @@ public class LoginScreen extends AppCompatActivity {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
                     }
+                 /* if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        Intent intent = new Intent(LoginScreen.this, VerifyOTPScreen.class);
+                        intent.putExtra("OTP", response.body().getOtp());
+                        intent.putExtra("NUMBER", binding.edMobileNo.getText().toString());
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
+                    }*/
+
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(LoginScreen.this, "You are not approve by admin", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
@@ -124,6 +127,7 @@ public class LoginScreen extends AppCompatActivity {
             public void onFailure(Call<LoginModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
 
             }
 

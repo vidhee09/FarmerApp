@@ -1,14 +1,17 @@
 package com.ananta.fieldAgent.Models;
 
+
 public class AddServiceModel {
 
-    String success,message;
+    public boolean success;
+    public String message;
+    public Agentservice agentservice;
 
-    public String getSuccess() {
+    public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 
@@ -18,5 +21,13 @@ public class AddServiceModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Agentservice getAgentservice() {
+        return agentservice;
+    }
+
+    public void setAgentservice(Agentservice agentservice) {
+        this.agentservice = agentservice;
     }
 }

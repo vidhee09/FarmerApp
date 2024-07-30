@@ -13,13 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <ProgressBar
-            android:id="@+id/pbProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_centerInParent="true"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,22 +24,23 @@
                 android:layout_height="@dimen/_60sdp"
                 android:background="@drawable/round_bg_globle"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textSize="@dimen/_14ssp"
-                    android:textColor="@color/white"
-                    android:gravity="center"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="@string/login"/>
+                    android:gravity="center"
+                    android:text="@string/login"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
 
             </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_20sdp"
                 android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/_20sdp"
                 android:src="@drawable/logo" />
 
             <LinearLayout
@@ -75,15 +69,15 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/round_background"
                         android:drawableStart="@drawable/ic_mobile"
-                        android:drawableTint="@color/appColor"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/poppins_regular"
-                        android:maxLength="10"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:inputType="number"
+                        android:drawableTint="@color/appColor"
+                        android:fontFamily="@font/poppins_regular"
                         android:gravity="center_vertical"
                         android:hint="@string/enter_mobile_no"
-                        android:padding="@dimen/_10sdp" />
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
 
@@ -91,10 +85,10 @@
                     android:id="@+id/tvErrorMobileNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/red"
                     android:layout_margin="@dimen/_5sdp"
-                    android:visibility="gone"
-                    android:text="Enter valid Number"/>
+                    android:text="Enter valid Number"
+                    android:textColor="@color/red"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -119,7 +113,7 @@
                         android:gravity="center"
                         android:text="@string/send_otp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_14ssp"/>
+                        android:textSize="@dimen/_14ssp" />
                 </LinearLayout>
 
 
@@ -142,9 +136,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_regular"
                         android:text="|"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
                         android:textColor="@color/appColor"
                         android:textSize="@dimen/_12ssp" />
 
@@ -164,9 +158,14 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/pbProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
     </RelativeLayout>
-
-
 
 
 </LinearLayout>

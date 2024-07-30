@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 public class DeliveryDataModel {
 
-    String success,message;
+    public boolean success;
+    public String message;
+    public Data data;
 
-    public String getSuccess() {
+    public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 
@@ -21,8 +23,6 @@ public class DeliveryDataModel {
     public void setMessage(String message) {
         this.message = message;
     }
-
-   Data data ;
 
     public Data getData() {
         return data;

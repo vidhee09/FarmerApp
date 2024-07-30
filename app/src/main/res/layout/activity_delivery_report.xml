@@ -38,26 +38,18 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ProgressBar
-            android:id="@+id/pbProgressBar"
-            style="@style/progressbar"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -126,7 +118,7 @@
                             android:fontFamily="@font/poppins_regular"
                             android:gravity="center_vertical"
                             android:hint="Person Name"
-                            android:imeOptions="actionNext"
+                            android:imeOptions="actionDone"
                             android:inputType="text"
                             android:padding="@dimen/_10sdp"
                             android:singleLine="true"
@@ -360,12 +352,18 @@
 
                 </LinearLayout>
 
+                <ProgressBar
+                    android:id="@+id/pbProgressBar"
+                    style="@style/progressbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
+        </LinearLayout>
 
-        </ScrollView>
-
-    </RelativeLayout>
+    </ScrollView>
 
 </LinearLayout>

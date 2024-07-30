@@ -15,7 +15,7 @@ public class GetJointData {
     private String message;
     @SerializedName("jointServey")
     @Expose
-    private ArrayList<JointServey> jointServey;
+    private ArrayList<Jointservey> jointServey;
 
     public Boolean getSuccess() {
         return success;
@@ -43,15 +43,15 @@ public class GetJointData {
         return this;
     }
 
-    public ArrayList<JointServey> getJointServey() {
+    public ArrayList<Jointservey> getJointServey() {
         return jointServey;
     }
 
-    public void setJointServey(ArrayList<JointServey> jointServey) {
+    public void setJointServey(ArrayList<Jointservey> jointServey) {
         this.jointServey = jointServey;
     }
 
-    public GetJointData withJointServey(ArrayList<JointServey> jointServey) {
+    public GetJointData withJointServey(ArrayList<Jointservey> jointServey) {
         this.jointServey = jointServey;
         return this;
     }

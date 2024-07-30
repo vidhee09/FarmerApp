@@ -1,10 +1,10 @@
 package com.ananta.fieldAgent.Models;
 
-public class JointSurveyorModel {
+public class FarmerServiceModel {
 
     public boolean success;
     public String message;
-    public Jointservey jointservey;
+    public Farmerservice farmerservice;
 
     public boolean isSuccess() {
         return success;
@@ -22,11 +22,11 @@ public class JointSurveyorModel {
         this.message = message;
     }
 
-    public Jointservey getJointservey() {
-        return jointservey;
+    public Farmerservice getFarmerservice() {
+        return farmerservice;
     }
 
-    public void setJointservey(Jointservey jointservey) {
-        this.jointservey = jointservey;
+    public void setFarmerservice(Farmerservice farmerservice) {
+        this.farmerservice = farmerservice;
     }
 }

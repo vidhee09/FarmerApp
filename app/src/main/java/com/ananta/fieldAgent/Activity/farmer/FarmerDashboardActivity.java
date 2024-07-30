@@ -3,6 +3,7 @@ package com.ananta.fieldAgent.Activity.farmer;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
+import com.ananta.fieldAgent.Utils.CustomDialogAlert;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDashboardBinding;
 
 import java.util.ArrayList;
@@ -78,9 +80,8 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             }
         });
 
-
         binding.ivAddReqImage.setOnClickListener(v -> {
-            Intent intent = new Intent(FarmerDashboardActivity.this, AddRequestActivity.class);
+            Intent intent = new Intent(FarmerDashboardActivity.this, AddNewRequestFarmer.class);
             startActivity(intent);
 
         });
@@ -90,6 +91,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             preference.putFarmerName(null);
             preference.putFarmerNum(null);
             preference.putFarmerLoginId(null);
+            preference.putFarmerName(null);
             Intent intent = new Intent(FarmerDashboardActivity.this, LoginScreen.class);
             startActivity(intent);
             finishAffinity();
@@ -110,35 +112,60 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         hashMap.put("id", id);
 
         Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap ,"Bearer "+preference.getToken());
+        Log.d("farmerData===TOKEN",""+preference.getToken());
 
         call.enqueue(new Callback<FarmerServiceResponseModel>() {
             @Override
-            public void onResponse(Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
+            public void onResponse(@NonNull Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
+
+                Log.d("farmerData===TOKEN","dash="+response.code());
 
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
-                        adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrentServiceData()), "Current Request");
-                        adapter.addFragment(new PastRequestFarmerFragment(response.body().getPastServiceData()), "Past Request");
+                        adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrent_service_data()), "Current Request");
+                        adapter.addFragment(new PastRequestFarmerFragment(response.body().getPast_service_data()), "Past Request");
                         binding.viewPager.setAdapter(adapter);
                         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(FarmerDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
-
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(FarmerDashboardActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FarmerDashboardActivity.this, "Data not available", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerServiceResponseModel> call, Throwable t) {
-                Toast.makeText(FarmerDashboardActivity.this, "Server not responding", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(FarmerDashboardActivity.this, " " +t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CustomDialogAlert customDialogAlert = new CustomDialogAlert(this, this.getResources().getString(R.string.close_application), this.getResources().getString(R.string.close_text), this.getResources().getString(R.string.yes)) {
+            @Override
+            public void onClickLeftButton() {
+                dismiss();
+            }
+
+            @Override
+            public void onClickRightButton() {
+                dismiss();
+                finish();
+            }
+        };
+        customDialogAlert.show();
+
     }
 }

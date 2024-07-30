@@ -3,6 +3,7 @@ package com.ananta.fieldAgent.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -57,9 +58,14 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Intent intent = new Intent(SplashActivity.this, FarmerDashboardActivity.class);
-                    startActivity(intent);
-                    finish();
+                    if (!preference.getFarmerLoginId().equals("")){
+                        Const.LOGIN_FARMER_ID = preference.getFarmerLoginId();
+                        ApiClient.setLoginDetail(preference.getToken());
+                        Intent intent = new Intent(SplashActivity.this, FarmerDashboardActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
                 }
             }
         }, 5000);

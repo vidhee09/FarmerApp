@@ -43,18 +43,18 @@ public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHold
         PastServiceDatum model = pastReqModelsList.get(position);
         holder.tvNameFarmer.setText(model.getFarmer_name());
         holder.tvAddressPastReq.setText(model.getFarmer_address());
-        holder.tvPastReqName.setText(model.getServiceRequest());
+        holder.tvPastReqName.setText(model.getService_request());
 
-        Glide.with(context).load(Const.IMAGE_URL+model.getImageName()).error(R.drawable.placeholder).into(holder.ivPastReqImage);
+        Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).error(R.drawable.placeholder).into(holder.ivPastReqImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ShowComplaintActivity.class);
                 intent.putExtra("position",position);
-                intent.putExtra("FName",model.getFarmer_name());
+                intent.putExtra("FName",model.getService_request());
                 intent.putExtra("ComplaintID",model.getComplaint_id());
-                intent.putExtra("ComplaintName",model.getServiceRequest());
+                intent.putExtra("ComplaintName",model.getService_request());
                 context.startActivity(intent);
             }
         });

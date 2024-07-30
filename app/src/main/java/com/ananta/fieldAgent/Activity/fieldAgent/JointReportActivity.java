@@ -22,6 +22,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -135,148 +136,154 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
 
-        Call<GetJointData> call = apiInterface.getJointReport(hashMap ,"Bearer "+preference.getToken());
+        Call<GetJointData> call = apiInterface.getJointReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetJointData>() {
             @Override
             public void onResponse(Call<GetJointData> call, Response<GetJointData> response) {
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
+                if (response.body() != null){
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        reportId = String.valueOf(response.body().getJointServey().get(0).getId());
+                        binding.edSurveyorIMEIId.setText(response.body().getJointServey().get(0).getImei_no());
+                        binding.edConstantWaterLevel.setText(response.body().getJointServey().get(0).getConstant_water());
+                        binding.edSurveyorAlternativeNumber.setText(response.body().getJointServey().get(0).getAlternet_mo());
+                        binding.edDepthWaterSource.setText(response.body().getJointServey().get(0).getWater_depth());
+                        binding.edWaterDeliveryPoint.setText(response.body().getJointServey().get(0).getWater_delivery_point());
+                        binding.edRemark.setText(response.body().getJointServey().get(0).getRemark());
 
-                    assert response.body() != null;
-                    reportId = String.valueOf(response.body().getJointServey().get(0).getId());
-                    binding.edSurveyorIMEIId.setText(response.body().getJointServey().get(0).getImeiNo());
-                    binding.edConstantWaterLevel.setText(response.body().getJointServey().get(0).getConstantWater());
-                    binding.edSurveyorAlternativeNumber.setText(response.body().getJointServey().get(0).getAlternetMo());
-                    binding.edDepthWaterSource.setText(response.body().getJointServey().get(0).getWaterDepth());
-                    binding.edWaterDeliveryPoint.setText(response.body().getJointServey().get(0).getWaterDeliveryPoint());
-                    binding.edRemark.setText(response.body().getJointServey().get(0).getRemark());
+                        selectedWater = response.body().getJointServey().get(0).getIs_water_source_available();
 
-                    selectedWater = response.body().getJointServey().get(0).getIsWaterSourceAvailable();
-
-                    if (selectedWater.equals("Yes")){
-                        binding.rbYesWaterBtn.setChecked(true);
-                    }else {
-                        binding.rbNoWaterBtn.setChecked(true);
-                    }
-
-                    selectedPumpType = response.body().getJointServey().get(0).getPumpType();
-                    if (selectedPumpType.equals("Submarsible")){
-                        binding.rbSubmarsible.setChecked(true);
-                    }else {
-                        binding.rbSurface.setChecked(true);
-                    }
-
-                    selectAgPump = response.body().getJointServey().get(0).getIsPumpElectricity();
-                    if (selectAgPump.equals("Yes")){
-                        binding.rbAgYes.setChecked(true);
-                    }else {
-                        binding.rbAgNo.setChecked(true);
-                    }
-
-                    selectGovt = response.body().getJointServey().get(0).getIsPumpElectricity();
-                    if (selectGovt.equals("Yes")){
-                        binding.rbSolarYes.setChecked(true);
-                    }else {
-                        binding.rbSolarNo.setChecked(true);
-                    }
-
-                    selectShaow = response.body().getJointServey().get(0).getIsShadowArea();
-                    if (selectShaow.equals("Yes")){
-                        binding.rbShadowYes.setChecked(true);
-                    }else {
-                        binding.rbShadowNo.setChecked(true);
-                    }
-
-                    networkSelect =  response.body().getJointServey().get(0).getIsMobileNetwork();
-                    if (networkSelect.equals("Yes")){
-                        binding.rbNetworkYes.setChecked(true);
-                    }else {
-                        binding.rbNetworkNo.setChecked(true);
-                    }
-
-                    String seperate = response.body().getJointServey().get(0).getTypeOfWaterSource();
-                    Log.d("check====>","="+response.body().getJointServey().get(0).getTypeOfWaterSource());
-                    String[] items = seperate.split(",");
-                    for (String item : items)
-                    {
-                        Log.d("check====>","w="+item);
-                        if (item.equals("Borewell")){
-                            binding.checkboxBoreWell.setChecked(true);
-                        }  if (item.equals("River")) {
-                            binding.checkboxRiver.setChecked(true);
-                        }  if (item.equals("Lake")) {
-                            binding.checkboxLake.setChecked(true);
+                        if (selectedWater.equals("Yes")) {
+                            binding.rbYesWaterBtn.setChecked(true);
+                        } else {
+                            binding.rbNoWaterBtn.setChecked(true);
                         }
-                    }
 
-                    String pumpSurveyor = response.body().getJointServey().get(0).getPumpRecomSurvey();
-                    String[] pumpHead = pumpSurveyor.split(",");
-                    for (String pump : pumpHead)
-                    {
-                        Log.d("check====>","s="+pump);
-                        if (pump.equals("30")){
-                            binding.cbPumpHead1.setChecked(true);
-                        }  if (pump.equals("50")) {
-                            binding.cbPumpHead2.setChecked(true);
-                        }  if (pump.equals("70")) {
-                            binding.cbPumpHead3.setChecked(true);
-                        } if (pump.equals("100")) {
-                            binding.cbPumpHead4.setChecked(true);
+                        selectedPumpType = response.body().getJointServey().get(0).getPump_type();
+                        if (selectedPumpType.equals("Submarsible")) {
+                            binding.rbSubmarsible.setChecked(true);
+                        } else {
+                            binding.rbSurface.setChecked(true);
                         }
-                    }
 
-                    String pumpBeneficiary = response.body().getJointServey().get(0).getPumpRecomBenefits();
-                    String[] Beneficiary = pumpBeneficiary.split(",");
-                    for (String benefit : Beneficiary)
-                    {
-                        Log.d("check====>","b="+Beneficiary);
-                        if (benefit.equals("30")){
-                            binding.cbPumpHeadBeneficiary1.setChecked(true);
-                        }  if (benefit.equals("50")) {
-                            binding.cbPumpHeadBeneficiary2.setChecked(true);
-                        }  if (benefit.equals("70")) {
-                            binding.cbPumpHeadBeneficiary3.setChecked(true);
-                        } if (benefit.equals("100")) {
-                            binding.cbPumpHeadBeneficiary4.setChecked(true);
+                        selectAgPump = response.body().getJointServey().get(0).getIs_pump_electricity();
+                        if (selectAgPump.equals("Yes")) {
+                            binding.rbAgYes.setChecked(true);
+                        } else {
+                            binding.rbAgNo.setChecked(true);
                         }
-                    }
 
-                    String persons = response.body().getJointServey().get(0).getSurveyPerson();
-                    String[] person = persons.split(",");
-                    for (String per : person)
-                    {
-                        Log.d("check====>","f="+person);
-                        if (per.equals("Field Engineer")){
-                            binding.cbFieldEng.setChecked(true);
-                        } else if (per.equals("Farmer")) {
-                            binding.cbFarmer.setChecked(true);
-                        } else if (per.equals("Govt. Farmer")) {
-                            binding.cbGovtFarmer.setChecked(true);
+                        selectGovt = response.body().getJointServey().get(0).getIs_pump_electricity();
+                        if (selectGovt.equals("Yes")) {
+                            binding.rbSolarYes.setChecked(true);
+                        } else {
+                            binding.rbSolarNo.setChecked(true);
                         }
+
+                        selectShaow = response.body().getJointServey().get(0).getIs_shadow_area();
+                        if (selectShaow.equals("Yes")) {
+                            binding.rbShadowYes.setChecked(true);
+                        } else {
+                            binding.rbShadowNo.setChecked(true);
+                        }
+
+                        networkSelect = response.body().getJointServey().get(0).getIs_mobile_network();
+                        if (networkSelect.equals("Yes")) {
+                            binding.rbNetworkYes.setChecked(true);
+                        } else {
+                            binding.rbNetworkNo.setChecked(true);
+                        }
+
+                        String seperate = response.body().getJointServey().get(0).getType_of_water_source();
+                        Log.d("check====>", "=" + response.body().getJointServey().get(0).getType_of_water_source());
+                        String[] items = seperate.split(",");
+                        for (String item : items) {
+                            Log.d("check====>", "w=" + item);
+                            if (item.equals("Borewell")) {
+                                binding.checkboxBoreWell.setChecked(true);
+                            }
+                            if (item.equals("River")) {
+                                binding.checkboxRiver.setChecked(true);
+                            }
+                            if (item.equals("Lake")) {
+                                binding.checkboxLake.setChecked(true);
+                            }
+                        }
+
+                        String pumpSurveyor = response.body().getJointServey().get(0).getPump_recom_survey();
+                        String[] pumpHead = pumpSurveyor.split(",");
+                        for (String pump : pumpHead) {
+                            Log.d("check====>", "s=" + pump);
+                            if (pump.equals("30")) {
+                                binding.cbPumpHead1.setChecked(true);
+                            }
+                            if (pump.equals("50")) {
+                                binding.cbPumpHead2.setChecked(true);
+                            }
+                            if (pump.equals("70")) {
+                                binding.cbPumpHead3.setChecked(true);
+                            }
+                            if (pump.equals("100")) {
+                                binding.cbPumpHead4.setChecked(true);
+                            }
+                        }
+
+                        String pumpBeneficiary = response.body().getJointServey().get(0).getPump_recom_benefits();
+                        String[] Beneficiary = pumpBeneficiary.split(",");
+                        for (String benefit : Beneficiary) {
+                            Log.d("check====>", "b=" + Beneficiary);
+                            if (benefit.equals("30")) {
+                                binding.cbPumpHeadBeneficiary1.setChecked(true);
+                            }
+                            if (benefit.equals("50")) {
+                                binding.cbPumpHeadBeneficiary2.setChecked(true);
+                            }
+                            if (benefit.equals("70")) {
+                                binding.cbPumpHeadBeneficiary3.setChecked(true);
+                            }
+                            if (benefit.equals("100")) {
+                                binding.cbPumpHeadBeneficiary4.setChecked(true);
+                            }
+                        }
+
+                        String persons = response.body().getJointServey().get(0).getSurvey_person();
+                        String[] person = persons.split(",");
+                        for (String per : person) {
+                            Log.d("check====>", "f=" + person);
+                            if (per.equals("Field Engineer")) {
+                                binding.cbFieldEng.setChecked(true);
+                            } else if (per.equals("Farmer")) {
+                                binding.cbFarmer.setChecked(true);
+                            } else if (per.equals("Govt. Farmer")) {
+                                binding.cbGovtFarmer.setChecked(true);
+                            }
+                        }
+
+                        Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getWater_res_image()).into(binding.ivWaterPhoto);
+                        Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getLandmark_image()).into(binding.ivBeneficiaryPhotoJoint);
+                        Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getBeneficiary_image()).into(binding.ivLandmarkPhoto);
+
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
-
-
-
-
-                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getWaterResImage()).into(binding.ivWaterPhoto);
-                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getLandmarkImage()).into(binding.ivBeneficiaryPhotoJoint);
-                    Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getBeneficiaryImage()).into(binding.ivLandmarkPhoto);
-
-                } else {
+                }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<GetJointData> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(JointReportActivity.this, "jointtttttt" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(JointReportActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }
-
 
     /*  update joint report  */
     public void updateReport(String reportId) {
@@ -307,35 +314,37 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("is_mobile_network", networkSelect);
         hashMap.put("survey_person", checkbox_available_person.toString());
         hashMap.put("remark", binding.edRemark.getText().toString());
-        if (pumpPath == null || !pumpPath.isEmpty()){
+        if (pumpPath == null || !pumpPath.isEmpty()) {
             hashMap.put("water_res_image", pumpPath);
         }
-        if ( landmarkPath == null ||  !landmarkPath.isEmpty()){
+        if (landmarkPath == null || !landmarkPath.isEmpty()) {
             hashMap.put("landmark_image", landmarkPath);
         }
-        if (baneficiarypath == null || !baneficiarypath.isEmpty()){
+        if (baneficiarypath == null || !baneficiarypath.isEmpty()) {
             hashMap.put("beneficiary_image", baneficiarypath);
         }
         hashMap.put("beneficiary_sign", signatureBeneficiary);
         hashMap.put("survey_sign", signatureSurveyor);
 
-        Call<JointSurveyorModel> call = apiInterface.updateJointReport(hashMap ,"Bearer "+preference.getToken());
+        Call<JointSurveyorModel> call = apiInterface.updateJointReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<JointSurveyorModel>() {
             @Override
             public void onResponse(Call<JointSurveyorModel> call, Response<JointSurveyorModel> response) {
 
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
@@ -343,6 +352,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             public void onFailure(Call<JointSurveyorModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(JointReportActivity.this, "Data not found" + t, Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -383,13 +393,13 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("beneficiary_sign", signatureBeneficiary);
         hashMap.put("survey_sign", signatureSurveyor);
 
-        Call<JointSurveyorModel> call = apiInterface.addJointSurveyorData(hashMap,"Bearer "+preference.getToken());
+        Call<JointSurveyorModel> call = apiInterface.addJointSurveyorData(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<JointSurveyorModel>() {
             @Override
-            public void onResponse(Call<JointSurveyorModel> call, Response<JointSurveyorModel> response) {
+            public void onResponse(@NonNull Call<JointSurveyorModel> call, @NonNull Response<JointSurveyorModel> response) {
 
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
@@ -397,21 +407,22 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<JointSurveyorModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(JointReportActivity.this, "Data not found" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(JointReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
-
     }
 
     public void getSelectedRadioButton() {
@@ -515,25 +526,114 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         if (binding.edDepthWaterSource.getText().toString().isEmpty()) {
             isValid = false;
             binding.edDepthWaterSource.setError("please enter depth water source level");
-
         } else if (binding.edConstantWaterLevel.getText().toString().isEmpty()) {
             isValid = false;
             binding.edConstantWaterLevel.setError("please enter water constant level");
-
         } else if (binding.edSurveyorIMEIId.getText().toString().isEmpty()) {
             isValid = false;
             binding.edSurveyorIMEIId.setError("please enter IMEI Id");
-
         } else if (binding.edSurveyorAlternativeNumber.getText().toString().isEmpty()) {
             isValid = false;
             binding.edSurveyorAlternativeNumber.setError("please enter alternate number");
-
         } else if (binding.edWaterDeliveryPoint.getText().toString().isEmpty()) {
             isValid = false;
             binding.edWaterDeliveryPoint.setError("please enter water delivery point ");
         } else if (binding.edRemark.getText().toString().isEmpty()) {
             isValid = false;
             binding.edRemark.setError("please enter remark");
+        }else if (checkbox_typeWaterSource.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_pump_surveyor.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump head by surveyor", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_available_person.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select available person", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_pump_beneficiary.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump head by beneficiary", Toast.LENGTH_SHORT).show();
+        }else if (pumpPath == null || pumpPath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }else if (baneficiarypath == null || baneficiarypath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }else if (landmarkPath == null || landmarkPath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }else if (selectedWater.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select water availability", Toast.LENGTH_SHORT).show();
+        }else if (selectedPumpType.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump type", Toast.LENGTH_SHORT).show();
+        }else if (selectAgPump.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Ag pump availability", Toast.LENGTH_SHORT).show();
+        }else if (selectGovt.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Govt. scheme", Toast.LENGTH_SHORT).show();
+        }else if (networkSelect.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select network availability ", Toast.LENGTH_SHORT).show();
+        }else if (selectShaow.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select available area", Toast.LENGTH_SHORT).show();
+        }
+        return isValid;
+    }
+
+    public boolean updateValidation() {
+        boolean isValid = true;
+        if (binding.edDepthWaterSource.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edDepthWaterSource.setError("please enter depth water source level");
+        } else if (binding.edConstantWaterLevel.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edConstantWaterLevel.setError("please enter water constant level");
+        } else if (binding.edSurveyorIMEIId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edSurveyorIMEIId.setError("please enter IMEI Id");
+        } else if (binding.edSurveyorAlternativeNumber.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edSurveyorAlternativeNumber.setError("please enter alternate number");
+        } else if (binding.edWaterDeliveryPoint.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edWaterDeliveryPoint.setError("please enter water delivery point ");
+        } else if (binding.edRemark.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edRemark.setError("please enter remark");
+        }else if (checkbox_typeWaterSource.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_pump_surveyor.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump head by surveyor", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_available_person.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select available person", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_pump_beneficiary.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump head by beneficiary", Toast.LENGTH_SHORT).show();
+        }else if (selectedWater.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select water availability", Toast.LENGTH_SHORT).show();
+        }else if (selectedPumpType.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump type", Toast.LENGTH_SHORT).show();
+        }else if (selectAgPump.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Ag pump availability", Toast.LENGTH_SHORT).show();
+        }else if (selectGovt.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Govt. scheme", Toast.LENGTH_SHORT).show();
+        }else if (networkSelect.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select network availability ", Toast.LENGTH_SHORT).show();
+        }else if (selectShaow.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select available area", Toast.LENGTH_SHORT).show();
         }
         return isValid;
     }
@@ -573,7 +673,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         binding.btnCompletedSign.setOnClickListener(v -> {
             signImage = binding.signaturePadSign.getSignatureSvg();
             signImage = BitMapToString(binding.signaturePadSign.getSignatureBitmap());
-            saveBitmapIntoCacheDir(binding.signaturePadSign.getSignatureBitmap(),1);
+            saveBitmapIntoCacheDir(binding.signaturePadSign.getSignatureBitmap(), 1);
             Log.d("DeliveryReport===>", "===>" + signImage);
             binding.ivSignImage.setImageBitmap(binding.signaturePadSign.getSignatureBitmap());
         });
@@ -585,7 +685,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         binding.btnCompletedBeneficiary.setOnClickListener(v -> {
             beneficiarySignImage = binding.signaturePadBeneficiary.getSignatureSvg();
             beneficiarySignImage = BitMapToString(binding.signaturePadBeneficiary.getSignatureBitmap());
-            BitmapIntoCacheDir(binding.signaturePadBeneficiary.getSignatureBitmap(),2);
+            BitmapIntoCacheDir(binding.signaturePadBeneficiary.getSignatureBitmap(), 2);
             Log.d("DeliveryReport===>", "===>" + beneficiarySignImage);
             binding.ivBeneficiarySignImage.setImageBitmap(binding.signaturePadBeneficiary.getSignatureBitmap());
         });
@@ -635,10 +735,10 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadFileImage(fileName,pos);
+        uploadFileImage(fileName, pos);
     }
 
-    private void BitmapIntoCacheDir(Bitmap signatureBitmap,int pos) {
+    private void BitmapIntoCacheDir(Bitmap signatureBitmap, int pos) {
         File sd = getCacheDir();
         File folder = new File(sd, "/myfolder/");
         if (!folder.exists()) {
@@ -662,7 +762,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadFileImage(fileName,pos);
+        uploadFileImage(fileName, pos);
     }
 
     private void showPictureDialog(Integer photo) {
@@ -710,7 +810,6 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             if (data != null) {
                 Uri contentURI = data.getData();
                 path = String.valueOf(contentURI);
-
                 try {
                     if (imagePhoto == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
@@ -805,16 +904,20 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             showPictureDialog(3);
 
         } else if (id == R.id.llJointSubmit) {
+            getCheckboxData();
+            getSelectedRadioButton();
+            if (joint_report.equals("0")) {
             if (validation()) {
-                getCheckboxData();
-                getSelectedRadioButton();
-                if (joint_report.equals("0")) {
                     addJointReportData();
                 } else {
-                    updateReport(reportId);
+                Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                if(updateValidation()){
+                    updateReport(reportId);
+                }else {
+                    Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                }
             }
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
@@ -844,7 +947,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer " + preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -852,32 +955,43 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    Log.w("ImageName", imageName[0]);
-                    if (fromWhere == 1) {
-                        pumpPath = imageModel.getFileUploadData().getImage_name();
-                    } else if (fromWhere == 2) {
-                        landmarkPath = imageModel.getFileUploadData().getImage_name();
+                Log.d("response===", "==j=code==" + response.code());
+
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        Log.w("ImageName", imageName[0]);
+                        if (fromWhere == 1) {
+                            pumpPath = imageModel.getUploadimage().getImage_name();
+                        } else if (fromWhere == 2) {
+                            landmarkPath = imageModel.getUploadimage().getImage_name();
+                        } else {
+                            baneficiarypath = imageModel.getUploadimage().getImage_name();
+                        }
                     } else {
-                        baneficiarypath = imageModel.getFileUploadData().getImage_name();
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(JointReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JointReportActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }
 
-    public void uploadFileImage(File file,int fromWhere) {
+    public void uploadFileImage(File file, int fromWhere) {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         Uri uri = null;
@@ -889,7 +1003,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture" );
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer " + preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -897,24 +1011,32 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    if (fromWhere == 1){
-                        signatureSurveyor = imageModel.getFileUploadData().getImage_name();
-                    }else {
-                        signatureBeneficiary = imageModel.getFileUploadData().getImage_name();
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        if (fromWhere == 1) {
+                            signatureSurveyor = imageModel.getUploadimage().getImage_name();
+                        } else {
+                            signatureBeneficiary = imageModel.getUploadimage().getImage_name();
+                        }
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(JointReportActivity.this, "-" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(JointReportActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }

@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity">
+    tools:context="com.ananta.fieldAgent.Activity.farmer.AddNewRequestFarmer">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,6 +35,16 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/bg_green_add"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/user" />
 
     </RelativeLayout>
 
@@ -46,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_13sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -77,7 +88,7 @@
                             android:layout_marginTop="@dimen/_5sdp">
 
                             <Spinner
-                                android:id="@+id/spSpinner"
+                                android:id="@+id/spSpinnerFarmer"
                                 style="@style/spinner_style"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
@@ -93,7 +104,7 @@
                         </RelativeLayout>
 
                         <TextView
-                            android:id="@+id/tvErrorText"
+                            android:id="@+id/tvErrorTextFarmer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="3dp"
@@ -125,36 +136,28 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <Spinner
-                                android:id="@+id/spFarmerName"
-                                style="@style/spinner_style"
+                            <TextView
+                                android:id="@+id/tvFarmerName"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@drawable/round_background" />
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/round_background"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:fontFamily="@font/poppins_bold"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/_10sdp"
+                                android:text="Farmer Name"
+                                android:textColor="@color/black"/>
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
+                                android:visibility="gone"
                                 android:layout_marginEnd="@dimen/_10sdp"
                                 android:src="@drawable/ic_dropdown" />
 
                         </RelativeLayout>
-
-
-                        <TextView
-                            android:id="@+id/tvFarmerName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/round_background"
-                            android:drawablePadding="@dimen/_5sdp"
-                            android:drawableTint="@color/appColor"
-                            android:fontFamily="@font/poppins_regular"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/_10sdp"
-                            android:textColor="@color/black"
-                            android:visibility="gone" />
 
 
                     </LinearLayout>
@@ -162,7 +165,7 @@
                     <!--   service request layout  -->
 
                     <LinearLayout
-                        android:id="@+id/llServiceRequestLayout"
+                        android:id="@+id/llServiceRequestLayoutFarmer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -186,7 +189,7 @@
                                 android:layout_marginTop="@dimen/_5sdp">
 
                                 <Spinner
-                                    android:id="@+id/spSpinnerRequest"
+                                    android:id="@+id/spSpinnerRequestFarmer"
                                     style="@style/spinner_style"
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
@@ -227,7 +230,7 @@
                                 android:text="Description" />
 
                             <EditText
-                                android:id="@+id/edReqDescription"
+                                android:id="@+id/edReqDescriptionFarmer"
                                 android:layout_width="match_parent"
                                 android:layout_height="90dp"
                                 android:layout_marginTop="@dimen/_5sdp"
@@ -265,7 +268,7 @@
                                     app:cardCornerRadius="@dimen/_10sdp">
 
                                     <ImageView
-                                        android:id="@+id/ivRequestPhoto"
+                                        android:id="@+id/ivRequestPhotoFarmer"
                                         android:layout_width="@dimen/_70sdp"
                                         android:layout_height="@dimen/_70sdp"
                                         android:scaleType="centerCrop"
@@ -276,7 +279,7 @@
                             </FrameLayout>
 
                             <ImageView
-                                android:id="@+id/ivReqCamera"
+                                android:id="@+id/ivReqCameraFarmer"
                                 android:layout_width="@dimen/_30sdp"
                                 android:layout_height="@dimen/_30sdp"
                                 android:layout_gravity="end|bottom"
@@ -291,7 +294,7 @@
                     <!---   insurance claim layout  -->
 
                     <LinearLayout
-                        android:id="@+id/llInsauranceClaimLayout"
+                        android:id="@+id/llInsuranceClaimLayoutFarmer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -315,7 +318,7 @@
                                 android:layout_marginTop="@dimen/_5sdp">
 
                                 <Spinner
-                                    android:id="@+id/spSpinnerInsuranceClaim"
+                                    android:id="@+id/spSpinnerInsuranceClaimFarmer"
                                     style="@style/spinner_style"
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
@@ -350,7 +353,7 @@
                                 android:layout_marginTop="@dimen/_5sdp">
 
                                 <Spinner
-                                    android:id="@+id/spSpinnerIcReason"
+                                    android:id="@+id/spSpinnerIcReasonFarmer"
                                     style="@style/spinner_style"
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
@@ -380,7 +383,7 @@
                                 android:text="Description" />
 
                             <EditText
-                                android:id="@+id/edInsuranceDescription"
+                                android:id="@+id/edInsuranceDescriptionFarmer"
                                 android:layout_width="match_parent"
                                 android:layout_height="90dp"
                                 android:layout_marginTop="@dimen/_5sdp"
@@ -418,7 +421,7 @@
                                     app:cardCornerRadius="@dimen/_10sdp">
 
                                     <ImageView
-                                        android:id="@+id/ivInsurancePhoto"
+                                        android:id="@+id/ivInsurancePhotoFarmer"
                                         android:layout_width="@dimen/_70sdp"
                                         android:layout_height="@dimen/_70sdp"
                                         android:scaleType="centerCrop"
@@ -429,7 +432,7 @@
                             </FrameLayout>
 
                             <ImageView
-                                android:id="@+id/ivInsuranceCamera"
+                                android:id="@+id/ivInsuranceCameraFarmer"
                                 android:layout_width="@dimen/_30sdp"
                                 android:layout_height="@dimen/_30sdp"
                                 android:layout_gravity="end|bottom"
@@ -484,7 +487,7 @@
                             android:text="Incident Date" />
 
                         <TextView
-                            android:id="@+id/tvRequestDate"
+                            android:id="@+id/tvRequestDateFarmer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
@@ -500,15 +503,24 @@
 
                     <!-- add request button -->
 
-                    <Button
-                        android:id="@+id/btnAddReqest"
+                    <LinearLayout
+                        android:id="@+id/llAddReqBtnFarmer"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Add Request"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_12ssp"
-                        android:layout_marginVertical="@dimen/_10sdp"
-                        android:background="@drawable/round_fill_background"/>
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:background="@drawable/round_fill_background"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvAddReqTextFarmer"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:text="Add Request"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -518,7 +530,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 

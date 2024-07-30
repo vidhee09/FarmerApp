@@ -2,13 +2,16 @@ package com.ananta.fieldAgent.Models;
 
 public class PumpInstallModel {
 
-    String success,message;
+    public boolean success;
+    public String message;
+    public Pumpinstall pumpinstall;
 
-    public String getSuccess() {
+
+    public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 
@@ -18,5 +21,13 @@ public class PumpInstallModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Pumpinstall getPumpinstall() {
+        return pumpinstall;
+    }
+
+    public void setPumpinstall(Pumpinstall pumpinstall) {
+        this.pumpinstall = pumpinstall;
     }
 }

@@ -1,4 +1,5 @@
 package com.ananta.fieldAgent.Activity.fieldAgent;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -65,7 +66,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     private static final int PERMISSION_CODE = 1;
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private String signatureName,delivery_report,reportId,Imagepath;
+    private String signatureName, delivery_report, reportId, Imagepath;
     double latitude, longitude;
     Preference preference;
 
@@ -114,29 +115,42 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     }
 
     public void getData() {
+
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
 
-        Call<GetDeliveryData> call = apiInterface.getDeliveryReport(hashMap, "Bearer "+preference.getToken());
+        Call<GetDeliveryData> call = apiInterface.getDeliveryReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetDeliveryData>() {
             @Override
             public void onResponse(Call<GetDeliveryData> call, Response<GetDeliveryData> response) {
-                if (response.isSuccessful()) {
-                    Log.d("delivery ===>", "=1=" + response.body().getMessage());
-                    binding.edPresentPersonNameDelivery.setText(response.body().getDelivery().get(0).getPresentPersonName());
-                    reportId  = String.valueOf(response.body().getDelivery().get(0).getId());
-                    Glide.with(DeliveryReportActivity.this).load(Const.IMAGE_URL + response.body().getDelivery().get(0).getImage()).into(binding.ivMaterialPhoto);
 
+                if (response.body() != null) {
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+
+                        binding.edPresentPersonNameDelivery.setText(response.body().getDelivery().get(0).getPresentPersonName());
+                        reportId = String.valueOf(response.body().getDelivery().get(0).getId());
+                        Glide.with(DeliveryReportActivity.this).load(Const.IMAGE_URL + response.body().getDelivery().get(0).getImage()).into(binding.ivMaterialPhoto);
+
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                    }
                 } else {
-                    Log.d("delivery ===>", "=2=" + response.body().getMessage());
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<GetDeliveryData> call, Throwable t) {
-                Toast.makeText(DeliveryReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(DeliveryReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -164,12 +178,37 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         } else if (binding.tvAddressDelivery.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvErrorAddress.setVisibility(View.VISIBLE);
-        } /*else if (signatureName.isEmpty()) {
+        } else if (signatureName.isEmpty()) {
             isValid = false;
             binding.tvErrorAddress.setVisibility(View.VISIBLE);
             binding.tvErrorAddress.setText("please add signature");
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
-        }*/
+        } else if (Imagepath == null || Imagepath.isEmpty()) {
+            isValid = false;
+            binding.tvErrorAddress.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "please Select Image", Toast.LENGTH_SHORT).show();
+        }
+        return isValid;
+    }
+
+    /*  -- update report validation --     */
+    public boolean updateValidation() {
+        boolean isValid = true;
+        if (binding.edSurveyorNameDelivery.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.tvErrorSurveyorName.setVisibility(View.VISIBLE);
+        } else if (binding.edPresentPersonNameDelivery.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.tvErrorPresentPersonName.setVisibility(View.VISIBLE);
+        } else if (binding.tvAddressDelivery.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.tvErrorAddress.setVisibility(View.VISIBLE);
+        } else if (signatureName.isEmpty()) {
+            isValid = false;
+            binding.tvErrorAddress.setVisibility(View.VISIBLE);
+            binding.tvErrorAddress.setText("please add signature");
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
+        }
         return isValid;
     }
 
@@ -178,13 +217,13 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        HashMap<String,String > hashMap = new HashMap<>();
-        hashMap.put("id",reportId);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("id", reportId);
         hashMap.put("surveyor_name", Const.AGENT_NAME);
         hashMap.put("farmer_id", Const.FARMER_ID);
         hashMap.put("agent_id", Const.AGENT_ID);
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
-        if (!Imagepath.isEmpty()){
+        if (Imagepath == null || !Imagepath.toString().isEmpty()) {
             hashMap.put("image", Imagepath);
         }
         hashMap.put("date", binding.tvDeliveryDate.getText().toString());
@@ -192,31 +231,43 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
 
-        Call<DeliveryDataModel> call = apiInterface.updateDeliveryReport(hashMap, "Bearer "+preference.getToken());
+        Call<DeliveryDataModel> call = apiInterface.updateDeliveryReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<DeliveryDataModel>() {
             @Override
             public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
 
-                if (response.isSuccessful()){
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                    }
+                } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    finish();
-                }else {
-                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
+
             @Override
             public void onFailure(Call<DeliveryDataModel> call, Throwable t) {
-                Toast.makeText(DeliveryReportActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(DeliveryReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
-
     }
 
     /*   add report */
     public void addDeliveryReportData() {
 
-        binding.pbProgressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("surveyor_name", Const.AGENT_NAME);
@@ -229,13 +280,15 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
 
-        Call<DeliveryDataModel> call = apiInterface.addDeliveryReport(hashMap, "Bearer "+preference.getToken());
+        Call<DeliveryDataModel> call = apiInterface.addDeliveryReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<DeliveryDataModel>() {
             @Override
             public void onResponse(Call<DeliveryDataModel> call, Response<DeliveryDataModel> response) {
 
+                Log.d("response===", "delivery=" + response.code());
+
                 if (response.body() != null) {
-                    if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
@@ -243,10 +296,12 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -386,7 +441,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     binding.ivMaterialPhoto.setImageBitmap(bitmap);
                     uploadImage(contentURI, 1);
-                    Log.d("contentURI===>","=bitmap="+contentURI);
+                    Log.d("contentURI===>", "=bitmap=" + contentURI);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -447,14 +502,18 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         if (id == R.id.ivMaterialCamera) {
             showPictureDialog();
         } else if (id == R.id.llDeliverySubmit) {
-            if (validation()) {
-                if (delivery_report.equals("0")){
+            if (delivery_report.equals("0")) {
+                if (validation()) {
                     addDeliveryReportData();
-                }else {
-                    updateSiteReport(reportId);
+                } else {
+                    Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                if (updateValidation()) {
+                    updateSiteReport(reportId);
+                } else {
+                    Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                }
             }
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
@@ -526,7 +585,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer " + preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -534,23 +593,32 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    Log.w("ImageName", imageName[0]);
-                    if (fromWhere == 1) {
-                        Imagepath = imageModel.getFileUploadData().getImage_name();
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        Log.w("ImageName", imageName[0]);
+                        if (fromWhere == 1) {
+                            Imagepath = imageModel.getUploadimage().getImage_name();
+                        }
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(DeliveryReportActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(DeliveryReportActivity.this, "Image uploaded failed", Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -567,7 +635,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture");
+        Call<ImageModel> call = apiInterface.uploadImage(multipartBody, "profile_picture", "Bearer " + preference.getToken());
 
         final String[] imageName = {""};
         call.enqueue(new Callback<ImageModel>() {
@@ -575,20 +643,28 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                 ImageModel imageModel = response.body();
 
-                if (response.isSuccessful()) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    imageName[0] = imageModel.getFileUploadData().getImage_name();
-                    signatureName = imageModel.getFileUploadData().getImage_name();
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        imageName[0] = imageModel.getUploadimage().getImage_name();
+                        signatureName = imageModel.getUploadimage().getImage_name();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                    }
                 } else {
+                    binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(DeliveryReportActivity.this, "" + t, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DeliveryReportActivity.this, "Image upload failed" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
     }

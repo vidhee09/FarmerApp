@@ -175,10 +175,15 @@ public class FarmerDetailActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
     public void checkReportStatus() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+
+        binding.rlDeliveryReport.setClickable(false);
+        binding.rlSiteReport.setClickable(false);
+        binding.rlPumpInstall.setClickable(false);
+        binding.rlJointReport.setClickable(false);
+
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -195,7 +200,6 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
                 if (response.body() != null){
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    assert response.body() != null;
                     site_report = response.body().getSiteReport();
                     delivery_report = response.body().getDeliveryReport();
                     joint_report = response.body().getJointReport();
@@ -226,10 +230,16 @@ public class FarmerDetailActivity extends AppCompatActivity {
                         binding.ivJointRightArrow.setImageResource(R.drawable.ic_next_arrow);
                     }
 
+                    binding.rlDeliveryReport.setClickable(true);
+                    binding.rlSiteReport.setClickable(true);
+                    binding.rlPumpInstall.setClickable(true);
+                    binding.rlJointReport.setClickable(true);
+
                     Log.d("response====", "=" + site_report + delivery_report + joint_report + pump_report);
                 }else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Log.d("response====", "=" + site_report + delivery_report + joint_report + pump_report);
+                    Toast.makeText(FarmerDetailActivity.this, "Status not match", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -237,7 +247,8 @@ public class FarmerDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<CheckStatusModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(FarmerDetailActivity.this, "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FarmerDetailActivity.this, "" +t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
 
