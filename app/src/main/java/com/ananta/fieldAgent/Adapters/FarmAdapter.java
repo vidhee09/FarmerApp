@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
+public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder> {
 
     Context context;
     List<CurrentServiceDatumFarmer> farmerList;
@@ -39,7 +39,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
     @NonNull
     @Override
     public FarmAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.raw_farmer_layout,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.raw_farmer_layout, parent, false);
         return new ViewHolder(view);
     }
 
@@ -49,11 +49,11 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
         holder.tvFarmerName.setText(model.getRequest_type());
         holder.tvAddressName.setText(model.getDescription());
         holder.tvPumpName.setText(model.getService_request());
-        if (!model.getImage_name().isEmpty()){
-            Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).into(holder.ivFarmerImage);
-        }else {
-            Glide.with(context).load(R.drawable.placeholder).into(holder.ivFarmerImage);
-        }
+//        if (!model.getImage_name().isEmpty()){
+//            Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).into(holder.ivFarmerImage);
+//        }else {
+        Glide.with(context).load(R.drawable.placeholder).into(holder.ivFarmerImage);
+//        }
 
     }
 
@@ -63,9 +63,9 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder>{
     }
 
 
-    public class  ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvFarmerName,tvPumpName,tvAddressName;
+        TextView tvFarmerName, tvPumpName, tvAddressName;
         ImageView ivFarmerImage;
 
         public ViewHolder(@NonNull View itemView) {

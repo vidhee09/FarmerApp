@@ -66,7 +66,7 @@ public class PastRequestFragment extends Fragment {
     }
 
     public void bindRcv() {
-        if (pastReqModelArrayList.isEmpty()){
+        if (pastReqModelArrayList == null){
             binding.llData.setVisibility(View.GONE);
             binding.rlNoData.setVisibility(View.VISIBLE);
         }

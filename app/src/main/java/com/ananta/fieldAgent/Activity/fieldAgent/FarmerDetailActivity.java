@@ -179,6 +179,10 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
 
+        binding.rlDeliveryReport.setClickable(false);
+        binding.rlSiteReport.setClickable(false);
+        binding.rlPumpInstall.setClickable(false);
+        binding.rlJointReport.setClickable(false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -225,6 +229,11 @@ public class FarmerDetailActivity extends AppCompatActivity {
                     } else {
                         binding.ivJointRightArrow.setImageResource(R.drawable.ic_next_arrow);
                     }
+
+                    binding.rlDeliveryReport.setClickable(true);
+                    binding.rlSiteReport.setClickable(true);
+                    binding.rlPumpInstall.setClickable(true);
+                    binding.rlJointReport.setClickable(true);
 
                     Log.d("response====", "=" + site_report + delivery_report + joint_report + pump_report);
                 }else {

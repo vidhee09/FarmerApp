@@ -40,7 +40,11 @@ public class LoginScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginScreenBinding.inflate(getLayoutInflater());
         setContentView( binding.getRoot());
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
         binding.tvSendOtpLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -35,16 +35,6 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/bg_green_add"
-            android:padding="@dimen/_10sdp"
-            android:src="@drawable/user" />
 
     </RelativeLayout>
 
@@ -56,7 +46,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_13sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -511,24 +500,15 @@
 
                     <!-- add request button -->
 
-                    <LinearLayout
-                        android:id="@+id/llAddReqBtn"
+                    <Button
+                        android:id="@+id/btnAddReqest"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_marginTop="@dimen/_30sdp"
-                        android:background="@drawable/round_fill_background"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvAddReqText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/poppins_bold"
-                            android:gravity="center"
-                            android:text="Add Request"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_14ssp" />
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:text="Add Request"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_12ssp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:background="@drawable/round_fill_background"/>
 
                 </LinearLayout>
 

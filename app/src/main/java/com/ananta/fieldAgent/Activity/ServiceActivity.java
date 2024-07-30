@@ -93,25 +93,28 @@ public class ServiceActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
         getCurrentRequestData();
+    }
 
+    public void setAllClicksDisable(boolean b){
+        binding.ivBackPress.setClickable(b);
+        binding.ivAddReqImage.setClickable(b);
     }
 
     public void getCurrentRequestData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
-
+        setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("id", Const.AGENT_ID);
+        Log.d("Service ===>" ,"===>" + preference.getAgentId());
+        hashMap.put("id", preference.getAgentId());
 
         Call<CurrentReqModel> call = apiInterface.getCurrentRequest(hashMap ,"Bearer "+preference.getToken());
 
@@ -119,10 +122,10 @@ public class ServiceActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<CurrentReqModel> call, @NonNull Response<CurrentReqModel> response) {
 
-                Log.d("response===","=current"+response.code());
                 if (response.body() != null){
                     if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
                         adapter.addFragment(new CurrentRequestFragment(response.body().getCurrent_service_data()), "Current Request");
                         adapter.addFragment(new PastRequestFragment(response.body().getPastServiceData()), "Past Request");
@@ -131,10 +134,12 @@ public class ServiceActivity extends AppCompatActivity {
 
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         Toast.makeText(ServiceActivity.this, "Request not available", Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
                     Toast.makeText(ServiceActivity.this, "Request not available", Toast.LENGTH_SHORT).show();
                 }
 
@@ -142,24 +147,11 @@ public class ServiceActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<CurrentReqModel> call, Throwable t) {
-//                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
                 Toast.makeText(ServiceActivity.this, " "+t.getMessage(), Toast.LENGTH_SHORT).show();
-//                binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
-
-        /*binding.svSearchViewCurrent.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filter(newText);
-                return false;
-            }
-        });*/
     }
 
 

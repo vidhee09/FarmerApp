@@ -104,13 +104,13 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 } else if (position == 1) {
                     binding.tvErrorText.setVisibility(View.GONE);
                     binding.llServiceRequestLayout.setVisibility(View.VISIBLE);
-                    binding.tvAddReqText.setText("Add Request");
+                    binding.btnAddReqest.setText("Add Request");
                     binding.llInsauranceClaimLayout.setVisibility(View.GONE);
 
                 } else if (position == 2) {
                     binding.tvErrorText.setVisibility(View.GONE);
                     binding.llInsauranceClaimLayout.setVisibility(View.VISIBLE);
-                    binding.tvAddReqText.setText("Insaurance claim");
+                    binding.btnAddReqest.setText("Insaurance claim");
                     binding.llServiceRequestLayout.setVisibility(View.GONE);
                 }
             }
@@ -139,6 +139,19 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         getInsuranceClaim();
         getServiceRequest();
 
+    }
+
+
+    public void setAllClicksDisable(boolean b){
+        binding.spSpinner.setEnabled(b);
+        binding.spFarmerName.setEnabled(b);
+        binding.spSpinnerRequest.setEnabled(b);
+        binding.spSpinner.setClickable(b);
+        binding.spFarmerName.setClickable(b);
+        binding.spSpinnerRequest.setClickable(b);
+        binding.ivBackPress.setClickable(b);
+        binding.ivReqCamera.setClickable(b);
+        binding.btnAddReqest.setClickable(b);
     }
 
     public void getInsuranceReasonData() {
@@ -231,7 +244,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public void clickListener() {
         binding.ivReqCamera.setOnClickListener(this);
-        binding.llAddReqBtn.setOnClickListener(this);
+        binding.btnAddReqest.setOnClickListener(this);
         binding.ivInsuranceCamera.setOnClickListener(this);
 
     }
@@ -239,7 +252,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.llAddReqBtn) {
+        if (id == R.id.btnAddReqest) {
             if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")) {
                 if (validationIns()) {
                     getAddRequestData();
@@ -305,7 +318,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
-
+        setAllClicksDisable(false);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", Const.AGENT_ID);
 
@@ -317,6 +330,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         allFarmersList.addAll(response.body().getFarmer());
                         for (int i = 0; i < allFarmersList.size(); i++) {
                             list.add(allFarmersList.get(i).getName());
@@ -324,20 +338,22 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                         }
                         setFarmerList();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(AddRequestActivity.this, "No farmers found for the given agent ID", Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(AddRequestActivity.this, "No farmers found for the given agent ID", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(AddRequestActivity.this, "Farmer not available", Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+
+                    Toast.makeText(AddRequestActivity.this, "Farmer not available", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AllFarmerModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
                 Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
                 Log.d("Addrequest", "=" + t.getMessage());
             }
@@ -356,11 +372,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
                 farmer_name = list.get(position);
                 farmer_id = String.valueOf(ids.get(position));
-
-                Log.d("farmer id===>", "=list=" + farmer_name);
-
-                Log.d("farmer id===>", "=ids=" + farmer_id);
-
             }
 
             @Override
@@ -374,6 +385,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void getAddRequestData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
@@ -402,24 +414,25 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     if (response.body().isSuccess()) {
                         Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         finish();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(AddRequestActivity.this, "Data not Found" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(AddRequestActivity.this, "Data not Found" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -534,6 +547,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public void uploadImage(Uri contentURI, int fromWhere) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
         Uri uri = null;
         String fName = "";
@@ -562,6 +576,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         Log.w("ImageName", imageName[0]);
                         if (fromWhere == 1) {
@@ -570,23 +585,23 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                             Imagepath = imageModel.getUploadimage().getImage_name();
                         }
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(AddRequestActivity.this, ""+ response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(AddRequestActivity.this, ""+ response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(AddRequestActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(AddRequestActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(AddRequestActivity.this, "image not uploaded" + t, Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(AddRequestActivity.this, "image not uploaded" + t, Toast.LENGTH_SHORT).show();
 
             }
         });

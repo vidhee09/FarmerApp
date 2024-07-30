@@ -268,6 +268,9 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
         } else if (binding.edReqDescriptionFarmer.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
+        }else if (Imagepath == null || Imagepath.isEmpty()) {
+            isvalid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
         }
         return isvalid;
     }

@@ -160,7 +160,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
 
-
         Call<SiteReportModel> call = apiInterface.updateSiteReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<SiteReportModel>() {
             @Override
@@ -183,7 +182,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                     Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
                 }
-
             }
 
             @Override
@@ -303,7 +301,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.ivCameraPump) {
-//            checkAndRequestPermissions();
             showPictureDialog(1);
         } else if (id == R.id.ivBenificiaryCameraSite) {
             showPictureDialog(2);
@@ -313,13 +310,13 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                     if (validation()) {
                         addSiteReportData();
                     } else {
-                        Toast.makeText(this, "Please fill all field", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please fill all details", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     if (updateValidation()) {
                         updateSiteReport(reportId);
                     } else {
-                        Toast.makeText(this, "Please fill all field", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please fill all details", Toast.LENGTH_SHORT).show();
                     }
                 }
             } else {
@@ -340,7 +337,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = sdf.format(c.getTime());
-        binding.tvDateSiteReport.setText(formattedDate);
+        binding.tvDateSiteReport.setText(formattedDate );
 
     }
 
@@ -359,6 +356,9 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             isValid = false;
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         } else if (Imagepath == null || Imagepath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }else if (baneficiarypath == null || baneficiarypath.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
         }
@@ -622,6 +622,8 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     public void uploadImage(Uri contentURI, int fromWhere) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
 
+//        binding.
+
         Uri uri = null;
         String fName = "";
         try {
@@ -685,6 +687,9 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
     public void uploadFileImage(File file) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+
+//
+
         Uri uri = null;
         String fName = "";
         Log.w("FilePath", file.getPath());

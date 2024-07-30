@@ -122,7 +122,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             @Override
             public void onResponse(Call<GetPumpData> call, Response<GetPumpData> response) {
 
-                if (response.body() != null){
+                if (response.body() != null) {
                     if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         binding.edPumpId.setText(response.body().getPumpInstallation().get(0).getPumpId());
@@ -147,7 +147,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
                     }
-                }else {
+                } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
@@ -176,6 +176,36 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     }
 
     public boolean validation() {
+        boolean isValid = true;
+        if (binding.edPumpId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edPumpId.setError("please enter pump id");
+
+        } else if (binding.edIMEIId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edIMEIId.setError("please enter IMEI Id");
+
+        } else if (binding.edStructureId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edStructureId.setError("please enter structure id ");
+
+        } else if (binding.edControllerId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edControllerId.setError("please enter controller id ");
+        } else if (pumpPath == null || pumpPath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        } else if (baneficiarypath == null || baneficiarypath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        } else if (workingPumpPath == null || workingPumpPath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }
+        return isValid;
+    }
+
+    public boolean updateValidation() {
         boolean isValid = true;
         if (binding.edPumpId.getText().toString().isEmpty()) {
             isValid = false;
@@ -421,7 +451,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             @Override
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
             }
         });
@@ -493,25 +523,32 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         } else if (id == R.id.ivWorkingPumpCamera) {
             showPictureDialog(3);
         } else if (id == R.id.llSubmitPumpInstall) {
-            if (validation()) {
-                if (pump_report.equals("0")) {
-                    if (countChipsInChipGroup(binding.chipGroup) >= 9) {
+            if (pump_report.equals("0")) {
+                if (countChipsInChipGroup(binding.chipGroup) >= 9) {
+                    if (validation()) {
                         addPumpInstallationData();
                     } else {
-                        Toast.makeText(this, "Panel id minimum 9 required", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "please filled all details", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    updatePumpInstallReport(reportId);
+                    Toast.makeText(this, "Panel id minimum 9 required", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (countChipsInChipGroup(binding.chipGroup) >= 9) {
+                    if (updateValidation()) {
+                        updatePumpInstallReport(reportId);
+                    } else {
+                        Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Panel id minimum 9 required", Toast.LENGTH_SHORT).show();
                 }
 
-            } else {
-                Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.ivAddMoreId) {
             if (!binding.edPanelId.getText().toString().isEmpty()) {
                 addMorePanelId(binding.edPanelId.getText().toString());
                 binding.edPanelId.setText("");
-
             }
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
@@ -651,7 +688,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
             }
         });

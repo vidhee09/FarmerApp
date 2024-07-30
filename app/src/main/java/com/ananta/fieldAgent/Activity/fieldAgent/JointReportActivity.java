@@ -285,7 +285,6 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-
     /*  update joint report  */
     public void updateReport(String reportId) {
 
@@ -527,25 +526,114 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         if (binding.edDepthWaterSource.getText().toString().isEmpty()) {
             isValid = false;
             binding.edDepthWaterSource.setError("please enter depth water source level");
-
         } else if (binding.edConstantWaterLevel.getText().toString().isEmpty()) {
             isValid = false;
             binding.edConstantWaterLevel.setError("please enter water constant level");
-
         } else if (binding.edSurveyorIMEIId.getText().toString().isEmpty()) {
             isValid = false;
             binding.edSurveyorIMEIId.setError("please enter IMEI Id");
-
         } else if (binding.edSurveyorAlternativeNumber.getText().toString().isEmpty()) {
             isValid = false;
             binding.edSurveyorAlternativeNumber.setError("please enter alternate number");
-
         } else if (binding.edWaterDeliveryPoint.getText().toString().isEmpty()) {
             isValid = false;
             binding.edWaterDeliveryPoint.setError("please enter water delivery point ");
         } else if (binding.edRemark.getText().toString().isEmpty()) {
             isValid = false;
             binding.edRemark.setError("please enter remark");
+        }else if (checkbox_typeWaterSource.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_pump_surveyor.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump head by surveyor", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_available_person.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select available person", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_pump_beneficiary.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump head by beneficiary", Toast.LENGTH_SHORT).show();
+        }else if (pumpPath == null || pumpPath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }else if (baneficiarypath == null || baneficiarypath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }else if (landmarkPath == null || landmarkPath.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }else if (selectedWater.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select water availability", Toast.LENGTH_SHORT).show();
+        }else if (selectedPumpType.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump type", Toast.LENGTH_SHORT).show();
+        }else if (selectAgPump.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Ag pump availability", Toast.LENGTH_SHORT).show();
+        }else if (selectGovt.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Govt. scheme", Toast.LENGTH_SHORT).show();
+        }else if (networkSelect.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select network availability ", Toast.LENGTH_SHORT).show();
+        }else if (selectShaow.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select available area", Toast.LENGTH_SHORT).show();
+        }
+        return isValid;
+    }
+
+    public boolean updateValidation() {
+        boolean isValid = true;
+        if (binding.edDepthWaterSource.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edDepthWaterSource.setError("please enter depth water source level");
+        } else if (binding.edConstantWaterLevel.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edConstantWaterLevel.setError("please enter water constant level");
+        } else if (binding.edSurveyorIMEIId.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edSurveyorIMEIId.setError("please enter IMEI Id");
+        } else if (binding.edSurveyorAlternativeNumber.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edSurveyorAlternativeNumber.setError("please enter alternate number");
+        } else if (binding.edWaterDeliveryPoint.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edWaterDeliveryPoint.setError("please enter water delivery point ");
+        } else if (binding.edRemark.getText().toString().isEmpty()) {
+            isValid = false;
+            binding.edRemark.setError("please enter remark");
+        }else if (checkbox_typeWaterSource.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_pump_surveyor.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump head by surveyor", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_available_person.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select available person", Toast.LENGTH_SHORT).show();
+        }else if (checkbox_pump_beneficiary.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump head by beneficiary", Toast.LENGTH_SHORT).show();
+        }else if (selectedWater.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select water availability", Toast.LENGTH_SHORT).show();
+        }else if (selectedPumpType.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select pump type", Toast.LENGTH_SHORT).show();
+        }else if (selectAgPump.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Ag pump availability", Toast.LENGTH_SHORT).show();
+        }else if (selectGovt.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select Govt. scheme", Toast.LENGTH_SHORT).show();
+        }else if (networkSelect.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select network availability ", Toast.LENGTH_SHORT).show();
+        }else if (selectShaow.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please select available area", Toast.LENGTH_SHORT).show();
         }
         return isValid;
     }
@@ -816,16 +904,20 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             showPictureDialog(3);
 
         } else if (id == R.id.llJointSubmit) {
+            getCheckboxData();
+            getSelectedRadioButton();
+            if (joint_report.equals("0")) {
             if (validation()) {
-                getCheckboxData();
-                getSelectedRadioButton();
-                if (joint_report.equals("0")) {
                     addJointReportData();
                 } else {
-                    updateReport(reportId);
+                Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                if(updateValidation()){
+                    updateReport(reportId);
+                }else {
+                    Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                }
             }
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
