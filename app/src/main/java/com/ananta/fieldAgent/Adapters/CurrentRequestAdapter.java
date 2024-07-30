@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ananta.fieldAgent.Activity.farmer.FarmerCurrentServiceSinglePageActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.SingleCurrentServiceDetailsActivity;
 import com.ananta.fieldAgent.Fragments.CurrentRequestFragment;
-import com.ananta.fieldAgent.Models.CurrentReqModel;
 import com.ananta.fieldAgent.Models.CurrentServiceDatum;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
@@ -50,7 +50,7 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, FarmerCurrentServiceSinglePageActivity.class);
+                Intent intent = new Intent(context, SingleCurrentServiceDetailsActivity.class);
                 intent.putExtra("farmer_name",model.getFarmer_name());
                 intent.putExtra("request_name",model.getRequest_type());
                 intent.putExtra("farmer_address",model.getFarmer_address());
@@ -59,6 +59,7 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
                 intent.putExtra("ID",String.valueOf(model.getId()));
                 intent.putExtra("company_name",model.getCompany_name());
                 context.startActivity(intent);
+
             }
         });
 

@@ -59,7 +59,7 @@
             android:id="@+id/svSearchView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginHorizontal="@dimen/_18sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/round_background"
             android:iconifiedByDefault="false"

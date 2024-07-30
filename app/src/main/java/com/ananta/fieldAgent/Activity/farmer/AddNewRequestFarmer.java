@@ -138,6 +138,15 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
 
     }
 
+    public void setClickDisable(boolean b) {
+
+        binding.spSpinnerFarmer.setClickable(b);
+        binding.rlFarmerName.setClickable(b);
+        binding.tvFarmerName.setClickable(b);
+        binding.spSpinnerRequestFarmer.setClickable(b);
+        binding.edReqDescriptionFarmer.setClickable(b);
+    }
+
     public void getInsuranceReasonData() {
 
         ArrayList<String> insuranceReason = new ArrayList<>();

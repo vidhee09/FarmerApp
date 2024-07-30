@@ -77,6 +77,7 @@ public class PastRequestFragment extends Fragment {
             binding.rcvPastReqView.setLayoutManager(manager);
             adapter = new PastReqAdapter(getActivity(), pastReqModelArrayList);
             binding.rcvPastReqView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
     }
 

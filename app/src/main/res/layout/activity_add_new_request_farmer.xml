@@ -186,7 +186,7 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_5sdp">
+                                android:layout_marginTop="@dimen/_1sdp">
 
                                 <Spinner
                                     android:id="@+id/spSpinnerRequestFarmer"

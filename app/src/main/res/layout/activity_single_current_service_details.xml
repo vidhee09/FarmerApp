@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.farmer.FarmerCurrentServiceSinglePageActivity">
+    tools:context=".Activity.fieldAgent.SingleCurrentServiceDetailsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -49,12 +49,12 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_120sdp"
+                android:layout_height="@dimen/_100sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp">
 
                 <ImageView
-                    android:id="@+id/farmerImage"
+                    android:id="@+id/ivFarmerImageCurrentService"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
@@ -74,7 +74,7 @@
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerID"
+                    android:id="@+id/tvFarmerIDCurrentService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -101,7 +101,7 @@
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerApplicationNo"
+                    android:id="@+id/tvApplicationNoCurrentService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -128,7 +128,7 @@
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerName"
+                    android:id="@+id/tvFarmerNameCurrentService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -155,7 +155,7 @@
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerAddress"
+                    android:id="@+id/tvAddressCurrentService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -182,7 +182,7 @@
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerComplaintName"
+                    android:id="@+id/tvComplaintNameCurrentService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -222,6 +222,17 @@
                     android:padding="@dimen/_10sdp" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Complete"
+                android:textStyle="bold"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:background="@drawable/round_fill_background"/>
+
 
         </LinearLayout>
 

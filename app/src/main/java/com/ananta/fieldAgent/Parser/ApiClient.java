@@ -86,7 +86,7 @@ public class ApiClient {
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(chain -> {
             Request newRequest = chain.request().newBuilder().build();
-            httpLoggingInterceptor.intercept(chain);
+//            httpLoggingInterceptor.intercept(chain);
             return chain.proceed(newRequest);
         }).build();
 
