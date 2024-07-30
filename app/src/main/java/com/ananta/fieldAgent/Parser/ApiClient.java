@@ -24,7 +24,8 @@ public class ApiClient {
     private static final int CONNECTION_TIMEOUT = 30; //seconds
     private static final int READ_TIMEOUT = 20; //seconds
     private static final int WRITE_TIMEOUT = 20; //seconds
-    private static String BASE_URL = "https://farmer.idglock.com/api/";
+//    private static String BASE_URL = "https://farmer.idglock.com/api/";
+    private static String BASE_URL = "http://192.168.31.145:8000/api/";
     private static String token = "" ;
 
     public static Retrofit getClient(){
