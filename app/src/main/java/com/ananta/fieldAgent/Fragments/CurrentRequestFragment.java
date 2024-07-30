@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class CurrentRequestFragment extends Fragment {
                 return false;
             }
         });
+
         return view;
     }
 
@@ -73,6 +75,7 @@ public class CurrentRequestFragment extends Fragment {
             binding.rcvCurrentReqView.setLayoutManager(manager);
             adapter = new CurrentRequestAdapter(getActivity(), currentReqList);
             binding.rcvCurrentReqView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
 
     }

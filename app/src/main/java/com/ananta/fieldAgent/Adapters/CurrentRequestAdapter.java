@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ananta.fieldAgent.Activity.farmer.FarmerCurrentServiceSinglePageActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.SingleCurrentServiceDetailsActivity;
 import com.ananta.fieldAgent.Fragments.CurrentRequestFragment;
-import com.ananta.fieldAgent.Models.CurrentReqModel;
 import com.ananta.fieldAgent.Models.CurrentServiceDatum;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.R;
@@ -41,9 +43,25 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
 
         CurrentServiceDatum model = currentReqList.get(position);
         holder.tvFarmerName.setText(model.getFarmer_name());
-        holder.tvRequestName.setText(model.getService_request());
+        holder.tvRequestName.setText(model.getRequest_type());
         holder.tvAddressCurrentReq.setText(model.getFarmer_address());
         Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).error(R.drawable.placeholder).into(holder.ivCurrentReqImage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, SingleCurrentServiceDetailsActivity.class);
+                intent.putExtra("farmer_name",model.getFarmer_name());
+                intent.putExtra("request_name",model.getRequest_type());
+                intent.putExtra("farmer_address",model.getFarmer_address());
+                intent.putExtra("image_name",model.getImage_name());
+                intent.putExtra("ComplaintId",model.getComplaint_id());
+                intent.putExtra("ID",String.valueOf(model.getId()));
+                intent.putExtra("company_name",model.getCompany_name());
+                context.startActivity(intent);
+
+            }
+        });
 
     }
 

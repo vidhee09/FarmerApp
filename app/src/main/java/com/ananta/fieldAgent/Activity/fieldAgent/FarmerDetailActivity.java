@@ -58,7 +58,11 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
         FarmerPosition = getIntent().getStringExtra("farmer_position");
         FarmerName = getIntent().getStringExtra("FarmerName");
-        CompanyName = getIntent().getStringExtra("CompanyName");
+        if (CompanyName.isEmpty()){
+            CompanyName = "CompanyName";
+        }else {
+            CompanyName = getIntent().getStringExtra("CompanyName");
+        }
 
         binding.tvAgentName.setText(FarmerName);
         binding.tvCompanyName.setText(CompanyName);
@@ -159,7 +163,6 @@ public class FarmerDetailActivity extends AppCompatActivity {
                     }
                 }));
 
-
         binding.ivBackPress.setOnClickListener(v -> onBackPressed());
     }
 
@@ -200,10 +203,11 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
                 if (response.body() != null){
                     binding.pbProgressBar.setVisibility(View.GONE);
+
                     site_report = String.valueOf(response.body().getReports().getSiteReport());
                     delivery_report = String.valueOf(response.body().getReports().getDeliveryReport());
                     joint_report = String.valueOf(response.body().getReports().getJointReport());
-                    pump_report = String.valueOf(response.body().getReports().getPumpReport());
+                    pump_report =String.valueOf(response.body().getReports().getPumpReport());
 
                     if (site_report.equals("1")) {
                         binding.ivSiteRightArrow.setImageResource(R.drawable.right);

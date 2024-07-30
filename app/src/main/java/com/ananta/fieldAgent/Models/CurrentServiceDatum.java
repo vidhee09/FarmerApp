@@ -13,7 +13,6 @@ public class CurrentServiceDatum {
     public String description;
     public String image_name;
     public String image_url;
-    public String service_request;
     public String complaint_id;
     public String reason;
     public String incident_date;
@@ -21,6 +20,15 @@ public class CurrentServiceDatum {
     public int status;
     public String created_at;
     public String updated_at;
+    public String company_name;
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
+    }
 
     public int getId() {
         return id;
@@ -86,13 +94,7 @@ public class CurrentServiceDatum {
         this.image_url = image_url;
     }
 
-    public String getService_request() {
-        return service_request;
-    }
 
-    public void setService_request(String service_request) {
-        this.service_request = service_request;
-    }
 
     public String getComplaint_id() {
         return complaint_id;

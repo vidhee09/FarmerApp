@@ -75,7 +75,6 @@ public class DashboardActivity extends AppCompatActivity {
             finishAffinity();
         });
 
-
         ivPersonalDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

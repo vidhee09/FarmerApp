@@ -52,7 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tbTabLayout"
             android:layout_width="match_parent"
@@ -70,12 +69,20 @@
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
             app:tabTextColor="@color/black" />
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeServiceMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tbTabLayout">
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vpViewPager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tbTabLayout"
             android:layout_marginTop="@dimen/_2sdp" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
         <ProgressBar

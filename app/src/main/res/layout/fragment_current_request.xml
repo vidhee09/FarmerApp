@@ -25,12 +25,13 @@
                 android:iconifiedByDefault="false"
                 android:queryHint="Search" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvCurrentReqView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvCurrentReqView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp" />
+
 
         </LinearLayout>
 

@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.fieldAgent.ShowComplaintActivity">
+    tools:context=".Activity.fieldAgent.SingleCurrentServiceDetailsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_70sdp"
+        android:layout_height="70dp"
         android:background="@drawable/round_bg_globle"
         android:orientation="horizontal">
 
@@ -31,12 +31,11 @@
             android:gravity="center_horizontal"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/AddRequest"
+            android:text="Service Details"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
 
     </RelativeLayout>
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -50,11 +49,12 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_120sdp"
+                android:layout_height="@dimen/_100sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp">
 
                 <ImageView
+                    android:id="@+id/ivFarmerImageCurrentService"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
@@ -70,11 +70,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Farmer Name"
+                    android:text="Farmer ID"
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerName"
+                    android:id="@+id/tvFarmerIDCurrentService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -97,11 +97,65 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Phone Number"
+                    android:text="Application No."
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerNumber"
+                    android:id="@+id/tvApplicationNoCurrentService"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_background"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_regular"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Farmer Name"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/tvFarmerNameCurrentService"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_background"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_regular"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/tvAddressCurrentService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -128,7 +182,7 @@
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerComplaintName"
+                    android:id="@+id/tvComplaintNameCurrentService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -151,11 +205,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Complaint Number"
+                    android:text="Company Name"
                     android:fontFamily="@font/poppins_bold"/>
 
                 <TextView
-                    android:id="@+id/tvFarmerComplaintNumber"
+                    android:id="@+id/tvFarmerCompanyName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -168,6 +222,17 @@
                     android:padding="@dimen/_10sdp" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Complete"
+                android:textStyle="bold"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:background="@drawable/round_fill_background"/>
+
 
         </LinearLayout>
 

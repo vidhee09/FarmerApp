@@ -138,6 +138,15 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
 
     }
 
+    public void setClickDisable(boolean b) {
+
+        binding.spSpinnerFarmer.setClickable(b);
+        binding.rlFarmerName.setClickable(b);
+        binding.tvFarmerName.setClickable(b);
+        binding.spSpinnerRequestFarmer.setClickable(b);
+        binding.edReqDescriptionFarmer.setClickable(b);
+    }
+
     public void getInsuranceReasonData() {
 
         ArrayList<String> insuranceReason = new ArrayList<>();
@@ -304,6 +313,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
         hashMap.put("farmer_id", preference.getFarmerLoginId());
         hashMap.put("request_type", binding.spSpinnerFarmer.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequestFarmer.getSelectedItem().toString());
+
         if (binding.spSpinnerFarmer.getSelectedItem().toString().equals("Insurance Claim")) {
             hashMap.put("description", binding.edInsuranceDescriptionFarmer.getText().toString());
         } else {

@@ -47,6 +47,8 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
         holder.tvFarmerName.setText(model.getName());
         holder.tvAddressName.setText(model.getAddress());
 
+        Log.d("farmer address===>","="+model.getAddress());
+
 //      holder.tvPumpName.setText(model.getName());
 //      holder.tvAddressName.setText(model.getName());
 

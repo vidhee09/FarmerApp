@@ -72,7 +72,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/_16sdp"
-        android:src="@drawable/logo"
+        android:src="@drawable/ic_farmer"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toBottomOf="@id/llToolbar"/>
 
