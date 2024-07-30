@@ -55,7 +55,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/llToolbar">
 
-
         <SearchView
             android:id="@+id/svSearchView"
             android:layout_width="match_parent"
@@ -66,15 +65,22 @@
             android:iconifiedByDefault="false"
             android:queryHint="Search" />
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshFarmerDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/svSearchView">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvFarmer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="vertical"
-            android:layout_below="@id/svSearchView"
-            />
+            android:orientation="vertical" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ProgressBar
             android:id="@+id/pbProgressBar"

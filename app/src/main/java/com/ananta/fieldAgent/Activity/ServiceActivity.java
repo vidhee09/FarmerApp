@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
@@ -93,6 +94,14 @@ public class ServiceActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+
+        binding.swipeServiceMain.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getCurrentRequestData();
+            }
+        });
     }
 
     @Override
@@ -130,7 +139,9 @@ public class ServiceActivity extends AppCompatActivity {
                         adapter.addFragment(new CurrentRequestFragment(response.body().getCurrent_service_data()), "Current Request");
                         adapter.addFragment(new PastRequestFragment(response.body().getPastServiceData()), "Past Request");
                         binding.vpViewPager.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                         binding.tbTabLayout.setupWithViewPager(binding.vpViewPager);
+                        binding.swipeServiceMain.setRefreshing(false);
 
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);

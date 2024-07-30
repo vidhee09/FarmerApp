@@ -52,10 +52,11 @@ public class PastRequestFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filter(newText);
+//                filter(newText);
                 return false;
             }
         });
+
         return view;
     }
 
@@ -66,11 +67,10 @@ public class PastRequestFragment extends Fragment {
     }
 
     public void bindRcv() {
-        if (pastReqModelArrayList == null){
+        if (pastReqModelArrayList == null || pastReqModelArrayList.isEmpty() ){
             binding.llData.setVisibility(View.GONE);
             binding.rlNoData.setVisibility(View.VISIBLE);
-        }
-        else{
+        }else{
             binding.llData.setVisibility(View.VISIBLE);
             binding.rlNoData.setVisibility(View.GONE);
             LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -79,7 +79,6 @@ public class PastRequestFragment extends Fragment {
             binding.rcvPastReqView.setAdapter(adapter);
         }
     }
-
 
     private void filter(String text) {
         ArrayList<PastServiceDatum> filteredlist = new ArrayList<>();

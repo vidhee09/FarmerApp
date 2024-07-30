@@ -304,6 +304,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
         hashMap.put("farmer_id", preference.getFarmerLoginId());
         hashMap.put("request_type", binding.spSpinnerFarmer.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequestFarmer.getSelectedItem().toString());
+
         if (binding.spSpinnerFarmer.getSelectedItem().toString().equals("Insurance Claim")) {
             hashMap.put("description", binding.edInsuranceDescriptionFarmer.getText().toString());
         } else {

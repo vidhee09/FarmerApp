@@ -5,100 +5,38 @@ import com.google.gson.annotations.SerializedName;
 
 public class CheckStatusModel {
 
-    @SerializedName("id")
+    @SerializedName("success")
     @Expose
-    private Integer id;
-    @SerializedName("name")
+    private Boolean success;
+    @SerializedName("message")
     @Expose
-    private String name;
-    @SerializedName("site_report")
+    private String message;
+    @SerializedName("Reports")
     @Expose
-    private String siteReport;
-    @SerializedName("delivery_report")
-    @Expose
-    private String deliveryReport;
-    @SerializedName("joint_report")
-    @Expose
-    private String jointReport;
-    @SerializedName("pump_report")
-    @Expose
-    private String pumpReport;
+    private Reports reports;
 
-    public Integer getId() {
-        return id;
+    public Boolean getSuccess() {
+        return success;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 
-    public CheckStatusModel withId(Integer id) {
-        this.id = id;
-        return this;
+    public String getMessage() {
+        return message;
     }
 
-    public String getName() {
-        return name;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Reports getReports() {
+        return reports;
     }
 
-    public CheckStatusModel withName(String name) {
-        this.name = name;
-        return this;
+    public void setReports(Reports reports) {
+        this.reports = reports;
     }
 
-    public String getSiteReport() {
-        return siteReport;
-    }
-
-    public void setSiteReport(String siteReport) {
-        this.siteReport = siteReport;
-    }
-
-    public CheckStatusModel withSiteReport(String siteReport) {
-        this.siteReport = siteReport;
-        return this;
-    }
-
-    public String getDeliveryReport() {
-        return deliveryReport;
-    }
-
-    public void setDeliveryReport(String deliveryReport) {
-        this.deliveryReport = deliveryReport;
-    }
-
-    public CheckStatusModel withDeliveryReport(String deliveryReport) {
-        this.deliveryReport = deliveryReport;
-        return this;
-    }
-
-    public String getJointReport() {
-        return jointReport;
-    }
-
-    public void setJointReport(String jointReport) {
-        this.jointReport = jointReport;
-    }
-
-    public CheckStatusModel withJointReport(String jointReport) {
-        this.jointReport = jointReport;
-        return this;
-    }
-
-    public String getPumpReport() {
-        return pumpReport;
-    }
-
-    public void setPumpReport(String pumpReport) {
-        this.pumpReport = pumpReport;
-    }
-
-    public CheckStatusModel withPumpReport(String pumpReport) {
-        this.pumpReport = pumpReport;
-        return this;
-    }
 }
