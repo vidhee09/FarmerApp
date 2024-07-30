@@ -107,16 +107,27 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
     public void fetchData() {
         if (delivery_report.equals("0")) {
-            binding.tvSubmit.setText("Add Report");
+            binding.llDeliverySubmit.setText("Add Report");
         } else {
-            binding.tvSubmit.setText("Update Report");
+            binding.llDeliverySubmit.setText("Update Report");
             getData();
         }
+    }
+
+
+    public void setAllClicksDisable(boolean b){
+        binding.ivBackPress.setClickable(b);
+        binding.edPresentPersonNameDelivery.setClickable(b);
+        binding.ivMaterialCamera.setClickable(b);
+        binding.btnClear.setClickable(b);
+        binding.btnCompleted.setClickable(b);
+        binding.llDeliverySubmit.setClickable(b);
     }
 
     public void getData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
@@ -129,28 +140,28 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 if (response.body() != null) {
                     if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
-
+                        setAllClicksDisable(true);
                         binding.edPresentPersonNameDelivery.setText(response.body().getDelivery().get(0).getPresentPersonName());
                         reportId = String.valueOf(response.body().getDelivery().get(0).getId());
                         Glide.with(DeliveryReportActivity.this).load(Const.IMAGE_URL + response.body().getDelivery().get(0).getImage()).into(binding.ivMaterialPhoto);
 
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetDeliveryData> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(DeliveryReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(DeliveryReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -214,8 +225,9 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
     /*  delivery update  */
     public void updateSiteReport(String reportId) {
-
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", reportId);
@@ -239,26 +251,28 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<DeliveryDataModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(DeliveryReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(DeliveryReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -268,6 +282,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("surveyor_name", Const.AGENT_NAME);
@@ -290,25 +305,27 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
 
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<DeliveryDataModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
+                binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
                 Toast.makeText(DeliveryReportActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -568,6 +585,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
     public void uploadImage(Uri contentURI, int fromWhere) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
         Uri uri = null;
         String fName = "";
@@ -596,29 +614,30 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         Log.w("ImageName", imageName[0]);
                         if (fromWhere == 1) {
                             Imagepath = imageModel.getUploadimage().getImage_name();
                         }
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(DeliveryReportActivity.this, "Image uploaded failed", Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(DeliveryReportActivity.this, "Image uploaded failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -626,6 +645,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     public void uploadFileImage(File file) {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
         Uri uri = null;
         String fName = "";
         Log.w("FilePath", file.getPath());
@@ -646,25 +666,26 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         signatureName = imageModel.getUploadimage().getImage_name();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(DeliveryReportActivity.this, "Image upload failed" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(DeliveryReportActivity.this, "Image upload failed" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

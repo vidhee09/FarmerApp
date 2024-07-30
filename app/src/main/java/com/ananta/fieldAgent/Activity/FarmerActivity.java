@@ -128,7 +128,6 @@ public class FarmerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("Farmer=====","==>"+ preference.getAgentId());
-
         getFarmerData(preference.getAgentId());
     }
 

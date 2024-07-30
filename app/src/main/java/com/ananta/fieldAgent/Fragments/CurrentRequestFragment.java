@@ -86,7 +86,7 @@ public class CurrentRequestFragment extends Fragment {
             }
         }
         if (filteredlist.isEmpty()) {
-            Toast.makeText(getContext(), "No Data Found..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No Search Result found..", Toast.LENGTH_SHORT).show();
         } else {
             adapter.filterList(filteredlist);
         }

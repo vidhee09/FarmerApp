@@ -330,7 +330,7 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
+                   <!-- <LinearLayout
                         android:id="@+id/llDeliverySubmit"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -347,8 +347,18 @@
                             android:text="Submit"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_14ssp" />
-                    </LinearLayout>
+                    </LinearLayout>-->
 
+
+                    <Button
+                        android:id="@+id/llDeliverySubmit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Submit"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_12ssp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:background="@drawable/round_fill_background"/>
 
                 </LinearLayout>
 

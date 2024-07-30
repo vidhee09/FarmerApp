@@ -56,7 +56,7 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
 
                 Intent intent = new Intent(context, FarmerDetailActivity.class);
                 intent.putExtra(Const.FARMER_ID,model.getId());
-                Log.d("farmer id===>","="+model.getId());
+//                Log.d("farmer id===>","="+model.getId());
                 intent.putExtra("FarmerName",model.getName());
                 intent.putExtra("CompanyName",model.getAddress());
                 context.startActivity(intent);

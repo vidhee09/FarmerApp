@@ -23,6 +23,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.ananta.fieldAgent.Activity.ServiceActivity;
 import com.ananta.fieldAgent.Models.AddServiceModel;
 import com.ananta.fieldAgent.Models.AllFarmerModel;
 import com.ananta.fieldAgent.Models.Farmer;
@@ -57,6 +58,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     private static final int GALLERY = 101;
     private static final int CAMERA = 102;
+
     ActivityAddRequestBinding binding;
     String path = "", claim = "", reason = "", farmer_name = "", farmer_id = "", Imagepath;
     ApiInterface apiInterface;
@@ -415,6 +417,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                         Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
+                        Intent intent = new Intent(AddRequestActivity.this, ServiceActivity.class);
+                        startActivity(intent);
                         finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);

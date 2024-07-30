@@ -70,7 +70,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
                 .onExplainRequestReason((scope, deniedList, beforeRequest) -> {
 //                    CustomDialog customDialog = new CustomDialog(MainJavaActivity.this, "PermissionX needs following permissions to continue", deniedList);
 //                    scope.showRequestReasonDialog(customDialog);
-                    scope.showRequestReasonDialog(deniedList, "PermissionX needs following permissions to continue", "Allow");
+                    scope.showRequestReasonDialog(deniedList, "This app needs following permissions to continue", "Allow");
                 })
                 .onForwardToSettings((scope, deniedList) -> {
                     scope.showForwardToSettingsDialog(deniedList, "Please allow following permissions in settings", "Allow");
@@ -79,7 +79,6 @@ public class FarmerDetailActivity extends AppCompatActivity {
                     if (allGranted) {
                         Intent intent = new Intent(FarmerDetailActivity.this, SitInspectionReportActivity.class);
                         intent.putExtra("site_report", site_report);
-                        Log.d("report===", "=" + site_report);
                         startActivity(intent);
 //                            Toast.makeText(FarmerDetailActivity.this, "All permissions are granted", Toast.LENGTH_SHORT).show();
                     } else {
@@ -93,7 +92,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
                 .onExplainRequestReason((scope, deniedList, beforeRequest) -> {
 //                    CustomDialog customDialog = new CustomDialog(MainJavaActivity.this, "PermissionX needs following permissions to continue", deniedList);
 //                    scope.showRequestReasonDialog(customDialog);
-                    scope.showRequestReasonDialog(deniedList, "PermissionX needs following permissions to continue", "Allow");
+                    scope.showRequestReasonDialog(deniedList, "This app needs following permissions to continue", "Allow");
                 })
                 .onForwardToSettings((scope, deniedList) -> {
                     scope.showForwardToSettingsDialog(deniedList, "Please allow following permissions in settings", "Allow");
@@ -115,7 +114,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
                 .onExplainRequestReason((scope, deniedList, beforeRequest) -> {
 //                    CustomDialog customDialog = new CustomDialog(MainJavaActivity.this, "PermissionX needs following permissions to continue", deniedList);
 //                    scope.showRequestReasonDialog(customDialog);
-                    scope.showRequestReasonDialog(deniedList, "PermissionX needs following permissions to continue", "Allow");
+                    scope.showRequestReasonDialog(deniedList, "This app needs following permissions to continue", "Allow");
                 })
                 .onForwardToSettings((scope, deniedList) -> {
                     scope.showForwardToSettingsDialog(deniedList, "Please allow following permissions in settings", "Allow");
@@ -144,7 +143,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
                 .onExplainRequestReason((scope, deniedList, beforeRequest) -> {
 //                    CustomDialog customDialog = new CustomDialog(MainJavaActivity.this, "PermissionX needs following permissions to continue", deniedList);
 //                    scope.showRequestReasonDialog(customDialog);
-                    scope.showRequestReasonDialog(deniedList, "PermissionX needs following permissions to continue", "Allow");
+                    scope.showRequestReasonDialog(deniedList, "This app needs following permissions to continue", "Allow");
                 })
                 .onForwardToSettings((scope, deniedList) -> {
                     scope.showForwardToSettingsDialog(deniedList, "Please allow following permissions in settings", "Allow");
@@ -163,6 +162,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
         binding.ivBackPress.setOnClickListener(v -> onBackPressed());
     }
+
 
     @Override
     protected void onResume() {
@@ -200,10 +200,10 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
                 if (response.body() != null){
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    site_report = response.body().getSiteReport();
-                    delivery_report = response.body().getDeliveryReport();
-                    joint_report = response.body().getJointReport();
-                    pump_report = response.body().getPumpReport();
+                    site_report = String.valueOf(response.body().getReports().getSiteReport());
+                    delivery_report = String.valueOf(response.body().getReports().getDeliveryReport());
+                    joint_report = String.valueOf(response.body().getReports().getJointReport());
+                    pump_report = String.valueOf(response.body().getReports().getPumpReport());
 
                     if (site_report.equals("1")) {
                         binding.ivSiteRightArrow.setImageResource(R.drawable.right);

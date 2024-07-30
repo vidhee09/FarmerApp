@@ -52,7 +52,7 @@ public class PastRequestFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filter(newText);
+//                filter(newText);
                 return false;
             }
         });
@@ -90,7 +90,7 @@ public class PastRequestFragment extends Fragment {
             }
         }
         if (filteredlist.isEmpty()) {
-            Toast.makeText(getContext(), "No Data Found..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No Search Result found..", Toast.LENGTH_SHORT).show();
         } else {
             adapter.filterList(filteredlist);
         }

@@ -103,16 +103,17 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     public void fetchData() {
         if (pump_report.equals("0")) {
             Log.d("get==", "=" + pump_report);
-            binding.tvSubmit.setText("Add Report");
+            binding.llSubmitPumpInstall.setText("Add Report");
         } else {
             Log.d("get==", "=" + pump_report);
-            binding.tvSubmit.setText("Update Report");
+            binding.llSubmitPumpInstall.setText("Update Report");
             getData();
         }
     }
 
     public void getData() {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
@@ -125,6 +126,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 if (response.body() != null) {
                     if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         binding.edPumpId.setText(response.body().getPumpInstallation().get(0).getPumpId());
                         binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
                         binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
@@ -143,23 +145,23 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                         Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpWorkImage()).into(binding.ivPumpWorking);
 
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<GetPumpData> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -244,7 +246,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     private void setClickListener() {
         binding.btnCompleted.setOnClickListener(v -> {
-            binding.pbProgressBar.setVisibility(View.VISIBLE);
+//            binding.pbProgressBar.setVisibility(View.VISIBLE);
             signImage = binding.signaturePad.getSignatureSvg();
             signImage = BitMapToString(binding.signaturePad.getSignatureBitmap());
             saveBitmapIntoCacheDir(binding.signaturePad.getSignatureBitmap());
@@ -395,10 +397,27 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         }
     }
 
+    public void setAllClicksDisable(boolean b){
+        binding.ivBackPress.setClickable(b);
+        binding.edPumpId.setClickable(b);
+        binding.ivAddMoreId.setClickable(b);
+        binding.edPanelId.setClickable(b);
+        binding.edControllerId.setClickable(b);
+        binding.edIMEIId.setClickable(b);
+        binding.edStructureId.setClickable(b);
+        binding.edPolicyNumberPumpInstall.setClickable(b);
+        binding.ivCameraInstallPump.setClickable(b);
+        binding.ivBaneficiaryCameraPump.setClickable(b);
+        binding.ivWorkingPumpCamera.setClickable(b);
+        binding.btnCompleted.setClickable(b);
+        binding.btnClear.setClickable(b);
+    }
+
     /*  update pump report   */
     public void updatePumpInstallReport(String reportId) {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -434,25 +453,27 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -462,6 +483,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     public void addPumpInstallationData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -489,25 +511,26 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(PumpInstallationActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PumpInstallModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(PumpInstallationActivity.this, "Data not Found", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -591,6 +614,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     public void uploadImage(Uri contentURI, int fromWhere) {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
         Uri uri = null;
         String fName = "";
         try {
@@ -618,6 +642,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         Log.w("ImageName", imageName[0]);
                         if (fromWhere == 1) {
@@ -628,28 +653,29 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                             workingPumpPath = imageModel.getUploadimage().getImage_name();
                         }
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(PumpInstallationActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void uploadFileImage(File file) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
         Uri uri = null;
         String fName = "";
         Log.w("FilePath", file.getPath());
@@ -670,26 +696,27 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         signatureName = imageModel.getUploadimage().getImage_name();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(PumpInstallationActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

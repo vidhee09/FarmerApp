@@ -76,7 +76,7 @@ public class ApiClient {
 
     private static Retrofit retrofit = null;
     private static String BASE_URL = "https://farmer.idglock.com/api/";
-//    private static String BASE_URL = "http://192.168.31.145:8000/api/";
+    //    private static String BASE_URL = "http://192.168.31.145:8000/api/";
     private static String token = "";
 
     public static Retrofit getClient() {

@@ -84,6 +84,7 @@ public class ServiceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ServiceActivity.this, AddRequestActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -107,7 +108,6 @@ public class ServiceActivity extends AppCompatActivity {
     }
 
     public void getCurrentRequestData() {
-
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);

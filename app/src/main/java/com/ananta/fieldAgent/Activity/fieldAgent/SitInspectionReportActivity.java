@@ -129,18 +129,30 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
     public void fetchData() {
         if (site_report.equals("0")) {
-            binding.tvSubmit.setText("Add Report");
+            binding.llSiteSubmit.setText("Add Report");
         } else {
-            binding.tvSubmit.setText("Update Report");
+            binding.llSiteSubmit.setText("Update Report");
             getData();
         }
     }
 
+    public void setAllClicksDisable(boolean b){
+        binding.edPresentPersonName.setClickable(b);
+        binding.edInspectionOfficerName.setClickable(b);
+        binding.ivCameraPump.setClickable(b);
+        binding.ivBenificiaryCameraSite.setClickable(b);
+        binding.btnCompleted.setClickable(b);
+        binding.btnClear.setClickable(b);
+        binding.ivBackPress.setClickable(b);
+        binding.llSiteSubmit.setClickable(b);
+
+    }
     /*  site report update  */
 
     public void updateSiteReport(String reportId) {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -168,27 +180,28 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         Siteinspectionn siteinspectionn = response.body().getSiteinspection();
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SiteReportModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(SitInspectionReportActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(SitInspectionReportActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -198,6 +211,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     public void addSiteReportData() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -223,6 +237,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         Const.SiteReport = response.body().isSuccess();
                         siteinspectionnModel = response.body().getSiteinspection();
@@ -231,29 +246,30 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                         finish();
 
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
                     Log.d("response==", "dfgfdf=" + response.body().getMessage());
                     Toast.makeText(SitInspectionReportActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    binding.pbProgressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<SiteReportModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(SitInspectionReportActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(SitInspectionReportActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void getData() {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("farmer_id", Const.FARMER_ID);
@@ -266,6 +282,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 if (response.body() != null) {
                     if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         Log.d("sitemodel===>", "==success=>" + response.body().getMessage());
                         binding.edInspectionOfficerName.setText(response.body().getSiteInpections().get(0).getInspectionOfficerName());
                         binding.edPresentPersonName.setText(response.body().getSiteInpections().get(0).getPresentPersonName());
@@ -275,23 +292,23 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                         Glide.with(SitInspectionReportActivity.this).load(Const.IMAGE_URL + response.body().getSiteInpections().get(0).getPumpBenificiaryimage()).into(binding.ivBenificiaryPhoto);
 
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<GetSiteData> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(SitInspectionReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(SitInspectionReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -621,6 +638,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
     public void uploadImage(Uri contentURI, int fromWhere) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
 //        binding.
 
@@ -652,6 +670,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 if (response.body() != null){
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         Log.d("ImageName", imageName[0]);
                         if (fromWhere == 1) {
@@ -663,30 +682,31 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                         }
                     } else {
                         Log.d("ImageName==", "else" + Imagepath);
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     Log.d("ImageName==", "else" + Imagepath);
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(SitInspectionReportActivity.this, "Image uploaded failed", Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(SitInspectionReportActivity.this, "Image uploaded failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void uploadFileImage(File file) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
 
 //
 
@@ -710,25 +730,26 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         FilepathName = imageModel.getUploadimage().getImage_name();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    Toast.makeText(SitInspectionReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(SitInspectionReportActivity.this, "Signature image uploaded failed", Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(true);
+                Toast.makeText(SitInspectionReportActivity.this, "Signature image uploaded failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
