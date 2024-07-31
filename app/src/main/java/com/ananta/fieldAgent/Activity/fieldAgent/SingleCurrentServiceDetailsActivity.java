@@ -2,12 +2,14 @@ package com.ananta.fieldAgent.Activity.fieldAgent;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -27,8 +29,13 @@ import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivitySingleCurrentServiceDetailsBinding;
 import com.bumptech.glide.Glide;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -40,16 +47,20 @@ import retrofit2.Response;
 public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
 
     ActivitySingleCurrentServiceDetailsBinding binding;
-    String image, farmer_name, request_name, farmer_address, ComplaintId, ID, company_name, reason, description;
+    String image, farmer_name, request_name, farmer_address, ComplaintId, ID, company_name, reason, description,farmer_ID;
     ApiInterface apiInterface;
     Preference preference;
-    EditText etImeiNo, etMotorSerialNumber, etMultiplePanelIds, etMotorHead;
+    EditText etImeiNo, etMotorSerialNumber, etMultiplePanelIds;
     Button btnUpdate;
     Response<GetJointData> jointDataResponse;
-    ImageView ivBackPress;
+    ImageView ivBackPress,ivAddMoreId;
     Response<GetPumpData> pumpDataResponse;
     Dialog dialog;
     CheckBox cbPumpHead1, cbPumpHead2, cbPumpHead3, cbPumpHead4;
+    ArrayList<String> checkPumpHeadSurveyorArrayList = new ArrayList<>();
+    Chip chip;
+    ChipGroup chipGroup;
+    ArrayList<String> panelIdList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +81,8 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         });
 
         farmer_name = getIntent().getStringExtra("farmer_name");
+        farmer_ID = getIntent().getStringExtra("farmer_ID");
+        Log.d("Single ==>" ,"===>" + farmer_ID);
         request_name = getIntent().getStringExtra("request_name");
         farmer_address = getIntent().getStringExtra("farmer_address");
         image = getIntent().getStringExtra("image_name");
@@ -86,10 +99,10 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         binding.tvComplaintNameCurrentService.setText(request_name);
         binding.tvServiceDescription.setText(description);
 
-        if (reason == null || reason.isEmpty()|| company_name == null || company_name.isEmpty()){
+        if (reason == null || reason.isEmpty() || company_name == null || company_name.isEmpty()) {
             binding.llReason.setVisibility(View.GONE);
             binding.llCompanyName.setVisibility(View.GONE);
-        }else{
+        } else {
             binding.tvReason.setText(reason);
             company_name = getIntent().getStringExtra("company_name");
         }
@@ -107,34 +120,130 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                 dialog = new Dialog(SingleCurrentServiceDetailsActivity.this);
                 dialog.setContentView(R.layout.detail_form_dialog);
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                Log.d("Single ==>", "===>" + pumpDataResponse.body().getPumpInstallation().get(0).getImeiNo());
                 etImeiNo = dialog.findViewById(R.id.etImeiNo);
                 etMotorSerialNumber = dialog.findViewById(R.id.etMotorSerialNumber);
                 etMultiplePanelIds = dialog.findViewById(R.id.etMultiplePanelIds);
-                etMotorHead = dialog.findViewById(R.id.etMotorHead);
                 btnUpdate = dialog.findViewById(R.id.btnUpdate);
+
                 ivBackPress = dialog.findViewById(R.id.ivBackPress);
                 cbPumpHead1 = dialog.findViewById(R.id.cbPumpHead1);
                 cbPumpHead2 = dialog.findViewById(R.id.cbPumpHead2);
                 cbPumpHead3 = dialog.findViewById(R.id.cbPumpHead3);
                 cbPumpHead4 = dialog.findViewById(R.id.cbPumpHead4);
+                chipGroup = dialog.findViewById(R.id.chipGroup);
+                ivAddMoreId= dialog.findViewById(R.id.ivAddMoreId);
 
                 etImeiNo.setText(pumpDataResponse.body().getPumpInstallation().get(0).getImeiNo());
                 etMotorSerialNumber.setText(String.valueOf(pumpDataResponse.body().getPumpInstallation().get(0).getPumpId()));
-                etMotorHead.setText(jointDataResponse.body().getJointServey().get(0).getPump_recom_survey());
-                etMultiplePanelIds.setText(pumpDataResponse.body().getPumpInstallation().get(0).getPanelId());
 
+                String pumpSurveyor = jointDataResponse.body().getJointServey().get(0).getPump_recom_survey();
+
+                Log.d("Joint Get", "====>" + pumpSurveyor + " " + pumpSurveyor);
+                if (pumpSurveyor.contains("30")) {
+                    cbPumpHead1.setChecked(true);
+                }
+                if (pumpSurveyor.contains("50")) {
+                    cbPumpHead2.setChecked(true);
+                }
+                if (pumpSurveyor.contains("70")) {
+                    cbPumpHead3.setChecked(true);
+                }
+                if (pumpSurveyor.contains("100")) {
+                    cbPumpHead4.setChecked(true);
+                }
 
                 ivBackPress.setOnClickListener(v1 -> {
                     dialog.dismiss();
                 });
+
+                ivAddMoreId.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!etMultiplePanelIds.getText().toString().isEmpty()) {
+                            addMorePanelId(etMultiplePanelIds.getText().toString().trim());
+                            etMultiplePanelIds.setText("");
+                        }
+                    }
+                });
+
                 btnUpdate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        updatePumpInstallReport();
-                        updateReport();
+                        if (cbPumpHead1.isChecked()) {
+                            checkPumpHeadSurveyorArrayList.add(cbPumpHead1.getText().toString());
+                        }
+                        if (cbPumpHead2.isChecked()) {
+                            checkPumpHeadSurveyorArrayList.add(cbPumpHead2.getText().toString());
+                        }
+                        if (cbPumpHead3.isChecked()) {
+                            checkPumpHeadSurveyorArrayList.add(cbPumpHead3.getText().toString());
+                        }
+                        if (cbPumpHead4.isChecked()) {
+                            checkPumpHeadSurveyorArrayList.add(cbPumpHead4.getText().toString());
+                        }
+
+                        if (countChipsInChipGroup(chipGroup) >= 9) {
+                            updatePumpReport();
+                            updateJointReport();
+                        }else {
+                            Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please enter minimum 9 panel ids", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
+
+
+
+                /*======= Get All Chips ===========*/
+
+                        panelIdList.clear();
+//                        String panel = response.body().getPumpInstallation().get(0).getPanelId();
+                        String panel = pumpDataResponse.body().getPumpInstallation().get(0).getPanelId();
+
+                        Log.d("panelList===", "get=" + new Gson().toJson(panel));
+
+                        String[] panels = panel.split(",");
+
+                        String[] trimmedArray = new String[panels.length];
+                        for (int i = 0; i < panels.length; i++)
+                            trimmedArray[i] = panels[i].trim();
+
+                        panelIdList.addAll(Arrays.asList(trimmedArray));
+
+                        for (int i = 0; i < panels.length; i++) {
+
+                            Chip chip = new Chip(SingleCurrentServiceDetailsActivity.this);
+                            LinearLayout.LayoutParams layoutParams = new
+                                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT);
+                            layoutParams.setMargins(5, 1, 5, 1);
+
+                            chip.setLayoutParams(layoutParams);
+                            chip.setText(panels[i]);
+
+                            chip.setCloseIconVisible(true);
+                            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Chip chip = (Chip) v;
+                                    chipGroup.removeView(chip);
+                                    //panelIdList.indexOf(chip.getText().toString().trim());
+                                    Log.d("panelList===", "remove=" + panelIdList.indexOf(chip.getText().toString().trim()));
+                                    panelIdList.remove(chip.getText().toString().trim());
+                                }
+                            });
+
+                            chipGroup.addView(chip);
+
+                        }
+
+
+
+
                 dialog.show();
 
             }
@@ -142,7 +251,7 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
 
     }
 
-    public void updatePumpInstallReport() {
+    public void updatePumpReport() {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         setAllClicksDisable(false);
@@ -154,9 +263,10 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", String.valueOf(pumpDataResponse.body().getPumpInstallation().get(0).getId()));
         hashMap.put("agent_id", preference.getAgentId());
-        hashMap.put("farmer_id", preference.getAgentFarmerId());
+//        hashMap.put("farmer_id", preference.getAgentFarmerId());
+        hashMap.put("farmer_id",farmer_ID);
         hashMap.put("pump_id", etMotorSerialNumber.getText().toString());
-        hashMap.put("panel_id", etMultiplePanelIds.getText().toString());
+        hashMap.put("panel_id", panelIdList.toString());
         hashMap.put("controller_id", pumpDataResponse.body().getPumpInstallation().get(0).getControllerId());
         hashMap.put("imei_no", etImeiNo.getText().toString());
         hashMap.put("structure_id", pumpDataResponse.body().getPumpInstallation().get(0).getStructureId());
@@ -198,7 +308,7 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
 
     }
 
-    public void updateReport() {
+    public void updateJointReport() {
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -208,7 +318,8 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", String.valueOf(jointDataResponse.body().getJointServey().get(0).getId()));
         hashMap.put("agent_id", preference.getAgentId());
-        hashMap.put("farmer_id", preference.getAgentFarmerId());
+//        hashMap.put("farmer_id", preference.getAgentFarmerId());
+        hashMap.put("farmer_id",farmer_ID);
         hashMap.put("alternet_mo", jointDataResponse.body().getJointServey().get(0).getAlternet_mo());
         hashMap.put("imei_no", jointDataResponse.body().getJointServey().get(0).getImei_no());
         hashMap.put("latitude", jointDataResponse.body().getJointServey().get(0).getLatitude());
@@ -219,7 +330,11 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         hashMap.put("constant_water", jointDataResponse.body().getJointServey().get(0).getConstant_water());
         hashMap.put("water_delivery_point", jointDataResponse.body().getJointServey().get(0).getWater_delivery_point());
         hashMap.put("pump_type", jointDataResponse.body().getJointServey().get(0).getPump_type());
-        hashMap.put("pump_recom_survey", etMotorHead.getText().toString());
+        if (checkPumpHeadSurveyorArrayList.isEmpty()) {
+            hashMap.put("pump_recom_survey", jointDataResponse.body().getJointServey().get(0).getPump_recom_survey());
+        } else {
+            hashMap.put("pump_recom_survey", checkPumpHeadSurveyorArrayList.toString());
+        }
         hashMap.put("pump_recom_benefits", jointDataResponse.body().getJointServey().get(0).getPump_recom_benefits());
         hashMap.put("is_pump_electricity", jointDataResponse.body().getJointServey().get(0).getIs_pump_electricity());
         hashMap.put("is_solar_pump", jointDataResponse.body().getJointServey().get(0).getIs_solar_pump());
@@ -242,6 +357,9 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
+                        dialog.dismiss();
+                        Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Data update successfully" , Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
@@ -262,13 +380,40 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
 
     }
 
+    private void addMorePanelId(String txet) {
+
+        chip = new Chip(SingleCurrentServiceDetailsActivity.this);
+        chip.setText(txet);
+        chipGroup.addView(chip);
+
+        panelIdList.add(txet);
+        Log.d("chip====", "=" + new Gson().toJson(panelIdList));
+
+        countChipsInChipGroup(chipGroup);
+        Log.d("chipgroup====", "=" + countChipsInChipGroup(chipGroup));
+
+        /*  if remove chip   */
+        chip.setCloseIconVisible(true);
+        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chipGroup.removeView(chip);
+            }
+        });
+
+    }
+
+    private int countChipsInChipGroup(ChipGroup chipGroup) {
+        return chipGroup.getChildCount();
+    }
 
     public void getJointReport() {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("farmer_id", preference.getAgentFarmerId());
+//        hashMap.put("farmer_id", preference.getAgentFarmerId());
+        hashMap.put("farmer_id", farmer_ID);
 
         Call<GetJointData> call = apiInterface.getJointReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetJointData>() {
@@ -424,7 +569,8 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("farmer_id", preference.getAgentFarmerId());
+//        hashMap.put("farmer_id", preference.getAgentFarmerId());
+        hashMap.put("farmer_id",farmer_ID);
 
         Call<GetPumpData> call = apiInterface.getPumpReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetPumpData>() {
@@ -436,51 +582,6 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
                         pumpDataResponse = response;
-                        /*binding.edPumpId.setText(response.body().getPumpInstallation().get(0).getPumpId());
-                        binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
-                        binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
-                        binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
-
-                        panelIdList.clear();
-                        String panel = response.body().getPumpInstallation().get(0).getPanelId();
-                        panelIdList.add(panel);
-
-                        Log.d("panelList===","="+new Gson().toJson(panel));
-
-                        String[] panels = panel.split(",");
-
-                        panels[0];
-                        chip.append(panels[0]);
-
-                        for (int i = 0; i < panels.length; i++) {
-                            Chip chip = new Chip(binding.chipGroup.getContext());
-                            LinearLayout.LayoutParams layoutParams= new
-                                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);
-                            layoutParams.setMargins(5,1,5,1);
-
-                            chip.setLayoutParams(layoutParams);
-                            chip.setText(panels[i]);
-
-                            panelIdList.add(panels[i]);
-
-                            chip.setCloseIconVisible(true);
-                            binding.chipGroup.addView(chip);
-
-                            chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    binding.chipGroup.removeView(chip);
-                                }
-                            });
-                        }
-//                        Log.d("panelList===","="+new Gson().toJson(panelIdList));
-
-                        reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
-                        Glide.with(SingleCurrentServiceDetailsActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
-                        Glide.with(SingleCurrentServiceDetailsActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpBenifiImage()).into(binding.ivBeneficiaryInstallPump);
-                        Glide.with(SingleCurrentServiceDetailsActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getPumpWorkImage()).into(binding.ivPumpWorking);
-*/
 
 
                     } else {

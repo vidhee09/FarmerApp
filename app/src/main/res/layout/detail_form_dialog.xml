@@ -17,7 +17,6 @@
             android:padding="@dimen/_10sdp"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:padding="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:src="@drawable/ic_back_arrow" />
 
@@ -36,6 +35,9 @@
 
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +66,8 @@
                     android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
                     android:padding="@dimen/_10sdp"
+                    android:inputType="number"
+                    android:maxLength="10"
                     android:hint="IMEI NO"
                     android:textColor="@color/black"/>
 
@@ -85,13 +89,13 @@
                 android:id="@+id/etMotorSerialNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-
+                android:inputType="number"
                 android:background="@drawable/round_background"
                 android:drawablePadding="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10sdp"
+                android:maxLength="10"
                 android:imeOptions="actionNext"
                 android:hint="Motor Serial Number"
                 android:textColor="@color/black"/>
@@ -143,33 +147,14 @@
                 android:src="@drawable/add" />
             </LinearLayout>
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Motor Head" />
-
-            <EditText
-                android:id="@+id/etMotorHead"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_background"
-                android:drawablePadding="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:gravity="center_vertical"
-                android:padding="@dimen/_10sdp"
-                android:inputType="number"
-                android:hint="Motor Head"
-                android:textColor="@color/black"/>
+                android:layout_marginTop="@dimen/_5sdp">
+
+            </com.google.android.material.chip.ChipGroup>
 
         </LinearLayout>
 
@@ -231,5 +216,5 @@
             android:background="@drawable/round_fill_background"/>
 
     </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

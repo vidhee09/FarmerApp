@@ -55,6 +55,7 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
             public void onClick(View v) {
                 Intent intent = new Intent(context, SingleCurrentServiceDetailsActivity.class);
                 intent.putExtra("farmer_name",model.getFarmer_name());
+                intent.putExtra("farmer_ID",""+model.getFarmer_id());
                 intent.putExtra("request_name",model.getRequest_type());
                 intent.putExtra("farmer_address",model.getFarmer_address());
                 intent.putExtra("image_name",model.getImage_name());
