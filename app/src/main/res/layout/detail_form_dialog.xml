@@ -14,6 +14,7 @@
             android:id="@+id/ivBackPress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/_10sdp"
@@ -53,7 +54,8 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="IMEI NO" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/etImeiNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
@@ -61,7 +63,7 @@
                     android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
                     android:padding="@dimen/_10sdp"
-                    android:text="IMEI NO"
+                    android:hint="IMEI NO"
                     android:textColor="@color/black"/>
 
         </LinearLayout>
@@ -78,15 +80,19 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Motor Serial Number" />
 
-            <TextView
+            <EditText
+                android:id="@+id/etMotorSerialNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="text"
+
                 android:background="@drawable/round_background"
                 android:drawablePadding="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10sdp"
-                android:text="Motor Serial Number"
+                android:imeOptions="actionNext"
+                android:hint="Motor Serial Number"
                 android:textColor="@color/black"/>
 
         </LinearLayout>
@@ -103,20 +109,43 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Multiple Panel IDs" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
+                android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etMultiplePanelIds"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:drawablePadding="@dimen/_5sdp"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:inputType="text"
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10sdp"
-                android:text="Multiple Panel IDs"
+                android:hint="Multiple Panel IDs"
                 android:textColor="@color/black"/>
+
+            <ImageView
+                android:id="@+id/ivAddMoreId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_6sdp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:src="@drawable/add" />
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -128,7 +157,8 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Motor Head" />
 
-            <TextView
+            <EditText
+                android:id="@+id/etMotorHead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
@@ -136,10 +166,68 @@
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10sdp"
-                android:text="Motor Head"
+                android:inputType="number"
+                android:hint="Motor Head"
                 android:textColor="@color/black"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_background"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/_10sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Pump head recommanded by surveyor" />
+
+            <CheckBox
+                android:id="@+id/cbPumpHead1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="30"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbPumpHead2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="50"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbPumpHead3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="70"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbPumpHead4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:visibility="visible"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:background="@drawable/round_fill_background"/>
 
     </LinearLayout>
 

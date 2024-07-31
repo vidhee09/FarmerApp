@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -9,6 +9,7 @@
     tools:context=".Activity.fieldAgent.SingleCurrentServiceDetailsActivity">
 
     <RelativeLayout
+        android:id="@+id/rlToolbar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@drawable/round_bg_globle"
@@ -21,6 +22,7 @@
             android:layout_gravity="center"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_back_arrow"/>
 
         <TextView
@@ -38,8 +40,11 @@
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/rlToolbar"
+        android:visibility="visible"
         android:layout_marginVertical="@dimen/_10sdp">
 
         <LinearLayout
@@ -286,7 +291,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Complete"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:textStyle="bold"
                 android:textSize="@dimen/_12ssp"
                 android:layout_marginVertical="@dimen/_10sdp"
@@ -297,4 +302,37 @@
 
     </ScrollView>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rlNoData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rlToolbar"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/ivNoData"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/no_data" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivNoData"
+            android:layout_centerHorizontal="true"
+            android:text="No Data Found"
+            android:textAlignment="center"
+            android:textColor="@color/appColor"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/pbProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>
