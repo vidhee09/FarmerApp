@@ -72,7 +72,7 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(SingleCurrentServiceDetailsActivity.this);
                 builder.setView(R.layout.detail_form_dialog).create().show();
-                Toast.makeText(SingleCurrentServiceDetailsActivity.this, "complete", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SingleCurrentServiceDetailsActivity.this, "complete", Toast.LENGTH_SHORT).show();
             }
         });
 

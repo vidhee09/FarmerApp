@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:padding="@dimen/_10sdp"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_10sdp"
             android:src="@drawable/ic_back_arrow"/>
@@ -286,7 +287,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Complete"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:textStyle="bold"
                 android:textSize="@dimen/_12ssp"
                 android:layout_marginVertical="@dimen/_10sdp"

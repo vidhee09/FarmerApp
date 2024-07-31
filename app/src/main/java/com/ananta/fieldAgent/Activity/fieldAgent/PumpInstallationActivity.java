@@ -51,6 +51,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -135,38 +136,46 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
                         panelIdList.clear();
                         String panel = response.body().getPumpInstallation().get(0).getPanelId();
-                        panelIdList.add(panel);
 
-                        Log.d("panelList===","="+new Gson().toJson(panel));
+                        Log.d("panelList===", "get=" + new Gson().toJson(panel));
 
                         String[] panels = panel.split(",");
 
-//                        panels[0];
-//                        chip.append(panels[0]);
+                        String[] trimmedArray = new String[panels.length];
+                        for (int i = 0; i < panels.length; i++)
+                            trimmedArray[i] = panels[i].trim();
+
+                        panelIdList.addAll(Arrays.asList(trimmedArray));
 
                         for (int i = 0; i < panels.length; i++) {
+
                             Chip chip = new Chip(binding.chipGroup.getContext());
-                            LinearLayout.LayoutParams layoutParams= new
+                            LinearLayout.LayoutParams layoutParams = new
                                     LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT);
-                            layoutParams.setMargins(5,1,5,1);
+                            layoutParams.setMargins(5, 1, 5, 1);
 
                             chip.setLayoutParams(layoutParams);
                             chip.setText(panels[i]);
 
-//                            panelIdList.add(panels[i]);
-
                             chip.setCloseIconVisible(true);
-                            binding.chipGroup.addView(chip);
-
                             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    Chip chip = (Chip) v;
                                     binding.chipGroup.removeView(chip);
+                                    //panelIdList.indexOf(chip.getText().toString().trim());
+                                    Log.d("panelList===", "remove=" + panelIdList.indexOf(chip.getText().toString().trim()));
+                                    panelIdList.remove(chip.getText().toString().trim());
+
                                 }
                             });
+
+                            binding.chipGroup.addView(chip);
+
                         }
-//                        Log.d("panelList===","="+new Gson().toJson(panelIdList));
+
+                        Log.d("panelList===", "getId=" + new Gson().toJson(panelIdList));
 
                         reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
                         Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
@@ -232,7 +241,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         } else if (workingPumpPath == null || workingPumpPath.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
-        }else if (signatureName == null || signatureName.isEmpty()) {
+        } else if (signatureName == null || signatureName.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }
@@ -256,7 +265,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         } else if (binding.edControllerId.getText().toString().isEmpty()) {
             isValid = false;
             binding.edControllerId.setError("please enter controller id ");
-        }else if (signatureName == null || signatureName.isEmpty()) {
+        } else if (signatureName == null || signatureName.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }
@@ -479,6 +488,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
+        Log.d("panelList===", "updateReq=" + panelIdList.toString());
+
         Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap, "Bearer " + preference.getToken());
 
         call.enqueue(new Callback<PumpInstallModel>() {
@@ -489,7 +500,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
-
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
@@ -536,6 +546,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("pump_work_image", workingPumpPath);
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
+
+        Log.d("panelList===", "add=" + panelIdList.toString());
 
         Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap, "Bearer " + preference.getToken());
 
@@ -605,7 +617,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             }
         } else if (id == R.id.ivAddMoreId) {
             if (!binding.edPanelId.getText().toString().isEmpty()) {
-                addMorePanelId(binding.edPanelId.getText().toString());
+                addMorePanelId(binding.edPanelId.getText().toString().trim());
                 binding.edPanelId.setText("");
             }
         } else if (id == R.id.ivBackPress) {

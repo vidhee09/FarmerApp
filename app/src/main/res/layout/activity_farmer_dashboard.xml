@@ -20,7 +20,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_bold"
-            android:gravity="center"
+            android:gravity="end"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:text="@string/dashboard"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
