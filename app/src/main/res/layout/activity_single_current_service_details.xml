@@ -39,7 +39,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_10sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -170,6 +171,7 @@
             </LinearLayout>
 
             <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -197,6 +199,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llCompanyName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -223,11 +226,67 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Service Description"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/tvServiceDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_background"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_regular"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Service Reason"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/tvReason"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_background"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_regular"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/_10sdp" />
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/btnComplete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Complete"
+                android:visibility="gone"
                 android:textStyle="bold"
                 android:textSize="@dimen/_12ssp"
                 android:layout_marginVertical="@dimen/_10sdp"

@@ -58,11 +58,21 @@ public class CurrenRequestFarmerFragment extends Fragment {
     }
 
     public void bindList() {
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        binding.rcvFarmView.setLayoutManager(manager);
 
-        farmAdapter = new FarmAdapter(getActivity(), FarmerServiceresponseModelArrayList);
-        binding.rcvFarmView.setAdapter(farmAdapter);
+        if (FarmerServiceresponseModelArrayList == null || FarmerServiceresponseModelArrayList.isEmpty()){
+            binding.rlNoData.setVisibility(View.VISIBLE);
+            binding.llData.setVisibility(View.GONE);
+
+        }else {
+            binding.rlNoData.setVisibility(View.GONE);
+            binding.llData.setVisibility(View.VISIBLE);
+
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            binding.rcvFarmView.setLayoutManager(manager);
+
+            farmAdapter = new FarmAdapter(getActivity(), FarmerServiceresponseModelArrayList);
+            binding.rcvFarmView.setAdapter(farmAdapter);
+        }
 
     }
     private void filter(String text) {

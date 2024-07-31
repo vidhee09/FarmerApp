@@ -112,7 +112,8 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         pinView.getText().clear();
                         Intent intent1 = new Intent(VerifyOTPScreen.this, DashboardActivity.class);
-                        Const.AGENT_ID = String.valueOf(response.body().getUser_id());
+//                        preference.putAgentID("agent_id",String.valueOf(response.body().getUser_id()));
+//                        = String.valueOf(response.body().getUser_id());
                         Const.AGENT_NAME = response.body().getUser_name();
                         Const.COMPANY_NAME = response.body().getUser_companyname();
                         Const.MOBILE_NUMBER = response.body().getMobile_number();
@@ -120,9 +121,10 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         preference.putAgentID(String.valueOf(response.body().getUser_id()));
                         preference.putAgentNumber(response.body().getMobile_number());
                         preference.putToken(response.body().getToken());
+//                        preference.putAgentFarmerId(response.body().get);
                         Const.SERVER_TOKEN = response.body().getToken();
                         String token = preference.putToken(response.body().getToken());
-                        ApiClient.setLoginDetail(response.body().getToken());
+//                        ApiClient.setLoginDetail(response.body().getToken());
                         startActivity(intent1);
                         finish();
 
@@ -137,7 +139,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         preference.putFarmerName(response.body().getUser_name());
                         preference.putFarmerNum(response.body().getMobile_number());
                         Const.SERVER_TOKEN = response.body().getToken();
-                        ApiClient.setLoginDetail(response.body().getToken());
+//                        ApiClient.setLoginDetail(response.body().getToken());
                         String token = preference.putToken(response.body().getToken());
                         startActivity(intent3);
                         finish();

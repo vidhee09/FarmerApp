@@ -323,7 +323,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         setAllClicksDisable(false);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("agent_id", preference.getAgentId());
 
         Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<AllFarmerModel>() {
@@ -392,7 +392,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("farmer_id", farmer_id);  // give id as per select farmer
         hashMap.put("request_type", binding.spSpinner.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequest.getSelectedItem().toString());

@@ -101,13 +101,13 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                 } else if (position == 1) {
                     binding.tvErrorTextFarmer.setVisibility(View.GONE);
                     binding.llServiceRequestLayoutFarmer.setVisibility(View.VISIBLE);
-                    binding.tvAddReqTextFarmer.setText("Add Request");
+                    binding.btnAddReqBtnFarmer.setText("Add Request");
                     binding.llInsuranceClaimLayoutFarmer.setVisibility(View.GONE);
 
                 } else if (position == 2) {
                     binding.tvErrorTextFarmer.setVisibility(View.GONE);
                     binding.llInsuranceClaimLayoutFarmer.setVisibility(View.VISIBLE);
-                    binding.tvAddReqTextFarmer.setText("Insaurance claim");
+                    binding.btnAddReqBtnFarmer.setText("Insaurance claim");
                     binding.llServiceRequestLayoutFarmer.setVisibility(View.GONE);
                 }
             }
@@ -141,10 +141,14 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
     public void setClickDisable(boolean b) {
 
         binding.spSpinnerFarmer.setClickable(b);
+        binding.spSpinnerFarmer.setEnabled(b);
         binding.rlFarmerName.setClickable(b);
         binding.tvFarmerName.setClickable(b);
         binding.spSpinnerRequestFarmer.setClickable(b);
+        binding.spSpinnerRequestFarmer.setEnabled(b);
+        binding.ivBackPress.setClickable(b);
         binding.edReqDescriptionFarmer.setClickable(b);
+        binding.btnAddReqBtnFarmer.setClickable(b);
     }
 
     public void getInsuranceReasonData() {
@@ -232,12 +236,15 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(AddNewRequestFarmer.this, FarmerDashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void clickListener() {
 
         binding.ivReqCameraFarmer.setOnClickListener(this);
-        binding.llAddReqBtnFarmer.setOnClickListener(this);
+        binding.btnAddReqBtnFarmer.setOnClickListener(this);
         binding.ivInsuranceCameraFarmer.setOnClickListener(this);
 
     }
@@ -245,7 +252,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.llAddReqBtnFarmer) {
+        if (id == R.id.btnAddReqBtnFarmer) {
             if (binding.spSpinnerFarmer.getSelectedItem().toString().equals("Insurance Claim")) {
                 if (validationIns()) {
                     addRequestDataFarmer();
@@ -299,6 +306,9 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
         } else if (binding.edInsuranceDescriptionFarmer.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
+        }else if (Imagepath == null || Imagepath.isEmpty()) {
+            isvalid = false;
+            Toast.makeText(this, "Please select Image", Toast.LENGTH_SHORT).show();
         }
         return isvalid;
     }
@@ -306,10 +316,11 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
 
     public void addRequestDataFarmer() {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setClickDisable(false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("farmer_id", preference.getFarmerLoginId());
         hashMap.put("request_type", binding.spSpinnerFarmer.getSelectedItem().toString());
         hashMap.put("service_request", binding.spSpinnerRequestFarmer.getSelectedItem().toString());
@@ -334,24 +345,27 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setClickDisable(true);
+                        Intent intent = new Intent(AddNewRequestFarmer.this,FarmerDashboardActivity.class);
+                        startActivity(intent);
                         finish();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(AddNewRequestFarmer.this,  response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setClickDisable(true);
+                        Toast.makeText(AddNewRequestFarmer.this,  response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(AddNewRequestFarmer.this,  response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setClickDisable(true);
+                    Toast.makeText(AddNewRequestFarmer.this,  response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerServiceModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(AddNewRequestFarmer.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setClickDisable(true);
+                Toast.makeText(AddNewRequestFarmer.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -469,6 +483,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
     public void farmerUploadImage(Uri contentURI, int fromWhere) {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setClickDisable(false);
 
         Uri uri = null;
         String fName = "";
@@ -497,6 +512,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setClickDisable(true);
                         imageName[0] = imageModel.getUploadimage().getImage_name();
                         Log.w("ImageName", imageName[0]);
                         if (fromWhere == 1) {
@@ -505,22 +521,22 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                             Imagepath = imageModel.getUploadimage().getImage_name();
                         }
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setClickDisable(true);
+                        Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setClickDisable(true);
+                    Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(AddNewRequestFarmer.this,"Image upload failed", Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setClickDisable(true);
+                Toast.makeText(AddNewRequestFarmer.this,"Image upload failed", Toast.LENGTH_SHORT).show();
 
             }
         });

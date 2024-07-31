@@ -180,7 +180,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
 
         Call<GetJointData> call = apiInterface.getJointReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetJointData>() {
@@ -200,7 +200,6 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         binding.edRemark.setText(response.body().getJointServey().get(0).getRemark());
 
                         selectedWater = response.body().getJointServey().get(0).getIs_water_source_available();
-
                         if (selectedWater.equals("Yes")) {
                             binding.rbYesWaterBtn.setChecked(true);
                         } else {
@@ -243,63 +242,65 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         }
 
                         String seperate = response.body().getJointServey().get(0).getType_of_water_source();
-                        String seperate1 = response.body().getJointServey().get(1).getType_of_water_source();
-                        Log.d("Joint Get", "====>" + seperate + " " + seperate1);
-                        if (seperate.contains("Borewell") || seperate1.contains("Borewell")) {
+//                        String seperate1 = response.body().getJointServey().get(1).getType_of_water_source();
+
+                        Log.d("Joint Get", "====>" + seperate + " " + seperate);
+                        if (seperate.contains("Borewell") /*|| seperate1.contains("Borewell")*/) {
                             binding.checkboxBoreWell.setChecked(true);
                         }
-                        if (seperate.contains("River") || seperate1.contains("River")) {
+                        if (seperate.contains("River") /*|| seperate1.contains("River")*/) {
                             binding.checkboxRiver.setChecked(true);
                         }
-                        if (seperate.contains("Lake") || seperate1.contains("Lake")) {
+                        if (seperate.contains("Lake")/* || seperate1.contains("Lake")*/) {
                             binding.checkboxLake.setChecked(true);
                         }
 
                         String pumpSurveyor = response.body().getJointServey().get(0).getPump_recom_survey();
-                        String pumpSurveyor1 = response.body().getJointServey().get(1).getPump_recom_survey();
-                        Log.d("Joint Get", "====>" + pumpSurveyor + " " + pumpSurveyor1);
+//                        String pumpSurveyor1 = response.body().getJointServey().get(1).getPump_recom_survey();
 
-                        if (pumpSurveyor.contains("30") || pumpSurveyor1.contains("30")) {
+                        Log.d("Joint Get", "====>" + pumpSurveyor + " " + pumpSurveyor);
+
+                        if (pumpSurveyor.contains("30")/* || pumpSurveyor1.contains("30")*/) {
                             binding.cbPumpHead1.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("50") || pumpSurveyor1.contains("50")) {
+                        if (pumpSurveyor.contains("50")/* || pumpSurveyor1.contains("50")*/) {
                             binding.cbPumpHead2.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("70") || pumpSurveyor1.contains("70")) {
+                        if (pumpSurveyor.contains("70") /*|| pumpSurveyor1.contains("70")*/) {
                             binding.cbPumpHead3.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("100") || pumpSurveyor1.contains("100")) {
+                        if (pumpSurveyor.contains("100") /*|| pumpSurveyor1.contains("100")*/) {
                             binding.cbPumpHead4.setChecked(true);
                         }
 
                         String pumpBeneficiary = response.body().getJointServey().get(0).getPump_recom_benefits();
-                        String pumpBeneficiary1 = response.body().getJointServey().get(1).getPump_recom_benefits();
-                        Log.d("Joint Get", "====>" + pumpBeneficiary + " " + pumpBeneficiary1);
+//                        String pumpBeneficiary1 = response.body().getJointServey().get(1).getPump_recom_benefits();
+                        Log.d("Joint Get", "====>" + pumpBeneficiary + " " + pumpBeneficiary);
 
-                        if (pumpBeneficiary.contains("30") || pumpBeneficiary1.contains("30")) {
+                        if (pumpBeneficiary.contains("30") /*|| pumpBeneficiary1.contains("30")*/) {
                             binding.cbPumpHeadBeneficiary1.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("50") || pumpBeneficiary1.contains("50")) {
+                        if (pumpBeneficiary.contains("50") /*|| pumpBeneficiary1.contains("50")*/) {
                             binding.cbPumpHeadBeneficiary2.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("70") || pumpBeneficiary1.contains("70")) {
+                        if (pumpBeneficiary.contains("70") /*|| pumpBeneficiary1.contains("70")*/) {
                             binding.cbPumpHeadBeneficiary3.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("100") || pumpBeneficiary1.contains("100")) {
+                        if (pumpBeneficiary.contains("100") /*|| pumpBeneficiary1.contains("100")*/) {
                             binding.cbPumpHeadBeneficiary4.setChecked(true);
                         }
 
                         String persons = response.body().getJointServey().get(0).getSurvey_person();
-                        String persons1 = response.body().getJointServey().get(1).getSurvey_person();
-                        Log.d("Joint Get", "====>" + persons + " " + persons1);
+//                        String persons1 = response.body().getJointServey().get(1).getSurvey_person();
+                        Log.d("Joint Get", "====>" + persons + " " + persons);
 
-                        if (persons.contains("Field Engineer") || persons1.contains("Field Engineer")) {
+                        if (persons.contains("Field Engineer") /*|| persons1.contains("Field Engineer")*/) {
                             binding.cbFieldEng.setChecked(true);
                         }
-                        if (persons.contains("Farmer") || persons1.contains("Farmer")) {
+                        if (persons.contains("Farmer") /*|| persons1.contains("Farmer")*/) {
                             binding.cbFarmer.setChecked(true);
                         }
-                        if (persons.contains("Govt. Farmer") || persons1.contains("Govt. Farmer")) {
+                        if (persons.contains("Govt. Farmer") /*|| persons1.contains("Govt. Farmer")*/) {
                             binding.cbGovtFarmer.setChecked(true);
                         }
 
@@ -338,8 +339,8 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", reportId);
-        hashMap.put("agent_id", Const.AGENT_ID);
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("agent_id", preference.getAgentId());
+        hashMap.put("farmer_id", preference.getAgentFarmerId() );
         hashMap.put("alternet_mo", binding.edSurveyorAlternativeNumber.getText().toString());
         hashMap.put("imei_no", binding.edSurveyorIMEIId.getText().toString());
         hashMap.put("latitude", String.valueOf(latitude));
@@ -412,8 +413,8 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         setAllClicksDisable(false);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("agent_id", Const.AGENT_ID);
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("agent_id", preference.getAgentId());
+        hashMap.put("farmer_id",preference.getAgentFarmerId());
         hashMap.put("alternet_mo", binding.edSurveyorAlternativeNumber.getText().toString());
         hashMap.put("imei_no", binding.edSurveyorIMEIId.getText().toString());
         hashMap.put("latitude", String.valueOf(latitude));
@@ -632,6 +633,12 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (selectShaow.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select available area", Toast.LENGTH_SHORT).show();
+        }else if (signatureSurveyor == null || signatureSurveyor.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
+        }else if (signatureBeneficiary == null ||signatureBeneficiary.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }
         return isValid;
     }
@@ -686,6 +693,12 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (selectShaow.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select available area", Toast.LENGTH_SHORT).show();
+        }else if (signatureSurveyor == null || signatureSurveyor.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
+        }else if (signatureBeneficiary == null ||signatureBeneficiary.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }
         return isValid;
     }
@@ -1032,7 +1045,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-                    Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }

@@ -1,6 +1,7 @@
 package com.ananta.fieldAgent.Activity.farmer;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,7 +50,12 @@ public class FarmerCurrentServiceSinglePageActivity extends AppCompatActivity {
         binding.tvFarmerID.setText(id);
         binding.tvFarmerAddress.setText(farmer_address);
         binding.tvFarmerApplicationNo.setText(ComplaintNumber);
-        binding.tvFarmerCompanyName.setText(Comapany_name);
+
+        if (Comapany_name.isEmpty()){
+            binding.llCompanyName.setVisibility(View.GONE);
+        }else {
+            binding.tvFarmerCompanyName.setText(Comapany_name);
+        }
 
         if (image_name.isEmpty()){
             Glide.with(getApplicationContext()).load(R.drawable.placeholder).into(binding.farmerImage);

@@ -130,7 +130,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
 
         Call<GetDeliveryData> call = apiInterface.getDeliveryReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetDeliveryData>() {
@@ -188,15 +188,11 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             binding.tvErrorPresentPersonName.setVisibility(View.VISIBLE);
         } else if (binding.tvAddressDelivery.getText().toString().isEmpty()) {
             isValid = false;
-            binding.tvErrorAddress.setVisibility(View.VISIBLE);
-        } else if (signatureName.isEmpty()) {
+        } else if (signatureName == null || signatureName.isEmpty()) {
             isValid = false;
-            binding.tvErrorAddress.setVisibility(View.VISIBLE);
-            binding.tvErrorAddress.setText("please add signature");
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         } else if (Imagepath == null || Imagepath.isEmpty()) {
             isValid = false;
-            binding.tvErrorAddress.setVisibility(View.VISIBLE);
             Toast.makeText(this, "please Select Image", Toast.LENGTH_SHORT).show();
         }
         return isValid;
@@ -213,11 +209,8 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             binding.tvErrorPresentPersonName.setVisibility(View.VISIBLE);
         } else if (binding.tvAddressDelivery.getText().toString().isEmpty()) {
             isValid = false;
-            binding.tvErrorAddress.setVisibility(View.VISIBLE);
-        } else if (signatureName.isEmpty()) {
+        } else if (signatureName == null || signatureName.isEmpty()) {
             isValid = false;
-            binding.tvErrorAddress.setVisibility(View.VISIBLE);
-            binding.tvErrorAddress.setText("please add signature");
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }
         return isValid;
@@ -232,8 +225,8 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", reportId);
         hashMap.put("surveyor_name", Const.AGENT_NAME);
-        hashMap.put("farmer_id", Const.FARMER_ID);
-        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
+        hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
         if (Imagepath == null || !Imagepath.toString().isEmpty()) {
             hashMap.put("image", Imagepath);
@@ -272,7 +265,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             public void onFailure(Call<DeliveryDataModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.GONE);
                 setAllClicksDisable(true);
-                Toast.makeText(DeliveryReportActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DeliveryReportActivity.this,  "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -286,8 +279,8 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("surveyor_name", Const.AGENT_NAME);
-        hashMap.put("farmer_id", Const.FARMER_ID);
-        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
+        hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("present_person_name", binding.edPresentPersonNameDelivery.getText().toString());
         hashMap.put("image", Imagepath);
         hashMap.put("date", binding.tvDeliveryDate.getText().toString());

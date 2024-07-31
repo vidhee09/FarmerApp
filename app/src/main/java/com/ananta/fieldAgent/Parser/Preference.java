@@ -116,6 +116,9 @@ public class Preference {
     public static Integer  ID ;
     public static String FARMER_ID = "farmer_id";
 
+    public static String AGENT_FARMER_ID = "farmer_id";
+
+
     public String getAgentName(){
         return app_preferences.getString(AGENT_NAME, "");
     }
@@ -153,6 +156,16 @@ public class Preference {
     public void putAgentNumber(String mobile) {
         SharedPreferences.Editor edit = app_preferences.edit();
         edit.putString(AGNET_MobileNo, mobile);
+        edit.apply();
+    }
+
+    public String getAgentFarmerId(){
+        return app_preferences.getString(AGENT_FARMER_ID, "");
+    }
+
+    public void putAgentFarmerId(String farmId) {
+        SharedPreferences.Editor edit = app_preferences.edit();
+        edit.putString(AGENT_FARMER_ID, farmId);
         edit.apply();
     }
 

@@ -2,6 +2,7 @@ package com.ananta.fieldAgent.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
         holder.tvAddressCurrentReq.setText(model.getFarmer_address());
         Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).error(R.drawable.placeholder).into(holder.ivCurrentReqImage);
 
+        Log.d("Current ==>" , "=reason===>" + model.getReason());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +60,8 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
                 intent.putExtra("image_name",model.getImage_name());
                 intent.putExtra("ComplaintId",model.getComplaint_id());
                 intent.putExtra("ID",String.valueOf(model.getId()));
+                intent.putExtra("description", model.getDescription());
+                intent.putExtra("reason", model.getReason());
                 intent.putExtra("company_name",model.getCompany_name());
                 context.startActivity(intent);
 

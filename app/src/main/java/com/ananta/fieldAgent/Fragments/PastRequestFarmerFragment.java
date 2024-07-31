@@ -43,7 +43,7 @@ public class PastRequestFarmerFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filter(newText);
+//                filter(newText);
                 return false;
             }
         });
@@ -61,11 +61,21 @@ public class PastRequestFarmerFragment extends Fragment {
     }
 
     public void bindRcv() {
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        binding.rcvFarmServiceView.setLayoutManager(manager);
+        if (serviceArrayList == null || serviceArrayList.isEmpty()){
+            binding.rlNoData.setVisibility(View.VISIBLE);
+            binding.llData.setVisibility(View.GONE);
 
-        serviceAdapter = new FarmServiceAdapter(getActivity(), serviceArrayList);
-        binding.rcvFarmServiceView.setAdapter(serviceAdapter);
+        }else {
+            binding.rlNoData.setVisibility(View.GONE);
+            binding.llData.setVisibility(View.VISIBLE);
+
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            binding.rcvFarmServiceView.setLayoutManager(manager);
+
+            serviceAdapter = new FarmServiceAdapter(getActivity(), serviceArrayList);
+            binding.rcvFarmServiceView.setAdapter(serviceAdapter);
+        }
+
 
     }
 

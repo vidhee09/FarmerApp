@@ -16,6 +16,9 @@ public class CurrentServiceDatumFarmer {
     public int status;
     public String created_at;
     public String updated_at;
+    public String farmer_address;
+    public String company_name;
+    public String farmer_name;
 
 
     public int getId() {
@@ -120,5 +123,30 @@ public class CurrentServiceDatumFarmer {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+
+    public String getFarmer_address() {
+        return farmer_address;
+    }
+
+    public void setFarmer_address(String farmer_address) {
+        this.farmer_address = farmer_address;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
+    }
+
+    public String getFarmer_name() {
+        return farmer_name;
+    }
+
+    public void setFarmer_name(String farmer_name) {
+        this.farmer_name = farmer_name;
     }
 }

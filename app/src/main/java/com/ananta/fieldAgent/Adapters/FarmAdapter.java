@@ -61,13 +61,13 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder> {
             public void onClick(View v) {
 
                 Intent intent = new Intent(context, FarmerCurrentServiceSinglePageActivity.class);
-//                intent.putExtra("farmer_name", model.getFarmer_name());
+                intent.putExtra("farmer_name", model.getFarmer_name());
                 intent.putExtra("request_name", model.getRequest_type());
-//                intent.putExtra("farmer_address", model.getFarmer_address());
+                intent.putExtra("farmer_address", model.getFarmer_address());
                 intent.putExtra("image_name", model.getImage_name());
                 intent.putExtra("ComplaintId", model.getComplaint_id());
                 intent.putExtra("ID", String.valueOf(model.getId()));
-//                intent.putExtra("company_name", model.getCompany_name());
+                intent.putExtra("company_name", model.getCompany_name());
                 context.startActivity(intent);
 
             }

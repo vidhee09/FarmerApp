@@ -41,6 +41,7 @@ public class FramerFragment extends Fragment {
     ArrayList<FarmerDatum> farmerModelArrayList = new ArrayList<>();
     ApiInterface apiInterface;
     Preference preference;
+    String FarmerFarmID;
 
     public static FramerFragment newInstance() {
         return new FramerFragment();
@@ -59,8 +60,8 @@ public class FramerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getFarmerData(Const.AGENT_ID);
-        Log.d("AgentId==", "=" + Const.AGENT_ID);
+        getFarmerData(preference.getAgentId());
+        Log.d("AgentId==", "=" + preference.getAgentId());
 
     }
 
@@ -72,6 +73,10 @@ public class FramerFragment extends Fragment {
         farmerAdapter = new FarmerAdapter(getActivity(), farmerModelArrayList);
         binding.rcvFarmerView.setAdapter(farmerAdapter);
 
+    }
+
+    public void setClickDisable(boolean b){
+        binding.rcvFarmerView.setClickable(b);
     }
 
     public void getFarmerData(String id) {
@@ -91,7 +96,7 @@ public class FramerFragment extends Fragment {
                     if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.addAll(response.body().getFarmerData());
-                        Const.FARMER_ID = String.valueOf(response.body().getFarmerData().get(0).getId());
+                        FarmerFarmID  = String.valueOf(response.body().getFarmerData().get(0).getId());
                         bindList();
                     } else {
                         binding.pbProgressBar.setVisibility(View.VISIBLE);

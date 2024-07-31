@@ -57,6 +57,7 @@ public class FarmerActivity extends AppCompatActivity {
 
         addListener();
 
+        binding.svSearchView.clearFocus();
         binding.svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -65,7 +66,7 @@ public class FarmerActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filter(newText);
+//                filter(newText);
                 return false;
             }
         });
@@ -98,7 +99,7 @@ public class FarmerActivity extends AppCompatActivity {
 
     private void initView() {
 
-        if (farmerModelArrayList.isEmpty()){
+        if (farmerModelArrayList.isEmpty() || farmerModelArrayList.contains(null)){
             binding.rlNoData.setVisibility(View.VISIBLE);
             binding.rlData.setVisibility(View.GONE);
         }else{
@@ -154,6 +155,11 @@ public class FarmerActivity extends AppCompatActivity {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         farmerModelArrayList.clear();
                         farmerModelArrayList.addAll(response.body().getFarmerData());
+
+                        if (!farmerModelArrayList.isEmpty()){
+                            preference.putAgentFarmerId(String.valueOf(response.body().getFarmerData().get(0).getId()));
+                        }
+
                         initView();
                     }else {
                         binding.pbProgressBar.setVisibility(View.GONE);

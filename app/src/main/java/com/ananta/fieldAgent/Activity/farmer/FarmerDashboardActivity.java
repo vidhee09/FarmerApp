@@ -83,6 +83,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         binding.ivAddReqImage.setOnClickListener(v -> {
             Intent intent = new Intent(FarmerDashboardActivity.this, AddNewRequestFarmer.class);
             startActivity(intent);
+            finish();
 
         });
 
@@ -100,29 +101,39 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
         getFarmerData(preference.getFarmerLoginId());
+        super.onResume();
+    }
+
+    public void setClickDisable(boolean b) {
+
+        binding.ivSignOut.setClickable(b);
+        binding.ivAddReqImage.setEnabled(b);
     }
 
     public void getFarmerData(String id) {
 
         binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setClickDisable(false);
+
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", id);
 
-        Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap ,"Bearer "+preference.getToken());
-        Log.d("farmerData===TOKEN",""+preference.getToken());
+        Call<FarmerServiceResponseModel> call = apiInterface.getCurrentAndPastData(hashMap, "Bearer " + preference.getToken());
+        Log.d("farmerData===TOKEN", "" + preference.getToken());
 
         call.enqueue(new Callback<FarmerServiceResponseModel>() {
             @Override
             public void onResponse(@NonNull Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
 
-                Log.d("farmerData===TOKEN","dash="+response.code());
+                Log.d("farmerData===TOKEN", "dash=" + response.code());
 
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setClickDisable(true);
+
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
                         adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrent_service_data()), "Current Request");
                         adapter.addFragment(new PastRequestFarmerFragment(response.body().getPast_service_data()), "Past Request");
@@ -130,22 +141,22 @@ public class FarmerDashboardActivity extends AppCompatActivity {
                         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(FarmerDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                         binding.pbProgressBar.setVisibility(View.GONE);
+                        setClickDisable(true);
+                        Toast.makeText(FarmerDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(FarmerDashboardActivity.this, "Data not available", Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    setClickDisable(true);
+                    Toast.makeText(FarmerDashboardActivity.this, "Data not available", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FarmerServiceResponseModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(FarmerDashboardActivity.this, " " +t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                setClickDisable(true);
+                Toast.makeText(FarmerDashboardActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -153,7 +164,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        CustomDialogAlert customDialogAlert = new CustomDialogAlert(this, this.getResources().getString(R.string.close_application), this.getResources().getString(R.string.close_text), this.getResources().getString(R.string.yes)) {
+        /*CustomDialogAlert customDialogAlert = new CustomDialogAlert(this, this.getResources().getString(R.string.close_application), this.getResources().getString(R.string.close_text), this.getResources().getString(R.string.yes)) {
             @Override
             public void onClickLeftButton() {
                 dismiss();
@@ -165,7 +176,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
                 finish();
             }
         };
-        customDialogAlert.show();
 
+        customDialogAlert.show();*/
     }
 }

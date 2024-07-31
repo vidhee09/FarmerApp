@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -116,7 +117,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
 
         Call<GetPumpData> call = apiInterface.getPumpReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetPumpData>() {
@@ -131,13 +132,41 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                         binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
                         binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
                         binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
-//                    String panel = response.body().getPumpInstallation().get(0).getPanelId();
-//                    String[] panels = panel.split(",");
-//                    Log.d("chipp-===panel===", "=" + panels);
 
-                        chip.setText(response.body().getPumpInstallation().get(0).getPanelId());
-                        binding.chipGroup.addView(chip);
-                        Log.d("chipp-======", "=" + chip);
+                        panelIdList.clear();
+                        String panel = response.body().getPumpInstallation().get(0).getPanelId();
+                        panelIdList.add(panel);
+
+                        Log.d("panelList===","="+new Gson().toJson(panel));
+
+                        String[] panels = panel.split(",");
+
+//                        panels[0];
+//                        chip.append(panels[0]);
+
+                        for (int i = 0; i < panels.length; i++) {
+                            Chip chip = new Chip(binding.chipGroup.getContext());
+                            LinearLayout.LayoutParams layoutParams= new
+                                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT);
+                            layoutParams.setMargins(5,1,5,1);
+
+                            chip.setLayoutParams(layoutParams);
+                            chip.setText(panels[i]);
+
+//                            panelIdList.add(panels[i]);
+
+                            chip.setCloseIconVisible(true);
+                            binding.chipGroup.addView(chip);
+
+                            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    binding.chipGroup.removeView(chip);
+                                }
+                            });
+                        }
+//                        Log.d("panelList===","="+new Gson().toJson(panelIdList));
 
                         reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
                         Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
@@ -152,7 +181,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -203,6 +232,9 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         } else if (workingPumpPath == null || workingPumpPath.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
+        }else if (signatureName == null || signatureName.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }
         return isValid;
     }
@@ -224,6 +256,9 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         } else if (binding.edControllerId.getText().toString().isEmpty()) {
             isValid = false;
             binding.edControllerId.setError("please enter controller id ");
+        }else if (signatureName == null || signatureName.isEmpty()) {
+            isValid = false;
+            Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }
         return isValid;
     }
@@ -397,7 +432,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         }
     }
 
-    public void setAllClicksDisable(boolean b){
+    public void setAllClicksDisable(boolean b) {
         binding.ivBackPress.setClickable(b);
         binding.edPumpId.setClickable(b);
         binding.ivAddMoreId.setClickable(b);
@@ -423,8 +458,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", reportId);
-        hashMap.put("agent_id", Const.AGENT_ID);
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("agent_id", preference.getAgentId());
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
         hashMap.put("pump_id", binding.edPumpId.getText().toString());
         hashMap.put("panel_id", panelIdList.toString());
         hashMap.put("controller_id", binding.edControllerId.getText().toString());
@@ -488,8 +523,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("agent_id", Const.AGENT_ID);
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("agent_id", preference.getAgentId());
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
         hashMap.put("pump_id", binding.edPumpId.getText().toString());
         hashMap.put("panel_id", panelIdList.toString());
         hashMap.put("controller_id", binding.edControllerId.getText().toString());

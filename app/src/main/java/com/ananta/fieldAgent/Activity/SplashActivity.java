@@ -44,8 +44,8 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (!preference.getAgentId().equals("")) {
-                    Const.AGENT_ID = preference.getAgentId();
-                    ApiClient.setLoginDetail(preference.getToken());
+//                    preference.getAgentId() = preference.getAgentId();
+//                    ApiClient.setLoginDetail(preference.getToken());
                     // old screen
 //                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
@@ -61,7 +61,7 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     if (!preference.getFarmerLoginId().equals("")){
                         Const.LOGIN_FARMER_ID = preference.getFarmerLoginId();
-                        ApiClient.setLoginDetail(preference.getToken());
+//                        ApiClient.setLoginDetail(preference.getToken());
                         Intent intent = new Intent(SplashActivity.this, FarmerDashboardActivity.class);
                         startActivity(intent);
                         finish();

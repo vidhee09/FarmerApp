@@ -157,8 +157,8 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", reportId);
-        hashMap.put("farmer_id", Const.FARMER_ID);
-        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
+        hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("date", binding.tvDateSiteReport.getText().toString());
         if (Imagepath == null || !Imagepath.isEmpty()) {
             hashMap.put("pump_image", Imagepath);
@@ -216,8 +216,8 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("farmer_id", Const.FARMER_ID);
-        hashMap.put("agent_id", Const.AGENT_ID);
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
+        hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("pump_image", Imagepath);
         hashMap.put("pump_benificiaryimage", baneficiarypath);
         hashMap.put("date", binding.tvDateSiteReport.getText().toString());
@@ -272,7 +272,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         setAllClicksDisable(false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("farmer_id", preference.getAgentFarmerId());
 
         Call<GetSiteData> call = apiInterface.getSiteReport(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<GetSiteData>() {
@@ -369,7 +369,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         } else if (binding.tvDateSiteReport.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvAddressSite.setError("please enter date");
-        } else if (signImage.isEmpty()) {
+        } else if (signImage == null || signImage.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         } else if (Imagepath == null || Imagepath.isEmpty()) {
@@ -393,7 +393,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         } else if (binding.tvDateSiteReport.getText().toString().isEmpty()) {
             isValid = false;
             binding.tvAddressSite.setError("please enter date");
-        } else if (signImage.isEmpty()) {
+        } else if (signImage == null ||signImage.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please add signature", Toast.LENGTH_SHORT).show();
         }

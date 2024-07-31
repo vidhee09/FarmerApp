@@ -1,6 +1,8 @@
 package com.ananta.fieldAgent.Activity.fieldAgent;
 
+import android.icu.util.LocaleData;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,7 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
 
     ActivitySingleCurrentServiceDetailsBinding binding;
-    String image, farmer_name, request_name, farmer_address, ComplaintId, ID, company_name;
+    String image, farmer_name, request_name, farmer_address, ComplaintId, ID, company_name, reason, description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +46,26 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         image = getIntent().getStringExtra("image_name");
         ComplaintId = getIntent().getStringExtra("ComplaintId");
         ID = getIntent().getStringExtra("ID");
-        company_name = getIntent().getStringExtra("company_name");
+        reason = getIntent().getStringExtra("reason");
+        description = getIntent().getStringExtra("description");
 
         binding.tvFarmerNameCurrentService.setText(farmer_name);
         binding.tvAddressCurrentService.setText(farmer_address);
         binding.tvApplicationNoCurrentService.setText(ComplaintId);
         binding.tvFarmerIDCurrentService.setText(ID);
+        binding.tvFarmerCompanyName.setText(company_name);
         binding.tvComplaintNameCurrentService.setText(request_name);
+        binding.tvServiceDescription.setText(description);
+
+        if (reason == null || reason.isEmpty()|| company_name == null || company_name.isEmpty()){
+            binding.llReason.setVisibility(View.GONE);
+            binding.llCompanyName.setVisibility(View.GONE);
+        }else{
+            binding.tvReason.setText(reason);
+            company_name = getIntent().getStringExtra("company_name");
+        }
 
         Glide.with(getApplicationContext()).load(Const.IMAGE_URL + image).into(binding.ivFarmerImageCurrentService);
-
 
         binding.btnComplete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +73,6 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(SingleCurrentServiceDetailsActivity.this);
                 builder.setView(R.layout.detail_form_dialog).create().show();
                 Toast.makeText(SingleCurrentServiceDetailsActivity.this, "complete", Toast.LENGTH_SHORT).show();
-
             }
         });
 

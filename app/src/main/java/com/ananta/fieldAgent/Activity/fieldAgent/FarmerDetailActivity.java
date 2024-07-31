@@ -36,7 +36,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
     ActivityFarmerDetailBinding binding;
     ApiInterface apiInterface;
-    String FarmerPosition = "", CompanyName = "", FarmerName = "";
+    String FarmerPosition = "", CompanyName = "", FarmerName = "",Selected_farmer_id;
     public static final int PERMISSION_FOR_LOCATION = 2;
     Preference preference;
     String site_report, delivery_report, joint_report, pump_report;
@@ -58,6 +58,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
         FarmerPosition = getIntent().getStringExtra("farmer_position");
         FarmerName = getIntent().getStringExtra("FarmerName");
+        Selected_farmer_id = getIntent().getStringExtra("Selected_farmer_id");
         if (CompanyName.isEmpty()){
             CompanyName = "CompanyName";
         }else {
@@ -191,10 +192,10 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
         HashMap<String, String> hashMap = new HashMap<>();
 
-        hashMap.put("agent_id", Const.AGENT_ID);
-        hashMap.put("farmer_id", Const.FARMER_ID);
+        hashMap.put("agent_id", preference.getAgentId());
+        hashMap.put("farmer_id", Selected_farmer_id);
 
-        Log.d("FARMER_ID==", "=" + Const.FARMER_ID + "aid===" + Const.AGENT_ID);
+//        Log.d("FARMER_ID==", "=" + Const.FARMER_ID + "aid===" + preference.getAgentId());
 
         Call<CheckStatusModel> call = apiInterface.checkReportStatus(hashMap ,"Bearer "+preference.getToken());
         call.enqueue(new Callback<CheckStatusModel>() {
