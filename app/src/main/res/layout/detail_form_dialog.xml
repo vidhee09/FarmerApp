@@ -112,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Multiple Panel IDs" />
+                android:text="Panel IDs" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10sdp"
-                android:hint="Multiple Panel IDs"
+                android:hint="Panel IDs"
                 android:textColor="@color/black"/>
 
             <ImageView
@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Pump head recommanded by surveyor" />
+                android:text="Motor Head" />
 
             <CheckBox
                 android:id="@+id/cbPumpHead1"

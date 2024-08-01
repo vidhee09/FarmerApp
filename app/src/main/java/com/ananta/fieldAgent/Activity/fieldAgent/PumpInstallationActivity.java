@@ -133,6 +133,13 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                         binding.edIMEIId.setText(response.body().getPumpInstallation().get(0).getImeiNo());
                         binding.edStructureId.setText(response.body().getPumpInstallation().get(0).getStructureId());
                         binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
+                        String policyNumber = response.body().getPumpInstallation().get(0).getPolicyNo();
+
+                        if (policyNumber.isEmpty()){
+                            binding.edPolicyNumberPumpInstall.setText("");
+                        }else {
+                            binding.edPolicyNumberPumpInstall.setText(response.body().getPumpInstallation().get(0).getPolicyNo());
+                        }
 
                         panelIdList.clear();
                         String panel = response.body().getPumpInstallation().get(0).getPanelId();
@@ -150,8 +157,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                         for (int i = 0; i < panels.length; i++) {
 
                             Chip chip = new Chip(binding.chipGroup.getContext());
-                            LinearLayout.LayoutParams layoutParams = new
-                                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT);
                             layoutParams.setMargins(5, 1, 5, 1);
 

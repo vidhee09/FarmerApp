@@ -143,7 +143,6 @@ public class FarmerActivity extends AppCompatActivity {
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("id",agentId);
 
-
         Call<FarmerModel> call = apiInterface.getDashboardData(hashMap,"Bearer "+preference.getToken());
 
         call.enqueue(new Callback<FarmerModel>() {
@@ -156,9 +155,16 @@ public class FarmerActivity extends AppCompatActivity {
                         farmerModelArrayList.clear();
                         farmerModelArrayList.addAll(response.body().getFarmerData());
 
-                        if (!farmerModelArrayList.isEmpty()){
-                            preference.putAgentFarmerId(String.valueOf(response.body().getFarmerData().get(0).getId()));
-                        }
+                       /* for (int i = 0; i< response.body().getFarmerData().size(); i++){
+                            if (!farmerModelArrayList.isEmpty()){
+                                preference.putAgentFarmerId(String.valueOf(response.body().getFarmerData().get(i).getId()));
+                                Log.d("hello===","farmerID=="+response.body().getFarmerData().get(i).getId());
+                            }else {
+                                Log.d("hello===","farmerID=else="+response.body().getFarmerData().get(i));
+                                Toast.makeText(FarmerActivity.this, "farmerID==="+response.body().getFarmerData().size(), Toast.LENGTH_SHORT).show();
+                            }
+                        }*/
+
 
                         initView();
                     }else {

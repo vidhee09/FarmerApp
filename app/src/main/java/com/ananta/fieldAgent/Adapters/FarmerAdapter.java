@@ -18,6 +18,7 @@ import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
 import com.ananta.fieldAgent.Models.FarmerDatum;
 import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
 
     Context context;
     ArrayList<FarmerDatum> farmerList;
+    Preference preference;
 
     public FarmerAdapter(Context context, ArrayList<FarmerDatum> farmerList) {
         this.context = context;
@@ -46,6 +48,9 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
         FarmerDatum model = farmerList.get(position);
         holder.tvFarmerName.setText(model.getName());
         holder.tvAddressName.setText(model.getAddress());
+        preference = Preference.getInstance(context);
+
+        Log.d("idddd=====","=="+model.getId());
 
         Log.d("farmer address===>","="+model.getAddress());
 
@@ -56,13 +61,15 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
             @Override
             public void onClick(View v) {
 
+                Log.d("idddd=====","=click="+ String.valueOf(model.getId()));
+
                 Intent intent = new Intent(context, FarmerDetailActivity.class);
                 intent.putExtra("Selected_farmer_id",""+model.getId());
+                preference.putAgentFarmerId(String.valueOf(model.getId()));
                 intent.putExtra("FarmerName",model.getName());
                 intent.putExtra("CompanyName",model.getAddress());
                 context.startActivity(intent);
 
-//                Const.FARMER_ID = String.valueOf(model.getId());
             }
         });
 

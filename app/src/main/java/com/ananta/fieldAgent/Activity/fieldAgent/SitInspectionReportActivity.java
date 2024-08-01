@@ -41,6 +41,7 @@ import com.ananta.fieldAgent.Models.SiteReportModel;
 import com.ananta.fieldAgent.Models.Siteinspectionn;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
+import com.ananta.fieldAgent.Parser.CompressImage;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
@@ -158,6 +159,8 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", reportId);
         hashMap.put("farmer_id", preference.getAgentFarmerId());
+        Log.d("idddd=====","=farmerid==siteAdd=="+preference.getAgentFarmerId());
+
         hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("date", binding.tvDateSiteReport.getText().toString());
         if (Imagepath == null || !Imagepath.isEmpty()) {
@@ -502,9 +505,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 try {
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        Log.w("Imagepath==sdgvsdg==", "photo 1" + Imagepath);
                         uploadImage(contentURI, 1);
-                        Log.w("siteins", "photo 1" + Imagepath);
                         binding.ivPumpPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);

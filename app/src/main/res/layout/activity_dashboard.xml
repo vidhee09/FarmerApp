@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -10,11 +10,8 @@
 
     <LinearLayout
         android:id="@+id/llToolbar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_60sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/round_bg_globle"
         android:orientation="horizontal">
 
@@ -22,34 +19,34 @@
             android:id="@+id/ivPersonalDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_green_add"
             android:layout_gravity="center"
-            android:padding="@dimen/_10sdp"
             android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/bg_green_add"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/person"
             android:visibility="gone"
-            app:tint="@color/white"/>
+            app:tint="@color/white" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="end"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_bold"
+            android:gravity="end"
             android:text="@string/dashboard"
             android:textColor="@color/white"
-            android:textSize="@dimen/_14ssp"/>
+            android:textSize="@dimen/_14ssp" />
 
         <ImageView
             android:id="@+id/ivSignOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_green_add"
             android:layout_gravity="center"
-            android:padding="@dimen/_10sdp"
             android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/bg_green_add"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/signout" />
 
         <ImageView
@@ -57,89 +54,90 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="@dimen/_10sdp"
-            android:background="@drawable/bg_green_add"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/user"/>
+            android:background="@drawable/bg_green_add"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/user" />
 
     </LinearLayout>
 
-
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="@dimen/_220sdp"
-        android:layout_height="@dimen/_220sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:src="@drawable/ic_farmer"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@id/llToolbar"/>
-
+    <!-- <ImageView
+         android:id="@+id/ivLogo"
+         android:layout_width="@dimen/_220sdp"
+         android:layout_height="@dimen/_220sdp"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         android:layout_marginTop="@dimen/_16sdp"
+         android:src="@drawable/ic_farmer"
+         android:scaleType="centerCrop"
+         app:layout_constraintTop_toBottomOf="@id/llToolbar"/>-->
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivLogo"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:weightSum="2">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:weightSum="2"
+        android:layout_marginVertical="@dimen/_20sdp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/llFarmer"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_150sdp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/farmer"/>
+                android:src="@drawable/farmer_new_logo"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
                 android:text="Farmer"
                 android:textAlignment="center"
-                android:fontFamily="@font/poppins_bold"
-                android:textSize="@dimen/_14ssp"
                 android:textColor="@color/black"
-                android:gravity="center"/>
+                android:textSize="@dimen/_14ssp" />
 
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llService"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1">
+            android:layout_gravity="bottom"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_150sdp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/mechanic"/>
+                android:layout_marginStart="@dimen/_2sdp"
+                android:src="@drawable/service_logo" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Service"
-                android:textAlignment="center"
-                android:textSize="@dimen/_14ssp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:text="Service requests"
+                android:textAlignment="center"
                 android:textColor="@color/black"
-                android:gravity="center"/>
+                android:textSize="@dimen/_14ssp" />
 
         </LinearLayout>
 
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
