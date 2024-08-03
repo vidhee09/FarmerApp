@@ -149,20 +149,8 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                     etImeiNo.setText(pumpDataResponse.body().getPumpInstallation().get(0).getImeiNo());
                     etMotorSerialNumber.setText(String.valueOf(pumpDataResponse.body().getPumpInstallation().get(0).getPumpId()));
 
-                    /*---- Motor head ---*/
-                    int selectedId = radioGroupHeadSurveyor.getCheckedRadioButtonId();
-                    RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
-                    if (radioButton != null || selectedId != -1){
-                        pumpSurveyor = radioButton.getText().toString();
-                    }else {
-                        Log.d("Joint Get", "===selectedId=else=>" + selectedId);
-                    }
-
-                    Log.d("Joint Get", "===selectedId=>" + selectedId);
-
                     pumpSurveyor = jointDataResponse.body().getJointServey().get(0).getPump_recom_survey();
 
-                    Log.d("Joint Get", "====>" + pumpSurveyor + " " + pumpSurveyor);
                     if (pumpSurveyor.contains("30")) {
                         rbPumpHeadSurveyor30.setChecked(true);
                     }
@@ -193,6 +181,15 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                     btnUpdate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
+                            /*---- Motor head ---*/
+                            int selectedId = radioGroupHeadSurveyor.getCheckedRadioButtonId();
+                            RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
+                            if (radioButton != null || selectedId != -1){
+                                pumpSurveyor = radioButton.getText().toString();
+                            }else {
+                                Log.d("Joint Get", "===selectedId=else=>" + pumpSurveyor);
+                            }
 
                             if (countChipsInChipGroup(chipGroup) >= 9) {
                                 updatePumpReport();
