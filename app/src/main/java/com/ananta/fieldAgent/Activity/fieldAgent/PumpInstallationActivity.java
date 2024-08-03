@@ -159,8 +159,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                                 public void onClick(View v) {
                                     Chip chip = (Chip) v;
                                     binding.chipGroup.removeView(chip);
-                                    //panelIdList.indexOf(chip.getText().toString().trim());
-                                    Log.d("panelList===", "remove=" + panelIdList.indexOf(chip.getText().toString().trim()));
                                     panelIdList.remove(chip.getText().toString().trim());
 
                                 }
@@ -170,7 +168,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
                         }
 
-                        Log.d("panelList===", "getId=" + new Gson().toJson(panelIdList));
 
                         reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
                         Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
@@ -483,7 +480,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-        Log.d("panelList===", "updateReq=" + panelIdList.toString());
 
         Call<PumpInstallModel> call = apiInterface.updatePumpInstallReport(hashMap, "Bearer " + preference.getToken());
 
@@ -542,7 +538,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-        Log.d("panelList===", "add=" + panelIdList.toString());
 
         Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap, "Bearer " + preference.getToken());
 
