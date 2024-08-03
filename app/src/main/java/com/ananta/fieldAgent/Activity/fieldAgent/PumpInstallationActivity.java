@@ -627,23 +627,20 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     private void addMorePanelId(String txet) {
 
-        chip = new Chip(PumpInstallationActivity.this);
-        chip.setText(txet);
-        binding.chipGroup.addView(chip);
+
 
         if (panelIdList.contains(txet)) {
             Toast.makeText(this, "Panel Id already added", Toast.LENGTH_SHORT).show();
             binding.edPanelId.setText("");
         } else {
+            chip = new Chip(PumpInstallationActivity.this);
+            chip.setText(txet);
+            binding.chipGroup.addView(chip);
             panelIdList.add(txet);
+            countChipsInChipGroup(binding.chipGroup);
+            chip.setCloseIconVisible(true);
+            chip.setOnCloseIconClickListener(v -> binding.chipGroup.removeView(chip));
         }
-
-        countChipsInChipGroup(binding.chipGroup);
-
-
-        chip.setCloseIconVisible(true);
-        chip.setOnCloseIconClickListener(v -> binding.chipGroup.removeView(chip));
-
     }
 
     private int countChipsInChipGroup(ChipGroup chipGroup) {

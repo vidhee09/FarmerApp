@@ -1,8 +1,6 @@
 package com.ananta.fieldAgent.Activity.fieldAgent;
 
 import android.app.Dialog;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -432,26 +430,21 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
 
     private void addMorePanelId(String txet) {
 
-        chip = new Chip(SingleCurrentServiceDetailsActivity.this);
-        chip.setText(txet);
-        chipGroup.addView(chip);
+
 
         if (panelIdList.contains(txet)) {
             Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Panel Id already added", Toast.LENGTH_SHORT).show();
             etMultiplePanelIds.setText("");
-        }else{
+        } else{
+            chip = new Chip(SingleCurrentServiceDetailsActivity.this);
+            chip.setText(txet);
+            chipGroup.addView(chip);
             panelIdList.add(txet);
+            countChipsInChipGroup(chipGroup);
+            /*  if remove chip   */
+            chip.setCloseIconVisible(true);
+            chip.setOnCloseIconClickListener(v -> chipGroup.removeView(chip));
         }
-        countChipsInChipGroup(chipGroup);
-
-        /*  if remove chip   */
-        chip.setCloseIconVisible(true);
-        chip.setOnCloseIconClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chipGroup.removeView(chip);
-            }
-        });
     }
 
     private int countChipsInChipGroup(ChipGroup chipGroup) {
@@ -475,119 +468,6 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
                         jointDataResponse = response;
-
-                       /* reportId = String.valueOf(response.body().getJointServey().get(0).getId());
-                        binding.edSurveyorIMEIId.setText(response.body().getJointServey().get(0).getImei_no());
-                        binding.edConstantWaterLevel.setText(response.body().getJointServey().get(0).getConstant_water());
-                        binding.edSurveyorAlternativeNumber.setText(response.body().getJointServey().get(0).getAlternet_mo());
-                        binding.edDepthWaterSource.setText(response.body().getJointServey().get(0).getWater_depth());
-                        binding.edWaterDeliveryPoint.setText(response.body().getJointServey().get(0).getWater_delivery_point());
-                        binding.edRemark.setText(response.body().getJointServey().get(0).getRemark());
-
-                        selectedWater = response.body().getJointServey().get(0).getIs_water_source_available();
-                        if (selectedWater.equals("Yes")) {
-                            binding.rbYesWaterBtn.setChecked(true);
-                        } else {
-                            binding.rbNoWaterBtn.setChecked(true);
-                        }
-
-                        selectedPumpType = response.body().getJointServey().get(0).getPump_type();
-                        if (selectedPumpType.equals("Submarsible")) {
-                            binding.rbSubmarsible.setChecked(true);
-                        } else {
-                            binding.rbSurface.setChecked(true);
-                        }
-
-                        selectAgPump = response.body().getJointServey().get(0).getIs_pump_electricity();
-                        if (selectAgPump.equals("Yes")) {
-                            binding.rbAgYes.setChecked(true);
-                        } else {
-                            binding.rbAgNo.setChecked(true);
-                        }
-
-                        selectGovt = response.body().getJointServey().get(0).getIs_pump_electricity();
-                        if (selectGovt.equals("Yes")) {
-                            binding.rbSolarYes.setChecked(true);
-                        } else {
-                            binding.rbSolarNo.setChecked(true);
-                        }
-
-                        selectShaow = response.body().getJointServey().get(0).getIs_shadow_area();
-                        if (selectShaow.equals("Yes")) {
-                            binding.rbShadowYes.setChecked(true);
-                        } else {
-                            binding.rbShadowNo.setChecked(true);
-                        }
-
-                        networkSelect = response.body().getJointServey().get(0).getIs_mobile_network();
-                        if (networkSelect.equals("Yes")) {
-                            binding.rbNetworkYes.setChecked(true);
-                        } else {
-                            binding.rbNetworkNo.setChecked(true);
-                        }
-
-                        String seperate = response.body().getJointServey().get(0).getType_of_water_source();
-
-                        Log.d("Joint Get", "====>" + seperate + " " + seperate);
-                        if (seperate.contains("Borewell")) {
-                            binding.checkboxBoreWell.setChecked(true);
-                        }
-                        if (seperate.contains("River") ) {
-                            binding.checkboxRiver.setChecked(true);
-                        }
-                        if (seperate.contains("Lake")) {
-                            binding.checkboxLake.setChecked(true);
-                        }
-
-                        String pumpSurveyor = response.body().getJointServey().get(0).getPump_recom_survey();
-
-                        Log.d("Joint Get", "====>" + pumpSurveyor + " " + pumpSurveyor);
-
-                        if (pumpSurveyor.contains("30")) {
-                            binding.cbPumpHead1.setChecked(true);
-                        }
-                        if (pumpSurveyor.contains("50")) {
-                            binding.cbPumpHead2.setChecked(true);
-                        }
-                        if (pumpSurveyor.contains("70") ) {
-                            binding.cbPumpHead3.setChecked(true);
-                        }
-                        if (pumpSurveyor.contains("100") ) {
-                            binding.cbPumpHead4.setChecked(true);
-                        }
-
-                        String pumpBeneficiary = response.body().getJointServey().get(0).getPump_recom_benefits();
-                        Log.d("Joint Get", "====>" + pumpBeneficiary + " " + pumpBeneficiary);
-
-                        if (pumpBeneficiary.contains("30") ) {
-                            binding.cbPumpHeadBeneficiary1.setChecked(true);
-                        }
-                        if (pumpBeneficiary.contains("50") ) {
-                            binding.cbPumpHeadBeneficiary2.setChecked(true);
-                        }
-                        if (pumpBeneficiary.contains("70") ) {
-                            binding.cbPumpHeadBeneficiary3.setChecked(true);
-                        }
-                        if (pumpBeneficiary.contains("100") ) {
-                            binding.cbPumpHeadBeneficiary4.setChecked(true);
-                        }
-
-                        String persons = response.body().getJointServey().get(0).getSurvey_person();
-                        Log.d("Joint Get", "====>" + persons + " " + persons);
-
-                        if (persons.contains("Field Engineer") ) {
-                            binding.cbFieldEng.setChecked(true);
-                        }
-                        if (persons.contains("Farmer")) {
-                            binding.cbFarmer.setChecked(true);
-                        }
-                        if (persons.contains("Govt. Farmer") ) {
-                            binding.cbGovtFarmer.setChecked(true);
-                        }
-
-                        Glide.with(SingleCurrentServiceDetailsActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getWater_res_image()).into(binding.ivWaterPhoto);
-                        Glide.with(SingleCurrentServiceDetailsActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getLandmark_image()).into(binding.ivBeneficiaryPhotoJoint);
-                        Glide.with(SingleCurrentServiceDetailsActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getBeneficiary_image()).into(binding.ivLandmarkPhoto);*/
 
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
