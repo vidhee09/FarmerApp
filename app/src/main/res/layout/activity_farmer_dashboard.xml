@@ -8,20 +8,19 @@
     android:orientation="vertical"
     tools:context=".Activity.farmer.FarmerDashboardActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@drawable/round_bg_globle"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:fontFamily="@font/poppins_bold"
-            android:gravity="end"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="@dimen/_14sdp"
             android:text="@string/dashboard"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
@@ -31,22 +30,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_6sdp"
             android:background="@drawable/bg_green_add"
-            android:padding="@dimen/_10sdp"
+            android:padding="@dimen/_8sdp"
             android:src="@drawable/signout" />
 
         <ImageView
             android:id="@+id/ivAddReqImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/ivSignOut"
+            android:layout_marginEnd="@dimen/_6sdp"
             android:background="@drawable/bg_green_add"
-            android:padding="@dimen/_10sdp"
+            android:padding="@dimen/_8sdp"
             android:src="@drawable/user" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

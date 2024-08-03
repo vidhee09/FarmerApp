@@ -236,16 +236,9 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                                     panelIdList.remove(chip.getText().toString().trim());
                                 }
                             });
-
                             chipGroup.addView(chip);
-
                         }
-
-
-
-
                 dialog.show();
-
             }
         });
 
@@ -386,11 +379,13 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         chip.setText(txet);
         chipGroup.addView(chip);
 
-        panelIdList.add(txet);
-        Log.d("chip====", "=" + new Gson().toJson(panelIdList));
-
+        if (panelIdList.contains(txet)) {
+            Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Panel Id already added", Toast.LENGTH_SHORT).show();
+            etMultiplePanelIds.setText("");
+        }else{
+            panelIdList.add(txet);
+        }
         countChipsInChipGroup(chipGroup);
-        Log.d("chipgroup====", "=" + countChipsInChipGroup(chipGroup));
 
         /*  if remove chip   */
         chip.setCloseIconVisible(true);

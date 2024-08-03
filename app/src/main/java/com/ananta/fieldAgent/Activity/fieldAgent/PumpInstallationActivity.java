@@ -1,15 +1,11 @@
 package com.ananta.fieldAgent.Activity.fieldAgent;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -24,7 +20,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Models.GetPumpData;
-import com.ananta.fieldAgent.Models.GetSiteData;
 import com.ananta.fieldAgent.Models.ImageModel;
 import com.ananta.fieldAgent.Models.PumpInstallModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
@@ -33,7 +28,6 @@ import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
 import com.ananta.fieldAgent.Parser.Preference;
-import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityPumpInstallationBinding;
 import com.bumptech.glide.Glide;
@@ -104,10 +98,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     public void fetchData() {
         if (pump_report.equals("0")) {
-            Log.d("get==", "=" + pump_report);
             binding.llSubmitPumpInstall.setText("Add Report");
         } else {
-            Log.d("get==", "=" + pump_report);
             binding.llSubmitPumpInstall.setText("Update Report");
             getData();
         }
@@ -136,9 +128,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
                         panelIdList.clear();
                         String panel = response.body().getPumpInstallation().get(0).getPanelId();
-
-                        Log.d("panelList===", "get=" + new Gson().toJson(panel));
-
                         String[] panels = panel.split(",");
 
                         String[] trimmedArray = new String[panels.length];
@@ -636,21 +625,18 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         chip.setText(txet);
         binding.chipGroup.addView(chip);
 
-        panelIdList.add(txet);
-        Log.d("chip====", "=" + new Gson().toJson(panelIdList));
+        if (panelIdList.contains(txet)) {
+            Toast.makeText(this, "Panel Id already added", Toast.LENGTH_SHORT).show();
+            binding.edPanelId.setText("");
+        } else {
+            panelIdList.add(txet);
+        }
 
         countChipsInChipGroup(binding.chipGroup);
-        Log.d("chipgroup====", "=" + countChipsInChipGroup(binding.chipGroup));
 
-        /*  if remove chip   */
 
         chip.setCloseIconVisible(true);
-        chip.setOnCloseIconClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.chipGroup.removeView(chip);
-            }
-        });
+        chip.setOnCloseIconClickListener(v -> binding.chipGroup.removeView(chip));
 
     }
 
@@ -666,7 +652,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         String fName = "";
         try {
             uri = FileSelectionUtils.getFilePathFromUri(getApplicationContext(), contentURI);
-            Log.w("FilePathURL", "" + contentURI + " " + uri);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
