@@ -1,51 +1,48 @@
 package com.ananta.fieldAgent.Activity.farmer;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import com.ananta.fieldAgent.Activity.DashboardActivity;
 import com.ananta.fieldAgent.Activity.LoginScreen;
-import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
+import com.ananta.fieldAgent.Activity.ServiceActivity;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.CurrenRequestFarmerFragment;
 import com.ananta.fieldAgent.Fragments.PastRequestFarmerFragment;
-import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
 import com.ananta.fieldAgent.Models.FarmerServiceResponseModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Preference;
-import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
-import com.ananta.fieldAgent.Utils.CustomDialogAlert;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDashboardBinding;
+import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FarmerDashboardActivity extends AppCompatActivity {
+public class FarmerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ActivityFarmerDashboardBinding binding;
     TabFragmentAdapter adapter;
     private Preference preference;
     ApiInterface apiInterface;
-
+    public ActionBarDrawerToggle actionBarDrawerToggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
@@ -59,6 +56,12 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        actionBarDrawerToggle = new ActionBarDrawerToggle(FarmerDashboardActivity.this, binding.myDrawerLayout, R.string.open, R.string.close);
+
+        binding.myDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         binding.tvFarmerName.setText(preference.getFarmerName());
         binding.tvFarmerNo.setText(preference.getFarmerNum());
@@ -96,6 +99,14 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             Intent intent = new Intent(FarmerDashboardActivity.this, LoginScreen.class);
             startActivity(intent);
             finishAffinity();
+        });
+
+
+        binding.ivOpenDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.myDrawerLayout.openDrawer(binding.navSideBar);
+            }
         });
     }
 
@@ -179,4 +190,36 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
         customDialogAlert.show();*/
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+
+
+        int id = item.getItemId();
+        if (id == R.id.profile) {
+            intent = new Intent(FarmerDashboardActivity.this, ServiceActivity.class);
+            startActivity(intent);
+        }
+
+        if (id == R.id.signOut) {
+            preference.putIsHideWelcomeScreen(false);
+            preference.putFarmerName(null);
+            preference.putFarmerNum(null);
+            preference.putFarmerLoginId(null);
+            preference.putFarmerName(null);
+            intent = new Intent(FarmerDashboardActivity.this, LoginScreen.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+
+        if (id == R.id.pastReq) {
+            Toast.makeText(this, "Past Request", Toast.LENGTH_SHORT).show();
+        }
+
+
+        binding.myDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 }
