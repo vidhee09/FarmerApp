@@ -164,6 +164,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/round_background"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/_5sdp"
             android:paddingStart="@dimen/_10sdp">
 
             <TextView
@@ -173,33 +174,36 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Motor Head" />
 
-            <CheckBox
-                android:id="@+id/cbPumpHead1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="30"
-                android:textColor="@color/black" />
+            <RadioGroup
+                android:id="@+id/radioGroupHeadSurveyor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <CheckBox
-                android:id="@+id/cbPumpHead2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="50"
-                android:textColor="@color/black" />
+                <RadioButton
+                    android:id="@+id/rbPumpHeadSurveyor30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30" />
 
-            <CheckBox
-                android:id="@+id/cbPumpHead3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="70"
-                android:textColor="@color/black" />
+                <RadioButton
+                    android:id="@+id/rbPumpHeadSurveyor50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50" />
 
-            <CheckBox
-                android:id="@+id/cbPumpHead4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="100"
-                android:textColor="@color/black" />
+                <RadioButton
+                    android:id="@+id/rbPumpHeadSurveyor70"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="70" />
+
+                <RadioButton
+                    android:id="@+id/rbPumpHeadSurveyor100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100" />
+
+            </RadioGroup>
 
         </LinearLayout>
 
