@@ -29,7 +29,7 @@
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:background="@drawable/bg_green_add"
                 android:padding="@dimen/_8sdp"
-                android:src="@drawable/profile"
+                android:src="@drawable/more"
                 android:visibility="visible"
                 app:tint="@color/white" />
 
@@ -40,12 +40,12 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_bold"
-                android:gravity="end"
+                android:gravity="center"
                 android:text="@string/dashboard"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
 
-            <ImageView
+          <!--  <ImageView
                 android:id="@+id/ivSignOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:background="@drawable/bg_green_add"
                 android:padding="@dimen/_10sdp"
-                android:src="@drawable/signout" />
+                android:src="@drawable/signout" />-->
 
             <ImageView
                 android:id="@+id/ivAddReqImage"
@@ -107,7 +107,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_bold"
                     android:gravity="center"
-                    android:text="Farmer"
+                    android:text="Beneficiaries"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14ssp" />
@@ -142,7 +142,6 @@
                     android:textSize="@dimen/_14ssp" />
 
             </LinearLayout>
-
 
         </LinearLayout>
 

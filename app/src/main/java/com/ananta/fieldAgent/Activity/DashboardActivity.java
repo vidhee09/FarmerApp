@@ -28,7 +28,7 @@ import com.ananta.fieldAgent.Utils.CustomDialogAlert;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private LinearLayout llFarmer, llService;
     private ImageView ivAddReqImage, ivSignOut, ivPersonalDetail;
@@ -52,15 +52,17 @@ public class DashboardActivity extends AppCompatActivity {
 
         bindView();
         addListener();
+        navSideBar.setNavigationItemSelectedListener(this);
     }
 
     private void bindView() {
         llFarmer = findViewById(R.id.llFarmer);
         llService = findViewById(R.id.llService);
         ivAddReqImage = findViewById(R.id.ivAddReqImage);
-        ivSignOut = findViewById(R.id.ivSignOut);
+//        ivSignOut = findViewById(R.id.ivSignOut);
         ivPersonalDetail = findViewById(R.id.ivPersonalDetail);
         drawer_layout = findViewById(R.id.drawer_layout);
+        navSideBar = findViewById(R.id.navSideBar);
     }
 
     private void addListener() {
@@ -79,12 +81,12 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        ivSignOut.setOnClickListener(v -> {
+   /*     ivSignOut.setOnClickListener(v -> {
             preference.putAgentID("");
             Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
             startActivity(intent);
             finishAffinity();
-        });
+        });*/
 
         ivPersonalDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,30 +95,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        navSideBar.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                int id = item.getItemId();
-
-                if (id == R.id.profileShow) {
-                    Log.d("profile===","=="+id);
-                    Intent intent = new Intent(DashboardActivity.this, AgentProfileActivity.class);
-                    startActivity(intent);
-                }
-
-                if (id == R.id.signOut) {
-                    Log.d("profile===","=sign="+id);
-
-                    preference.putAgentID("");
-                    Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
-                    startActivity(intent);
-                    finishAffinity();
-                }
-
-                return false;
-            }
-        });
     }
 
     @Override
@@ -135,5 +113,26 @@ public class DashboardActivity extends AppCompatActivity {
             }
         };
         customDialogAlert.show();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.profileShow) {
+            Log.d("profile===","=="+id);
+            Intent intent = new Intent(DashboardActivity.this, AgentProfileActivity.class);
+            startActivity(intent);
+        }
+
+        if (id == R.id.signOut) {
+            Log.d("profile===","=sign="+id);
+
+            preference.putAgentID("");
+            Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+        return false;
     }
 }

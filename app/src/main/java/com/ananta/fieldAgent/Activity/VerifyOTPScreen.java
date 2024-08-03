@@ -135,6 +135,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         preference.putAgentID(String.valueOf(response.body().getUser_id()));
                         preference.putAgentNumber(response.body().getMobile_number());
                         preference.putToken(response.body().getToken());
+                        preference.putCompanyName(response.body().getUser_companyname());
 //                        preference.putAgentFarmerId(response.body().get);
                         Const.SERVER_TOKEN = response.body().getToken();
                         String token = preference.putToken(response.body().getToken());
@@ -153,6 +154,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         preference.putFarmerName(response.body().getUser_name());
                         preference.putFarmerNum(response.body().getMobile_number());
                         Const.SERVER_TOKEN = response.body().getToken();
+                        preference.putCompanyName(response.body().getUser_companyname());
 //                        ApiClient.setLoginDetail(response.body().getToken());
                         String token = preference.putToken(response.body().getToken());
                         startActivity(intent3);

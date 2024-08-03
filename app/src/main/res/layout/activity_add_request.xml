@@ -218,6 +218,34 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Pump ID" />
+
+                            <TextView
+                                android:id="@+id/tvRequestPumpId"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@drawable/fill_round_background"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:fontFamily="@font/poppins_bold"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/_10sdp"
+                                android:text="Pump Id"
+                                android:textColor="@color/black" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:orientation="vertical">
 
@@ -371,6 +399,33 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Pump ID" />
+
+                            <TextView
+                                android:id="@+id/tvInsurancePumpId"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@drawable/fill_round_background"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:fontFamily="@font/poppins_bold"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/_10sdp"
+                                android:text="Pump Id"
+                                android:textColor="@color/black" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:orientation="vertical">
 
@@ -439,34 +494,6 @@
                                 android:src="@drawable/ic_camera" />
 
                         </LinearLayout>
-
-                        <!-- <LinearLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:layout_marginTop="@dimen/_10sdp"
-                             android:orientation="vertical">
-
-                             <TextView
-                                 android:layout_width="wrap_content"
-                                 android:layout_height="wrap_content"
-                                 android:fontFamily="@font/poppins_bold"
-                                 android:text="Incident Date" />
-
-                             <TextView
-                                 android:id="@+id/tvDateInsurance"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:layout_marginTop="@dimen/_5sdp"
-                                 android:background="@drawable/round_background"
-                                 android:drawablePadding="@dimen/_5sdp"
-                                 android:fontFamily="@font/poppins_regular"
-                                 android:gravity="center_vertical"
-                                 android:maxLength="10"
-                                 android:padding="@dimen/_10sdp"
-                                 android:text="Date"
-                                 android:textColor="@color/black" />
-
-                         </LinearLayout>-->
 
                     </LinearLayout>
 

@@ -62,13 +62,14 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private static final int TAKE_PHOTO_FROM_CAMERA = 100;
 
     ActivityAddRequestBinding binding;
-    String path = "", claim = "", reason = "", farmer_name = "", farmer_id = "", Imagepath;
+    String path = "", claim = "", reason = "", farmer_name = "", farmer_id = "", Imagepath,pump_id;
     ApiInterface apiInterface;
     int photos;
 
     ArrayList<Farmer> allFarmersList = new ArrayList<>();
     ArrayList<String> list = new ArrayList<>();
     ArrayList<Integer> ids = new ArrayList<>();
+    ArrayList<String> pumpId = new ArrayList<>();
     private Preference preference;
 
     @Override
@@ -232,9 +233,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private void datePick() {
 
         final Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = sdf.format(c.getTime());
@@ -340,6 +338,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                         for (int i = 0; i < allFarmersList.size(); i++) {
                             list.add(allFarmersList.get(i).getName());
                             ids.add(allFarmersList.get(i).getId());
+                            pumpId.add(allFarmersList.get(i).getPump_id());
                         }
                         setFarmerList();
                     } else {
@@ -377,11 +376,14 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
                 farmer_name = list.get(position);
                 farmer_id = String.valueOf(ids.get(position));
+                pump_id = pumpId.get(position);
+
+                binding.tvRequestPumpId.setText(pump_id);
+                binding.tvInsurancePumpId.setText(pump_id);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
