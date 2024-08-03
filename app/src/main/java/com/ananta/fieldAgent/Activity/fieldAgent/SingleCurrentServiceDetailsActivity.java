@@ -84,6 +84,7 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         image = getIntent().getStringExtra("image_name");
         ComplaintId = getIntent().getStringExtra("ComplaintId");
         ID = getIntent().getStringExtra("ID");
+        Log.d("Single ==>", "===>" + ID);
 
         reason = getIntent().getStringExtra("reason");
         description = getIntent().getStringExtra("description");
@@ -169,7 +170,11 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                         /*---- Motor head ---*/
                         int selectedId = radioGroupHeadSurveyor.getCheckedRadioButtonId();
                         RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
-                        pumpSurveyor = radioButton.getText().toString();
+                        if (radioButton != null || selectedId != -1){
+                            pumpSurveyor = radioButton.getText().toString();
+                        }else {
+                            Log.d("Joint Get", "===selectedId=else=>" + pumpSurveyor);
+                        }
 
                         if (countChipsInChipGroup(chipGroup) >= 9) {
                             updateRequest();

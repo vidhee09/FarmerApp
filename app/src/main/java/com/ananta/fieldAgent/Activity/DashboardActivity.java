@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,22 +14,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.AgentProfileActivity;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.Utils.CustomDialogAlert;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private LinearLayout llFarmer, llService;
     private ImageView ivAddReqImage, ivSignOut, ivPersonalDetail;
+    DrawerLayout drawer_layout;
     Preference preference;
+    NavigationView navSideBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +55,17 @@ public class DashboardActivity extends AppCompatActivity {
 
         bindView();
         addListener();
+        navSideBar.setNavigationItemSelectedListener(this);
     }
 
     private void bindView() {
         llFarmer = findViewById(R.id.llFarmer);
         llService = findViewById(R.id.llService);
         ivAddReqImage = findViewById(R.id.ivAddReqImage);
-        ivSignOut = findViewById(R.id.ivSignOut);
+//        ivSignOut = findViewById(R.id.ivSignOut);
         ivPersonalDetail = findViewById(R.id.ivPersonalDetail);
+        drawer_layout = findViewById(R.id.drawer_layout);
+        navSideBar = findViewById(R.id.navSideBar);
     }
 
     private void addListener() {
@@ -70,20 +84,20 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
-        ivSignOut.setOnClickListener(v -> {
+   /*     ivSignOut.setOnClickListener(v -> {
             preference.putAgentID("");
             Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
             startActivity(intent);
             finishAffinity();
-        });
+        });*/
 
         ivPersonalDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                drawer_layout.openDrawer(GravityCompat.START);
             }
         });
+
     }
 
     @Override
@@ -102,5 +116,26 @@ public class DashboardActivity extends AppCompatActivity {
             }
         };
         customDialogAlert.show();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.profileShow) {
+            Log.d("profile===","=="+id);
+            Intent intent = new Intent(DashboardActivity.this, AgentProfileActivity.class);
+            startActivity(intent);
+        }
+
+        if (id == R.id.signOut) {
+            Log.d("profile===","=sign="+id);
+
+            preference.putAgentID("");
+            Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+        return false;
     }
 }

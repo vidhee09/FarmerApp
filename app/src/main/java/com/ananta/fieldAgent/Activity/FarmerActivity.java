@@ -124,13 +124,13 @@ public class FarmerActivity extends AppCompatActivity {
             }
         });
 
-        binding.ivAddReqImage.setOnClickListener(new View.OnClickListener() {
+       /* binding.ivAddReqImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FarmerActivity.this, AddRequestActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override

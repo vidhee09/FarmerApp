@@ -168,5 +168,14 @@ public class Preference {
         edit.putString(AGENT_FARMER_ID, farmId);
         edit.apply();
     }
+ public String getCompanyName(){
+        return app_preferences.getString(COMPANY_NAME, "");
+    }
+
+    public void putCompanyName(String companyName) {
+        SharedPreferences.Editor edit = app_preferences.edit();
+        edit.putString(COMPANY_NAME, companyName);
+        edit.apply();
+    }
 
 }

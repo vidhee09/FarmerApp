@@ -11,12 +11,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
+import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityAgentProfileBinding;
 
 public class AgentProfileActivity extends AppCompatActivity {
 
     ActivityAgentProfileBinding binding;
+    Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +27,18 @@ public class AgentProfileActivity extends AppCompatActivity {
         binding = ActivityAgentProfileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        preference = Preference.getInstance(AgentProfileActivity.this);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        binding.tvAgentName.setText(Const.AGENT_NAME);
-        binding.tvAgentCompanyName.setText(Const.COMPANY_NAME);
-        binding.tvAgentMobileNumber.setText(Const.MOBILE_NUMBER);
+
+        binding.tvAgentName.setText(preference.getAgentName());
+        binding.tvAgentCompanyName.setText(preference.getCompanyName());
+        binding.tvAgentMobileNumber.setText(preference.getAgentNumber());
 
         binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
             @Override
