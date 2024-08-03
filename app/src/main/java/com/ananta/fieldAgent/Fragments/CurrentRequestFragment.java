@@ -41,6 +41,7 @@ public class CurrentRequestFragment extends Fragment {
         binding = FragmentCurrentRequestBinding.inflate(inflater);
         View view = binding.getRoot();
 
+        binding.svSearchViewCurrent.clearFocus();
         binding.svSearchViewCurrent.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

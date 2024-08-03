@@ -50,6 +50,7 @@ public class ServiceActivity extends AppCompatActivity {
     TabFragmentAdapter adapter;
     ApiInterface apiInterface;
     Preference preference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
@@ -111,7 +112,7 @@ public class ServiceActivity extends AppCompatActivity {
         getCurrentRequestData();
     }
 
-    public void setAllClicksDisable(boolean b){
+    public void setAllClicksDisable(boolean b) {
         binding.ivBackPress.setClickable(b);
         binding.ivAddReqImage.setClickable(b);
     }
@@ -122,22 +123,24 @@ public class ServiceActivity extends AppCompatActivity {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         HashMap<String, String> hashMap = new HashMap<>();
-        Log.d("Service ===>" ,"===>" + preference.getAgentId());
+        Log.d("Service ===>", "===>" + preference.getAgentId());
         hashMap.put("id", preference.getAgentId());
 
-        Call<CurrentReqModel> call = apiInterface.getCurrentRequest(hashMap ,"Bearer "+preference.getToken());
+        Call<CurrentReqModel> call = apiInterface.getCurrentRequest(hashMap, "Bearer " + preference.getToken());
 
         call.enqueue(new Callback<CurrentReqModel>() {
             @Override
             public void onResponse(@NonNull Call<CurrentReqModel> call, @NonNull Response<CurrentReqModel> response) {
 
-                if (response.body() != null){
+                if (response.body() != null) {
                     if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
                         adapter.addFragment(new CurrentRequestFragment(response.body().getCurrent_service_data()), "Current Request");
+
                         adapter.addFragment(new PastRequestFragment(response.body().getPastServiceData()), "Past Request");
+
                         binding.vpViewPager.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         binding.tbTabLayout.setupWithViewPager(binding.vpViewPager);
@@ -146,9 +149,9 @@ public class ServiceActivity extends AppCompatActivity {
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
-                        Toast.makeText(ServiceActivity.this, "Request not available", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ServiceActivity.this, "no open service requests", Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
                     Toast.makeText(ServiceActivity.this, "Request not available", Toast.LENGTH_SHORT).show();
@@ -160,7 +163,7 @@ public class ServiceActivity extends AppCompatActivity {
             public void onFailure(Call<CurrentReqModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.GONE);
                 setAllClicksDisable(true);
-                Toast.makeText(ServiceActivity.this, " "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ServiceActivity.this, " " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

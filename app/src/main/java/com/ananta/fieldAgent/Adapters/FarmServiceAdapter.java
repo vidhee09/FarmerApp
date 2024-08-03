@@ -54,7 +54,7 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
         if (model.getImage_name() == null || !model.getImage_name().toString().isEmpty()){
             Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).into(holder.ivServiceImage);
         }else {
-            Glide.with(context).load(R.drawable.placeholder).into(holder.ivServiceImage);
+            Glide.with(context).load(R.drawable.ic_farmer).into(holder.ivServiceImage);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

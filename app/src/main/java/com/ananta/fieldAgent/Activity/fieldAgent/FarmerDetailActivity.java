@@ -195,7 +195,7 @@ public class FarmerDetailActivity extends AppCompatActivity {
         hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("farmer_id", Selected_farmer_id);
 
-//        Log.d("FARMER_ID==", "=" + Const.FARMER_ID + "aid===" + preference.getAgentId());
+        Log.d("idddd=====", "idApi="  + "aid===" +Selected_farmer_id);
 
         Call<CheckStatusModel> call = apiInterface.checkReportStatus(hashMap ,"Bearer "+preference.getToken());
         call.enqueue(new Callback<CheckStatusModel>() {

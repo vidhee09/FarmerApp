@@ -61,11 +61,11 @@
 
             <ImageView
                 android:id="@+id/ivFarmerImage"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_100sdp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_130sdp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:src="@drawable/farmer" />
+                android:src="@drawable/farmer_new_logo" />
 
 
             <TextView

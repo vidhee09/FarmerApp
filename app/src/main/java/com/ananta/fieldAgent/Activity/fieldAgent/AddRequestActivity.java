@@ -1,5 +1,6 @@
 package com.ananta.fieldAgent.Activity.fieldAgent;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,6 +59,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     private static final int GALLERY = 101;
     private static final int CAMERA = 102;
+    private static final int TAKE_PHOTO_FROM_CAMERA = 100;
 
     ActivityAddRequestBinding binding;
     String path = "", claim = "", reason = "", farmer_name = "", farmer_id = "", Imagepath;
@@ -357,7 +359,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onFailure(Call<AllFarmerModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.GONE);
                 setAllClicksDisable(true);
-                Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRequestActivity.this, "no open service requests", Toast.LENGTH_SHORT).show();
                 Log.d("Addrequest", "=" + t.getMessage());
             }
         });
@@ -437,7 +439,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.GONE);
                 setAllClicksDisable(true);
-                Toast.makeText(AddRequestActivity.this, "Data not Found" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRequestActivity.this, "no open service requests" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -446,7 +448,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private void showPictureDialog(int photoImage) {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select photo from gallery"/*"Choose photo from camera"*/};
+        String[] pictureDialogItems = {"Select photo from gallery"/*,"Choose photo from camera"*/};
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -456,7 +458,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                                 choosePhotoFromGallary(photoImage);
                                 break;
                             case 1:
-                                takePhotoFromCamera();
+                                takePhotoFromCamera(photoImage);
                                 break;
                         }
                     }
@@ -472,18 +474,21 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         photos = photo;
     }
 
-    private void takePhotoFromCamera() {
+    private void takePhotoFromCamera(int photo) {
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        camera_intent.setType("image/*");
         startActivityForResult(camera_intent, CAMERA);
+        photos = photo;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
+        if (resultCode == RESULT_CANCELED) {
             return;
         }
+        if (resultCode == RESULT_OK && data != null) {
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
@@ -505,14 +510,35 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 }
             }
 
-        } else if (requestCode == CAMERA) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            binding.ivRequestPhoto.setImageBitmap(thumbnail);
-            Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-            saveImage(thumbnail);
-            Log.d("path===>", "=2=" + path);
-            Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+        } else if (requestCode == TAKE_PHOTO_FROM_CAMERA) {
+                Bitmap myBmp = (Bitmap) data.getExtras().get("data");
+                Uri uri =getImageUri(AddRequestActivity.this, myBmp);
+                if (photos == 1){
+                    binding.ivRequestPhoto.setImageBitmap(myBmp);
+                    uploadImage(uri,1);
+                }else {
+                    binding.ivRequestPhoto.setImageBitmap(myBmp);
+                    uploadImage(uri,2);
+                }
+                saveImage(myBmp);
+            }
         }
+
+            /*if (requestCode == CAMERA) {
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
+            if (photos == 1){
+                uploadImage(tempUri, 1);
+                binding.ivRequestPhoto.setImageBitmap(thumbnail);
+            }else {
+                uploadImage(tempUri, 2);
+                binding.ivRequestPhoto.setImageBitmap(thumbnail);
+
+            }
+            saveImage(thumbnail);
+            Log.d("path===>", "=2=" + tempUri);
+            Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+        }*/
     }
 
     public String saveImage(Bitmap myBitmap) {

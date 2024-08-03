@@ -45,7 +45,7 @@ public class PastReqAdapter extends RecyclerView.Adapter<PastReqAdapter.ViewHold
         holder.tvAddressPastReq.setText(model.getFarmer_address());
         holder.tvPastReqName.setText(model.getService_request());
 
-        Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).error(R.drawable.placeholder).into(holder.ivPastReqImage);
+        Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).error(R.drawable.ic_farmer).into(holder.ivPastReqImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

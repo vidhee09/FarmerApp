@@ -41,6 +41,7 @@ import com.ananta.fieldAgent.Models.SiteReportModel;
 import com.ananta.fieldAgent.Models.Siteinspectionn;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
+import com.ananta.fieldAgent.Parser.CompressImage;
 import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.FileSelectionUtils;
 import com.ananta.fieldAgent.Parser.GpsTracker;
@@ -74,11 +75,11 @@ import retrofit2.Response;
 public class SitInspectionReportActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int PERMISSION_CODE = 1;
+    private static final int CAMERA = 100;
     ActivitySitInspectionReportBinding binding;
     ApiInterface apiInterface;
     String Imagepath = "", baneficiarypath = "", signImage = "";
-    private static final int GALLERY = 100;
-    private static final int CAMERA = 101;
+    private static final int GALLERY = 101;
     Preference preference;
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final String TAG = "PermissionRequest";
@@ -158,6 +159,8 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", reportId);
         hashMap.put("farmer_id", preference.getAgentFarmerId());
+        Log.d("idddd=====","=farmerid==siteAdd=="+preference.getAgentFarmerId());
+
         hashMap.put("agent_id", preference.getAgentId());
         hashMap.put("date", binding.tvDateSiteReport.getText().toString());
         if (Imagepath == null || !Imagepath.isEmpty()) {
@@ -348,10 +351,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
         final Calendar c = Calendar.getInstance();
 
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = sdf.format(c.getTime());
         binding.tvDateSiteReport.setText(formattedDate );
@@ -453,11 +452,12 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         }
         uploadFileImage(fileName);
     }
-
+/*
     private void showPictureDialog(int photoImage) {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select photo from gallery" /*"Capture photo from camera"*/};
+        String[] pictureDialogItems = {"Select photo from gallery" */
+    /*"Capture photo from camera"*//*};
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -502,9 +502,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
                 try {
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        Log.w("Imagepath==sdgvsdg==", "photo 1" + Imagepath);
                         uploadImage(contentURI, 1);
-                        Log.w("siteins", "photo 1" + Imagepath);
                         binding.ivPumpPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
@@ -535,7 +533,104 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
 
         }
 
+    }*/
+
+private void showPictureDialog(int photoImage) {
+    AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+    pictureDialog.setTitle("Select Action");
+    String[] pictureDialogItems = {"Select photo from gallery"/*,"Choose photo from camera"*/};
+    pictureDialog.setItems(pictureDialogItems,
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            choosePhotoFromGallary(photoImage);
+                            break;
+                        case 1:
+                            takePhotoFromCamera(photoImage);
+                            break;
+                    }
+                }
+            });
+    pictureDialog.show();
+}
+
+    public void choosePhotoFromGallary(int photo) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, GALLERY);
+        photos = photo;
     }
+
+    private void takePhotoFromCamera(int photo) {
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        camera_intent.setType("image/*");
+        startActivityForResult(camera_intent, CAMERA);
+        photos = photo;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == GALLERY) {
+                if (data != null) {
+                    Uri contentURI = data.getData();
+//                path = String.valueOf(contentURI);
+                    try {
+                        if (photos == 1) {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                            uploadImage(contentURI, 1);
+                            binding.ivPumpPhoto.setImageBitmap(bitmap);
+                        } else {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                            uploadImage(contentURI, 2);
+                            binding.ivBenificiaryPhoto.setImageBitmap(bitmap);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            } else if (requestCode == CAMERA) {
+                Bitmap myBmp = (Bitmap) data.getExtras().get("data");
+                Uri uri =getImageUri(SitInspectionReportActivity.this, myBmp);
+                if (photos == 1){
+                    binding.ivPumpPhoto.setImageBitmap(myBmp);
+                    uploadImage(uri,1);
+                }else {
+                    binding.ivBenificiaryPhoto.setImageBitmap(myBmp);
+                    uploadImage(uri,2);
+                }
+                saveImage(myBmp);
+            }
+        }
+
+            /*if (requestCode == CAMERA) {
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
+            if (photos == 1){
+                uploadImage(tempUri, 1);
+                binding.ivRequestPhoto.setImageBitmap(thumbnail);
+            }else {
+                uploadImage(tempUri, 2);
+                binding.ivRequestPhoto.setImageBitmap(thumbnail);
+
+            }
+            saveImage(thumbnail);
+            Log.d("path===>", "=2=" + tempUri);
+            Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+        }*/
+    }
+
 
     public String saveImage(Bitmap myBitmap) {
         String imageFile = "";
@@ -545,7 +640,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         if (!wallpaperDirectory.exists()) {  // have the object build the directory structure, if needed.
             wallpaperDirectory.mkdirs();
         }
-
         try {
             File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
             f.createNewFile();
@@ -578,17 +672,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         binding.tvDateSiteReport.setOnClickListener(this);
         binding.tvAddressSite.setOnClickListener(this);
         binding.ivBackPress.setOnClickListener(this);
-    }
-
-    private void checkAndRequestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
-        } else {
-            // Permission has already been granted
-//            Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     @Override
@@ -639,8 +722,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     public void uploadImage(Uri contentURI, int fromWhere) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         setAllClicksDisable(false);
-
-//        binding.
 
         Uri uri = null;
         String fName = "";
@@ -707,8 +788,6 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     public void uploadFileImage(File file) {
         binding.pbProgressBar.setVisibility(View.VISIBLE);
         setAllClicksDisable(false);
-
-//
 
         Uri uri = null;
         String fName = "";

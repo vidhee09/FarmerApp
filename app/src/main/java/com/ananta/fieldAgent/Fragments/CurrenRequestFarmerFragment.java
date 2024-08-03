@@ -36,6 +36,7 @@ public class CurrenRequestFarmerFragment extends Fragment {
         binding = FragmentFramerFarmBinding.inflate(inflater);
         View view = binding.getRoot();
 
+        binding.svSearchView.clearFocus();
         binding.svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

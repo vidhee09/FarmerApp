@@ -53,7 +53,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder> {
         if (!model.getImage_name().isEmpty()) {
             Glide.with(context).load(Const.IMAGE_URL + model.getImage_name()).into(holder.ivFarmerImage);
         } else {
-            Glide.with(context).load(R.drawable.placeholder).into(holder.ivFarmerImage);
+            Glide.with(context).load(R.drawable.ic_farmer).into(holder.ivFarmerImage);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -47,6 +47,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         preference = Preference.getInstance(this);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -60,7 +61,8 @@ public class VerifyOTPScreen extends AppCompatActivity {
         binding.pinView.setFocusable(true);
         binding.pinView.setText(OTP);
 
-        binding.tvOtpMobileNumber.setText("+91" + Number);
+        String maskNumber = maskMobileNumber(Number);
+        binding.tvOtpMobileNumber.setText("+91" + maskNumber);
 
         binding.btnOTPVerify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +88,18 @@ public class VerifyOTPScreen extends AppCompatActivity {
             }
         });
     }
+
+    private String maskMobileNumber(String mobileNumber) {
+        // Check if the mobile number is valid
+        if (mobileNumber != null && mobileNumber.length() >= 10) {
+            // Replace the first 6 digits with '*'
+            return mobileNumber.replaceAll("\\d(?=\\d{4})", "*");
+        } else {
+            // Return the original number if it's not valid
+            return mobileNumber;
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

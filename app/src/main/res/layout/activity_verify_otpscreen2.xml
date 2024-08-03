@@ -73,6 +73,7 @@
                         android:id="@+id/tvOtpMobileNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+
                         android:fontFamily="@font/poppins_regular"
                         android:textColor="@color/black" />
 
