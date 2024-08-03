@@ -123,14 +123,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         if (id == R.id.profileShow) {
-            Log.d("profile===","=="+id);
             Intent intent = new Intent(DashboardActivity.this, AgentProfileActivity.class);
             startActivity(intent);
         }
 
         if (id == R.id.signOut) {
-            Log.d("profile===","=sign="+id);
-
             preference.putAgentID("");
             Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
             startActivity(intent);

@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <FrameLayout
@@ -98,7 +99,8 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Farmer Name" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tvName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -106,9 +108,7 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
-                    android:hint="Enter Name"
-                    android:inputType="text"
-                    android:maxLength="10"
+                    android:textStyle="bold"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black" />
 
@@ -118,6 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView
@@ -154,7 +155,8 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Mobile Number" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tvMobileNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -162,9 +164,7 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
-                    android:hint="Mobile Number"
-                    android:inputType="number"
-                    android:maxLength="10"
+                    android:textStyle="bold"
                     android:padding="@dimen/_10sdp"
                     android:textColor="@color/black"/>
 

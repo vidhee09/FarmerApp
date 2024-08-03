@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
@@ -18,11 +17,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.ananta.fieldAgent.Activity.LoginScreen;
-import com.ananta.fieldAgent.Activity.ServiceActivity;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.CurrenRequestFarmerFragment;
 import com.ananta.fieldAgent.Fragments.PastRequestFarmerFragment;
 import com.ananta.fieldAgent.Models.FarmerServiceResponseModel;
+import com.ananta.fieldAgent.Models.PastServiceDatumFarmer;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Preference;
@@ -31,6 +30,7 @@ import com.ananta.fieldAgent.databinding.ActivityFarmerDashboardBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +42,6 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
     TabFragmentAdapter adapter;
     private Preference preference;
     ApiInterface apiInterface;
-    public ActionBarDrawerToggle actionBarDrawerToggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
@@ -57,12 +56,7 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
             return insets;
         });
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(FarmerDashboardActivity.this, binding.myDrawerLayout, R.string.open, R.string.close);
-
-        binding.myDrawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        binding.navSideBar.setNavigationItemSelectedListener(this);
         binding.tvFarmerName.setText(preference.getFarmerName());
         binding.tvFarmerNo.setText(preference.getFarmerNum());
         binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -101,7 +95,6 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
             finishAffinity();
         });
 
-
         binding.ivOpenDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +113,7 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
 
         binding.ivSignOut.setClickable(b);
         binding.ivAddReqImage.setEnabled(b);
+        binding.ivOpenDrawer.setEnabled(b);
     }
 
     public void getFarmerData(String id) {
@@ -138,16 +132,14 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
             @Override
             public void onResponse(@NonNull Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
 
-                Log.d("farmerData===TOKEN", "dash=" + response.code());
-
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setClickDisable(true);
-
+                        binding.btnCreateRequest.setVisibility(View.VISIBLE);
+                        binding.tvTitle.setVisibility(View.VISIBLE);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
                         adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrent_service_data()), "Current Request");
-                        adapter.addFragment(new PastRequestFarmerFragment(response.body().getPast_service_data()), "Past Request");
                         binding.viewPager.setAdapter(adapter);
                         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
@@ -194,15 +186,13 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent intent;
-
-
         int id = item.getItemId();
         if (id == R.id.profile) {
-            intent = new Intent(FarmerDashboardActivity.this, ServiceActivity.class);
+            intent = new Intent(FarmerDashboardActivity.this, FarmerProfileActivity.class);
             startActivity(intent);
         }
 
-        if (id == R.id.signOut) {
+        if (id == R.id.logout) {
             preference.putIsHideWelcomeScreen(false);
             preference.putFarmerName(null);
             preference.putFarmerNum(null);
@@ -214,7 +204,8 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
         }
 
         if (id == R.id.pastReq) {
-            Toast.makeText(this, "Past Request", Toast.LENGTH_SHORT).show();
+            intent = new Intent(FarmerDashboardActivity.this, PastRequestActivity.class);
+            startActivity(intent);
         }
 
 
