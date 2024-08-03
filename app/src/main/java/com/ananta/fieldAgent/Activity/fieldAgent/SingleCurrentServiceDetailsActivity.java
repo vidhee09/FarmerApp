@@ -23,6 +23,7 @@ import com.ananta.fieldAgent.Models.GetJointData;
 import com.ananta.fieldAgent.Models.GetPumpData;
 import com.ananta.fieldAgent.Models.JointSurveyorModel;
 import com.ananta.fieldAgent.Models.PumpInstallModel;
+import com.ananta.fieldAgent.Models.ServiceRequestUpdateResponseModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Const;
@@ -173,32 +174,30 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                         }
                     });
 
-                    btnUpdate.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    btnUpdate.setOnClickListener(v12 -> {
 
-                            binding.pbProgressBar.setVisibility(View.VISIBLE);
-                            if (cbPumpHead1.isChecked()) {
-                                checkPumpHeadSurveyorArrayList.add(cbPumpHead1.getText().toString());
-                            }
-                            if (cbPumpHead2.isChecked()) {
-                                checkPumpHeadSurveyorArrayList.add(cbPumpHead2.getText().toString());
-                            }
-                            if (cbPumpHead3.isChecked()) {
-                                checkPumpHeadSurveyorArrayList.add(cbPumpHead3.getText().toString());
-                            }
-                            if (cbPumpHead4.isChecked()) {
-                                checkPumpHeadSurveyorArrayList.add(cbPumpHead4.getText().toString());
-                            }
-
-                            if (countChipsInChipGroup(chipGroup) >= 9) {
-                                updatePumpReport();
-                                updateJointReport();
-                            } else {
-                                Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please enter minimum 9 panel ids", Toast.LENGTH_SHORT).show();
-                            }
-
+                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        if (cbPumpHead1.isChecked()) {
+                            checkPumpHeadSurveyorArrayList.add(cbPumpHead1.getText().toString());
                         }
+                        if (cbPumpHead2.isChecked()) {
+                            checkPumpHeadSurveyorArrayList.add(cbPumpHead2.getText().toString());
+                        }
+                        if (cbPumpHead3.isChecked()) {
+                            checkPumpHeadSurveyorArrayList.add(cbPumpHead3.getText().toString());
+                        }
+                        if (cbPumpHead4.isChecked()) {
+                            checkPumpHeadSurveyorArrayList.add(cbPumpHead4.getText().toString());
+                        }
+
+                        if (countChipsInChipGroup(chipGroup) >= 9) {
+//                            updatePumpReport();
+//                            updateJointReport();
+                            updateRequest();
+                        } else {
+                            Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please enter minimum 9 panel ids", Toast.LENGTH_SHORT).show();
+                        }
+
                     });
 
                     /*======= Get All Chips ===========*/
@@ -252,6 +251,72 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    private void updateRequest() {
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        binding.pbProgressBar.setVisibility(View.VISIBLE);
+        setAllClicksDisable(false);
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("farmer_id", farmer_ID);
+        if (etMotorSerialNumber.getText().toString().isEmpty()) {
+            Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please enter motor serial number", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            hashMap.put("pump_id", etMotorSerialNumber.getText().toString());
+        }
+        if (etImeiNo.getText().toString().isEmpty()) {
+            Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please enter imei number", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            hashMap.put("imei_no", etImeiNo.getText().toString());
+        }
+        if (panelIdList.isEmpty()){
+            Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please enter panel id", Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            hashMap.put("panel_id", panelIdList.toString());
+        }
+        if (checkPumpHeadSurveyorArrayList.isEmpty()) {
+            hashMap.put("pump_recom_survey", jointDataResponse.body().getJointServey().get(0).getPump_recom_survey());
+        } else {
+            hashMap.put("pump_recom_survey", checkPumpHeadSurveyorArrayList.toString());
+        }
+
+
+        Call<ServiceRequestUpdateResponseModel> call = apiInterface.updateRequest(hashMap, "Bearer " + preference.getToken());
+        call.enqueue(new Callback<ServiceRequestUpdateResponseModel>() {
+            @Override
+            public void onResponse(Call<ServiceRequestUpdateResponseModel> call, Response<ServiceRequestUpdateResponseModel> response) {
+
+                if (response.body() != null) {
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        dialog.dismiss();
+                        Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Request update successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(false);
+                    }
+                } else {
+                    binding.pbProgressBar.setVisibility(View.GONE);
+//                    Toast.makeText(SingleCurrentServiceDetailsActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    setAllClicksDisable(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServiceRequestUpdateResponseModel> call, Throwable t) {
+                binding.pbProgressBar.setVisibility(View.GONE);
+                setAllClicksDisable(false);
+                Toast.makeText(SingleCurrentServiceDetailsActivity.this, "no open service requests" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="@dimen/_70sdp"
         android:background="@drawable/round_bg_globle"
         android:orientation="horizontal">
 
@@ -20,8 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:padding="@dimen/_8sdp"
-            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_back_arrow" />
 
         <TextView
@@ -35,13 +34,11 @@
             android:text="@string/verify_otp"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
-
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,12 +70,9 @@
                         android:id="@+id/tvOtpMobileNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:fontFamily="@font/poppins_regular"
                         android:textColor="@color/black" />
-
                 </LinearLayout>
-
 
                 <com.chaos.view.PinView
                     android:id="@+id/pinView"
@@ -101,7 +95,6 @@
                     app:itemRadius="10dp"
                     app:itemWidth="50dp"
                     app:lineColor="@color/appColor" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -150,11 +143,9 @@
                             android:text="59 s"
                             android:textColor="@color/appColor" />
                     </LinearLayout>
-
-
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btnOTPVerify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -164,10 +155,11 @@
                     android:includeFontPadding="false"
                     android:paddingVertical="@dimen/_8sdp"
                     android:text="@string/verifyotp"
+                    android:background="@drawable/round_fill_background"
                     android:textAllCaps="false"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp"
                     app:backgroundTint="@color/appColor" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -217,13 +209,9 @@
                         android:text="@string/privacy_policy"
                         android:textColor="@color/appColor"
                         android:textSize="@dimen/_12ssp" />
-
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
-
 
         <ProgressBar
             android:id="@+id/pbProgressBar"
@@ -232,8 +220,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
-
-
     </RelativeLayout>
-
 </LinearLayout>
