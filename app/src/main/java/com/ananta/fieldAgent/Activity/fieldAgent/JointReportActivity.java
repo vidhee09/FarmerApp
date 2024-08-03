@@ -14,6 +14,8 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -75,16 +77,17 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     ApiInterface apiInterface;
     String signImage, path, beneficiarySignImage, pumpPath, landmarkPath, baneficiarypath,
             signatureSurveyor, signatureBeneficiary, selectedWater, selectedPumpType, selectAgPump, selectGovt, selectShaow, networkSelect,
-            joint_report, reportId;
+            joint_report, reportId,TypeOfWaterSource;
     int imagePhoto;
     double latitude, longitude;
     private FusedLocationProviderClient fusedLocationClient;
     File SignPath, beneficiarySign;
-    ArrayList<String> checkbox_typeWaterSource = new ArrayList<>();
+//    ArrayList<String> checkbox_typeWaterSource = new ArrayList<>();
     ArrayList<String> checkbox_pump_surveyor = new ArrayList<>();
     ArrayList<String> checkbox_pump_beneficiary = new ArrayList<>();
     ArrayList<String> checkbox_available_person = new ArrayList<>();
     Preference preference;
+    ArrayAdapter waterSourceAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +99,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         preference = Preference.getInstance(JointReportActivity.this);
 
         loadData();
-        View view = binding.getRoot();
-        setContentView(view);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -148,9 +150,11 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         binding.rbNoWaterBtn.setClickable(b);
         binding.rbSubmarsible.setClickable(b);
         binding.rbSurface.setClickable(b);
-        binding.checkboxBoreWell.setClickable(b);
+
+     /*   binding.checkboxBoreWell.setClickable(b);
         binding.checkboxRiver.setClickable(b);
-        binding.checkboxLake.setClickable(b);
+        binding.checkboxLake.setClickable(b);*/
+
         binding.edDepthWaterSource.setClickable(b);
         binding.edConstantWaterLevel.setClickable(b);
         binding.edWaterDeliveryPoint.setClickable(b);
@@ -241,66 +245,70 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                             binding.rbNetworkNo.setChecked(true);
                         }
 
-                        String seperate = response.body().getJointServey().get(0).getType_of_water_source();
-//                        String seperate1 = response.body().getJointServey().get(1).getType_of_water_source();
 
-                        Log.d("Joint Get", "====>" + seperate + " " + seperate);
-                        if (seperate.contains("Borewell") /*|| seperate1.contains("Borewell")*/) {
-                            binding.checkboxBoreWell.setChecked(true);
+                        TypeOfWaterSource = response.body().getJointServey().get(0).getType_of_water_source();
+
+                        if (TypeOfWaterSource.equals("Borewell")) {
+                            binding.rbBorewell.setChecked(true);
+                        } else if (TypeOfWaterSource.equals("River")){
+                            binding.rbRiver.setChecked(true);
+                        }else {
+                            binding.rblake.setChecked(true);
                         }
-                        if (seperate.contains("River") /*|| seperate1.contains("River")*/) {
-                            binding.checkboxRiver.setChecked(true);
+
+                        /*if (separate.contains("BoreWell")) {
+                            binding.spSpinnerWaterSource.setSelection(0);
                         }
-                        if (seperate.contains("Lake")/* || seperate1.contains("Lake")*/) {
-                            binding.checkboxLake.setChecked(true);
+                        if (separate.contains("River") ) {
+                            binding.spSpinnerWaterSource.setSelection(1);
                         }
+                        if (separate.contains("Lake")) {
+                            binding.spSpinnerWaterSource.setSelection(2);
+                        }*/
+
 
                         String pumpSurveyor = response.body().getJointServey().get(0).getPump_recom_survey();
-//                        String pumpSurveyor1 = response.body().getJointServey().get(1).getPump_recom_survey();
-
                         Log.d("Joint Get", "====>" + pumpSurveyor + " " + pumpSurveyor);
 
-                        if (pumpSurveyor.contains("30")/* || pumpSurveyor1.contains("30")*/) {
+                        if (pumpSurveyor.contains("30")) {
                             binding.cbPumpHead1.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("50")/* || pumpSurveyor1.contains("50")*/) {
+                        if (pumpSurveyor.contains("50")) {
                             binding.cbPumpHead2.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("70") /*|| pumpSurveyor1.contains("70")*/) {
+                        if (pumpSurveyor.contains("70")) {
                             binding.cbPumpHead3.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("100") /*|| pumpSurveyor1.contains("100")*/) {
+                        if (pumpSurveyor.contains("100") ) {
                             binding.cbPumpHead4.setChecked(true);
                         }
 
                         String pumpBeneficiary = response.body().getJointServey().get(0).getPump_recom_benefits();
-//                        String pumpBeneficiary1 = response.body().getJointServey().get(1).getPump_recom_benefits();
                         Log.d("Joint Get", "====>" + pumpBeneficiary + " " + pumpBeneficiary);
 
-                        if (pumpBeneficiary.contains("30") /*|| pumpBeneficiary1.contains("30")*/) {
+                        if (pumpBeneficiary.contains("30") ) {
                             binding.cbPumpHeadBeneficiary1.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("50") /*|| pumpBeneficiary1.contains("50")*/) {
+                        if (pumpBeneficiary.contains("50") ) {
                             binding.cbPumpHeadBeneficiary2.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("70") /*|| pumpBeneficiary1.contains("70")*/) {
+                        if (pumpBeneficiary.contains("70") ) {
                             binding.cbPumpHeadBeneficiary3.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("100") /*|| pumpBeneficiary1.contains("100")*/) {
+                        if (pumpBeneficiary.contains("100") ) {
                             binding.cbPumpHeadBeneficiary4.setChecked(true);
                         }
 
                         String persons = response.body().getJointServey().get(0).getSurvey_person();
-//                        String persons1 = response.body().getJointServey().get(1).getSurvey_person();
                         Log.d("Joint Get", "====>" + persons + " " + persons);
 
-                        if (persons.contains("Field Engineer") /*|| persons1.contains("Field Engineer")*/) {
+                        if (persons.contains("Field Engineer") ) {
                             binding.cbFieldEng.setChecked(true);
                         }
-                        if (persons.contains("Farmer") /*|| persons1.contains("Farmer")*/) {
+                        if (persons.contains("Farmer")) {
                             binding.cbFarmer.setChecked(true);
                         }
-                        if (persons.contains("Govt. Farmer") /*|| persons1.contains("Govt. Farmer")*/) {
+                        if (persons.contains("Govt. Farmer")) {
                             binding.cbGovtFarmer.setChecked(true);
                         }
 
@@ -329,6 +337,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+
     /*  update joint report  */
     public void updateReport(String reportId) {
 
@@ -346,7 +355,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
         hashMap.put("is_water_source_available", selectedWater);
-        hashMap.put("type_of_water_source", checkbox_typeWaterSource.toString());
+        hashMap.put("type_of_water_source", TypeOfWaterSource);
         hashMap.put("water_depth", binding.edDepthWaterSource.getText().toString());
         hashMap.put("constant_water", binding.edConstantWaterLevel.getText().toString());
         hashMap.put("water_delivery_point", binding.edWaterDeliveryPoint.getText().toString());
@@ -420,7 +429,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("latitude", String.valueOf(latitude));
         hashMap.put("longitude", String.valueOf(longitude));
         hashMap.put("is_water_source_available", selectedWater);
-        hashMap.put("type_of_water_source", checkbox_typeWaterSource.toString());
+        hashMap.put("type_of_water_source",TypeOfWaterSource);
         hashMap.put("water_depth", binding.edDepthWaterSource.getText().toString());
         hashMap.put("constant_water", binding.edConstantWaterLevel.getText().toString());
         hashMap.put("water_delivery_point", binding.edWaterDeliveryPoint.getText().toString());
@@ -502,7 +511,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
     public void getCheckboxData() {
 
-        if (binding.checkboxRiver.isChecked()) {
+    /*    if (binding.checkboxRiver.isChecked()) {
             checkbox_typeWaterSource.add(binding.checkboxRiver.getText().toString());
         }
         if (binding.checkboxLake.isChecked()) {
@@ -510,7 +519,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         }
         if (binding.checkboxBoreWell.isChecked()) {
             checkbox_typeWaterSource.add(binding.checkboxBoreWell.getText().toString());
-        }
+        }*/
 
         if (binding.cbPumpHead1.isChecked()) {
             checkbox_pump_surveyor.add(binding.cbPumpHead1.getText().toString());
@@ -594,10 +603,10 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (binding.edRemark.getText().toString().isEmpty()) {
             isValid = false;
             binding.edRemark.setError("please enter remark");
-        } else if (checkbox_typeWaterSource.isEmpty()) {
+        } /*else if (checkbox_typeWaterSource.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
-        } else if (checkbox_pump_surveyor.isEmpty()) {
+        }*/ else if (checkbox_pump_surveyor.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select pump head by surveyor", Toast.LENGTH_SHORT).show();
         } else if (checkbox_available_person.isEmpty()) {
@@ -663,10 +672,10 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (binding.edRemark.getText().toString().isEmpty()) {
             isValid = false;
             binding.edRemark.setError("please enter remark");
-        } else if (checkbox_typeWaterSource.isEmpty()) {
+        } /*else if (checkbox_typeWaterSource.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
-        } else if (checkbox_pump_surveyor.isEmpty()) {
+        }*/ else if (checkbox_pump_surveyor.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select pump head by surveyor", Toast.LENGTH_SHORT).show();
         } else if (checkbox_available_person.isEmpty()) {

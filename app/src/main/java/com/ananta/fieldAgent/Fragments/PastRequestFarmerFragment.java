@@ -35,6 +35,8 @@ public class PastRequestFarmerFragment extends Fragment {
         binding = FragmentServiceFarmBinding.inflate(inflater);
         View view = binding.getRoot();
 
+        binding.svSearchView.clearFocus();
+
         binding.svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -43,7 +45,7 @@ public class PastRequestFarmerFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                filter(newText);
+                filter(newText);
                 return false;
             }
         });

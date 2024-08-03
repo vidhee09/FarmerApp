@@ -359,7 +359,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onFailure(Call<AllFarmerModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.GONE);
                 setAllClicksDisable(true);
-                Toast.makeText(AddRequestActivity.this, "Data not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRequestActivity.this, "no open service requests", Toast.LENGTH_SHORT).show();
                 Log.d("Addrequest", "=" + t.getMessage());
             }
         });
@@ -439,7 +439,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onFailure(Call<AddServiceModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.GONE);
                 setAllClicksDisable(true);
-                Toast.makeText(AddRequestActivity.this, "Data not Found" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRequestActivity.this, "no open service requests" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -16,7 +16,7 @@
         <item name="android:paddingTop">10dp</item>
         <item name="cornerRadius">10dp</item>
         <item name="android:paddingBottom">5dp</item>
-        <item name="android:popupBackground">#D6FACE</item>
+        <item name="android:popupBackground">#FFFF</item>
     </style>
 
 </resources>

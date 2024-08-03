@@ -46,7 +46,7 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
         holder.tvFarmerName.setText(model.getFarmer_name());
         holder.tvRequestName.setText(model.getRequest_type());
         holder.tvAddressCurrentReq.setText(model.getFarmer_address());
-        Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).error(R.drawable.placeholder).into(holder.ivCurrentReqImage);
+        Glide.with(context).load(Const.IMAGE_URL+model.getImage_name()).error(R.drawable.ic_farmer).into(holder.ivCurrentReqImage);
 
         Log.d("Current ==>" , "=reason===>" + model.getReason());
 
@@ -56,11 +56,17 @@ public class CurrentRequestAdapter extends RecyclerView.Adapter<CurrentRequestAd
                 Intent intent = new Intent(context, SingleCurrentServiceDetailsActivity.class);
                 intent.putExtra("farmer_name",model.getFarmer_name());
                 intent.putExtra("farmer_ID",""+model.getFarmer_id());
+
+                Log.d("Current ==>" , "=farmerId===>" +model.getFarmer_id());
+
                 intent.putExtra("request_name",model.getRequest_type());
                 intent.putExtra("farmer_address",model.getFarmer_address());
                 intent.putExtra("image_name",model.getImage_name());
                 intent.putExtra("ComplaintId",model.getComplaint_id());
                 intent.putExtra("ID",String.valueOf(model.getId()));
+
+                Log.d("Current ==>" , "=id===>" + model.getId());
+
                 intent.putExtra("description", model.getDescription());
                 intent.putExtra("reason", model.getReason());
                 intent.putExtra("company_name",model.getCompany_name());

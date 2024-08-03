@@ -44,18 +44,24 @@ public class PastRequestFragment extends Fragment {
         binding = FragmentPastRequestBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
-        binding.svSearchViewPast.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+        binding.svSearchViewPast.clearFocus();
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-//                filter(newText);
-                return false;
-            }
-        });
+        if (pastReqModelArrayList ==  null || pastReqModelArrayList.isEmpty()){
+            Log.d("past request","no past service request");
+        }else {
+            binding.svSearchViewPast.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    filter(newText);
+                    return false;
+                }
+            });
+        }
 
         return view;
     }
@@ -84,16 +90,21 @@ public class PastRequestFragment extends Fragment {
     private void filter(String text) {
         ArrayList<PastServiceDatum> filteredlist = new ArrayList<>();
 
-        for (PastServiceDatum item : pastReqModelArrayList) {
-            if (item.getService_request().toLowerCase().contains(text.toLowerCase())) {
-                filteredlist.add(item);
+        if (pastReqModelArrayList.isEmpty()|| pastReqModelArrayList.contains(null)){
+            return;
+        }else {
+            for (PastServiceDatum item : pastReqModelArrayList) {
+                if (item.getService_request().toLowerCase().contains(text.toLowerCase())) {
+                    filteredlist.add(item);
+                }
+            }
+            if (filteredlist.isEmpty()) {
+                Toast.makeText(getContext(), "No Search Result found..", Toast.LENGTH_SHORT).show();
+            } else {
+                adapter.filterList(filteredlist);
             }
         }
-        if (filteredlist.isEmpty()) {
-            Toast.makeText(getContext(), "No Search Result found..", Toast.LENGTH_SHORT).show();
-        } else {
-            adapter.filterList(filteredlist);
-        }
+
     }
 
 }

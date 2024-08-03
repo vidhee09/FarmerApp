@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:padding="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_back_arrow" />
 
         <TextView
@@ -57,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <TextView
@@ -82,6 +83,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -110,6 +112,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -170,7 +173,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -200,7 +204,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/round_background"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -247,37 +252,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/round_background"
-                    android:orientation="vertical"
-                    android:paddingStart="@dimen/_10sdp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Type of water source for" />
-
-                    <CheckBox
-                        android:id="@+id/checkboxBoreWell"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Borewell"
-                        android:textColor="@color/black" />
+                        android:background="@drawable/round_background"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:paddingStart="10dp">
 
-                    <CheckBox
-                        android:id="@+id/checkboxRiver"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="River"
-                        android:textColor="@color/black" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Type of Water source" />
 
-                    <CheckBox
-                        android:id="@+id/checkboxLake"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Lake"
-                        android:textColor="@color/black" />
+                        <RadioGroup
+                            android:id="@+id/rgTypeOfWaterSource"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/rbBorewell"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Borewell" />
+
+                            <RadioButton
+                                android:id="@+id/rbRiver"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="River" />
+
+                            <RadioButton
+                                android:id="@+id/rblake"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Lake" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -581,7 +598,7 @@
                                 android:text="Yes" />
 
                             <RadioButton
-                                    android:id="@+id/rbSolarNo"
+                                android:id="@+id/rbSolarNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="No" />
@@ -782,7 +799,7 @@
                                 android:layout_width="@dimen/_70sdp"
                                 android:layout_height="@dimen/_70sdp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/placeholder" />
+                                android:src="@drawable/ic_farmer" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -826,7 +843,7 @@
                                 android:layout_width="@dimen/_70sdp"
                                 android:layout_height="@dimen/_70sdp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/placeholder" />
+                                android:src="@drawable/ic_farmer" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -870,7 +887,7 @@
                                 android:layout_width="@dimen/_70sdp"
                                 android:layout_height="@dimen/_70sdp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/placeholder" />
+                                android:src="@drawable/ic_farmer" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -1050,11 +1067,12 @@
                     android:id="@+id/llJointSubmit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Submit"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_12ssp"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:background="@drawable/round_fill_background"/>
+                    android:background="@drawable/round_fill_background"
+                    android:text="Submit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </ScrollView>
@@ -1062,10 +1080,10 @@
         <ProgressBar
             android:id="@+id/pbProgressBar"
             style="@style/progressbar"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

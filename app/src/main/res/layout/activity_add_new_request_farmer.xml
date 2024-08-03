@@ -262,7 +262,7 @@
                                         android:layout_width="@dimen/_70sdp"
                                         android:layout_height="@dimen/_70sdp"
                                         android:scaleType="centerCrop"
-                                        android:src="@drawable/placeholder" />
+                                        android:src="@drawable/ic_farmer" />
 
                                 </androidx.cardview.widget.CardView>
 
@@ -415,7 +415,7 @@
                                         android:layout_width="@dimen/_70sdp"
                                         android:layout_height="@dimen/_70sdp"
                                         android:scaleType="centerCrop"
-                                        android:src="@drawable/placeholder" />
+                                        android:src="@drawable/ic_farmer" />
 
                                 </androidx.cardview.widget.CardView>
 

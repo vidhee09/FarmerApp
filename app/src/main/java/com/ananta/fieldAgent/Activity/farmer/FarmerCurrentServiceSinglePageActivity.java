@@ -58,7 +58,7 @@ public class FarmerCurrentServiceSinglePageActivity extends AppCompatActivity {
         }
 
         if (image_name.isEmpty()){
-            Glide.with(getApplicationContext()).load(R.drawable.placeholder).into(binding.farmerImage);
+            Glide.with(getApplicationContext()).load(R.drawable.ic_farmer).into(binding.farmerImage);
         }else {
             Glide.with(getApplicationContext()).load(Const.IMAGE_URL+ image_name).into(binding.farmerImage);
         }

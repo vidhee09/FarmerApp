@@ -10,7 +10,7 @@
         android:id="@+id/llData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <SearchView
@@ -34,7 +34,7 @@
         android:id="@+id/rlNoData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/ivNoDataFound"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ivNoDataFound"
             android:layout_centerHorizontal="true"
-            android:text="No Data Found"
+            android:text="No open service requests"
             android:textAlignment="center"
             android:textColor="@color/appColor"
             android:textSize="@dimen/_20ssp"

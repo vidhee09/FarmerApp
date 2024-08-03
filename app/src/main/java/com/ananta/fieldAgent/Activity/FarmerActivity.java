@@ -66,7 +66,7 @@ public class FarmerActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                filter(newText);
+                filter(newText);
                 return false;
             }
         });
@@ -88,6 +88,8 @@ public class FarmerActivity extends AppCompatActivity {
             if (item.getName().toLowerCase().contains(text.toLowerCase())) {
                 filteredlist.add(item);
             }
+            Log.d("serach==","="+item.getName());
+
         }
 
         if (filteredlist.isEmpty()) {
@@ -165,11 +167,10 @@ public class FarmerActivity extends AppCompatActivity {
                             }
                         }*/
 
-
                         initView();
                     }else {
                         binding.pbProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(FarmerActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FarmerActivity.this, "no open service requests", Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     binding.pbProgressBar.setVisibility(View.GONE);

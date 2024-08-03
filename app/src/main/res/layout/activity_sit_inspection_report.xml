@@ -196,7 +196,7 @@
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_60sdp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/placeholder"/>
+                                android:src="@drawable/ic_farmer"/>
 
                         </androidx.cardview.widget.CardView>
 
@@ -240,7 +240,7 @@
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_60sdp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/placeholder"/>
+                                android:src="@drawable/ic_farmer"/>
 
                         </androidx.cardview.widget.CardView>
 
@@ -391,6 +391,7 @@
                     android:layout_height="wrap_content"
                     android:text="Submit"
                     android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp"
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:background="@drawable/round_fill_background"/>

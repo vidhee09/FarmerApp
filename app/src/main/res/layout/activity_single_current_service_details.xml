@@ -293,6 +293,7 @@
                 android:text="Complete"
                 android:visibility="visible"
                 android:textStyle="bold"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp"
                 android:layout_marginVertical="@dimen/_10sdp"
                 android:background="@drawable/round_fill_background"/>
