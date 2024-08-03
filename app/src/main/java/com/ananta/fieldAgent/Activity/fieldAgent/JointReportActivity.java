@@ -77,15 +77,15 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     ApiInterface apiInterface;
     String signImage, path, beneficiarySignImage, pumpPath, landmarkPath, baneficiarypath,
             signatureSurveyor, signatureBeneficiary, selectedWater, selectedPumpType, selectAgPump, selectGovt, selectShaow, networkSelect,
-            joint_report, reportId,TypeOfWaterSource;
+            joint_report, reportId,TypeOfWaterSource,pumpHeadSurveyor,pumpHeadRecombaneficiary,availablePerson;
     int imagePhoto;
     double latitude, longitude;
     private FusedLocationProviderClient fusedLocationClient;
     File SignPath, beneficiarySign;
 //    ArrayList<String> checkbox_typeWaterSource = new ArrayList<>();
-    ArrayList<String> checkbox_pump_surveyor = new ArrayList<>();
-    ArrayList<String> checkbox_pump_beneficiary = new ArrayList<>();
-    ArrayList<String> checkbox_available_person = new ArrayList<>();
+//    ArrayList<String> checkbox_pump_surveyor = new ArrayList<>();
+//    ArrayList<String> checkbox_pump_beneficiary = new ArrayList<>();
+//    ArrayList<String> checkbox_available_person = new ArrayList<>();
     Preference preference;
     ArrayAdapter waterSourceAdapter;
 
@@ -123,17 +123,20 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void setAllClicksDisable(boolean b) {
-        binding.cbPumpHead1.setClickable(b);
-        binding.cbPumpHead2.setClickable(b);
-        binding.cbPumpHead3.setClickable(b);
-        binding.cbPumpHead4.setClickable(b);
-        binding.cbPumpHeadBeneficiary1.setClickable(b);
-        binding.cbPumpHeadBeneficiary2.setClickable(b);
-        binding.cbPumpHeadBeneficiary3.setClickable(b);
-        binding.cbPumpHeadBeneficiary4.setClickable(b);
-        binding.cbFieldEng.setClickable(b);
-        binding.cbFarmer.setClickable(b);
-        binding.cbGovtFarmer.setClickable(b);
+        binding.rbPumpHeadSurveyor30.setClickable(b);
+        binding.rbPumpHeadSurveyor50.setClickable(b);
+        binding.rbPumpHeadSurveyor70.setClickable(b);
+        binding.rbPumpHeadSurveyor100.setClickable(b);
+
+        binding.rbPumpHeadbaneficiary30.setClickable(b);
+        binding.rbPumpHeadbaneficiary50.setClickable(b);
+        binding.rbPumpHeadbaneficiary70.setClickable(b);
+        binding.rbPumpHeadbaneficiary100.setClickable(b);
+
+        binding.rbFieldEngineer.setClickable(b);
+        binding.rbFarmer.setClickable(b);
+        binding.rbGovtFarmer.setClickable(b);
+
         binding.edRemark.setClickable(b);
         binding.edSurveyorAlternativeNumber.setClickable(b);
         binding.edSurveyorIMEIId.setClickable(b);
@@ -151,9 +154,9 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         binding.rbSubmarsible.setClickable(b);
         binding.rbSurface.setClickable(b);
 
-     /*   binding.checkboxBoreWell.setClickable(b);
-        binding.checkboxRiver.setClickable(b);
-        binding.checkboxLake.setClickable(b);*/
+        binding.rblake.setClickable(b);
+        binding.rbRiver.setClickable(b);
+        binding.rbBorewell.setClickable(b);
 
         binding.edDepthWaterSource.setClickable(b);
         binding.edConstantWaterLevel.setClickable(b);
@@ -248,68 +251,62 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
                         TypeOfWaterSource = response.body().getJointServey().get(0).getType_of_water_source();
 
-                        if (TypeOfWaterSource.equals("Borewell")) {
+                        Log.d("TypeOfWaterSource=", "====>" + TypeOfWaterSource);
+                        if (TypeOfWaterSource.contains("Borewell")) {
                             binding.rbBorewell.setChecked(true);
-                        } else if (TypeOfWaterSource.equals("River")){
+                        }
+
+                        if (TypeOfWaterSource.contains("River")){
                             binding.rbRiver.setChecked(true);
-                        }else {
+
+                        }if (TypeOfWaterSource.contains("Lake")){
                             binding.rblake.setChecked(true);
                         }
 
-                        /*if (separate.contains("BoreWell")) {
-                            binding.spSpinnerWaterSource.setSelection(0);
-                        }
-                        if (separate.contains("River") ) {
-                            binding.spSpinnerWaterSource.setSelection(1);
-                        }
-                        if (separate.contains("Lake")) {
-                            binding.spSpinnerWaterSource.setSelection(2);
-                        }*/
 
+                         pumpHeadSurveyor = response.body().getJointServey().get(0).getPump_recom_survey();
+                        Log.d("Joint Get", "====>" +  pumpHeadSurveyor );
 
-                        String pumpSurveyor = response.body().getJointServey().get(0).getPump_recom_survey();
-                        Log.d("Joint Get", "====>" + pumpSurveyor + " " + pumpSurveyor);
-
-                        if (pumpSurveyor.contains("30")) {
-                            binding.cbPumpHead1.setChecked(true);
+                        if (pumpHeadSurveyor.contains("30")) {
+                            binding.rbPumpHeadSurveyor30.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("50")) {
-                            binding.cbPumpHead2.setChecked(true);
+                        if (pumpHeadSurveyor.contains("50")) {
+                            binding.rbPumpHeadSurveyor50.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("70")) {
-                            binding.cbPumpHead3.setChecked(true);
+                        if (pumpHeadSurveyor.contains("70")) {
+                            binding.rbPumpHeadSurveyor70.setChecked(true);
                         }
-                        if (pumpSurveyor.contains("100") ) {
-                            binding.cbPumpHead4.setChecked(true);
+                        if (pumpHeadSurveyor.contains("100") ) {
+                            binding.rbPumpHeadSurveyor100.setChecked(true);
                         }
 
-                        String pumpBeneficiary = response.body().getJointServey().get(0).getPump_recom_benefits();
-                        Log.d("Joint Get", "====>" + pumpBeneficiary + " " + pumpBeneficiary);
+                        pumpHeadRecombaneficiary = response.body().getJointServey().get(0).getPump_recom_benefits();
+                        Log.d("Joint Get", "====>" + pumpHeadRecombaneficiary );
 
-                        if (pumpBeneficiary.contains("30") ) {
-                            binding.cbPumpHeadBeneficiary1.setChecked(true);
+                        if (pumpHeadRecombaneficiary.contains("30") ) {
+                            binding.rbPumpHeadbaneficiary30.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("50") ) {
-                            binding.cbPumpHeadBeneficiary2.setChecked(true);
+                        if (pumpHeadRecombaneficiary.contains("50") ) {
+                            binding.rbPumpHeadbaneficiary50.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("70") ) {
-                            binding.cbPumpHeadBeneficiary3.setChecked(true);
+                        if (pumpHeadRecombaneficiary.contains("70") ) {
+                            binding.rbPumpHeadbaneficiary70.setChecked(true);
                         }
-                        if (pumpBeneficiary.contains("100") ) {
-                            binding.cbPumpHeadBeneficiary4.setChecked(true);
+                        if (pumpHeadRecombaneficiary.contains("100") ) {
+                            binding.rbPumpHeadbaneficiary100.setChecked(true);
                         }
 
-                        String persons = response.body().getJointServey().get(0).getSurvey_person();
-                        Log.d("Joint Get", "====>" + persons + " " + persons);
+                        availablePerson = response.body().getJointServey().get(0).getSurvey_person();
+                        Log.d("Joint Get", "====>" + availablePerson + " " + availablePerson);
 
-                        if (persons.contains("Field Engineer") ) {
-                            binding.cbFieldEng.setChecked(true);
+                        if (availablePerson.contains("Field Engineer") ) {
+                            binding.rbFieldEngineer.setChecked(true);
                         }
-                        if (persons.contains("Farmer")) {
-                            binding.cbFarmer.setChecked(true);
+                        if (availablePerson.contains("Farmer")) {
+                            binding.rbFarmer.setChecked(true);
                         }
-                        if (persons.contains("Govt. Farmer")) {
-                            binding.cbGovtFarmer.setChecked(true);
+                        if (availablePerson.contains("Govt. Farmer")) {
+                            binding.rbGovtFarmer.setChecked(true);
                         }
 
                         Glide.with(JointReportActivity.this).load(Const.IMAGE_URL + response.body().getJointServey().get(0).getWater_res_image()).into(binding.ivWaterPhoto);
@@ -360,13 +357,13 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("constant_water", binding.edConstantWaterLevel.getText().toString());
         hashMap.put("water_delivery_point", binding.edWaterDeliveryPoint.getText().toString());
         hashMap.put("pump_type", selectedPumpType);
-        hashMap.put("pump_recom_survey", checkbox_pump_surveyor.toString());
-        hashMap.put("pump_recom_benefits", checkbox_pump_beneficiary.toString());
+        hashMap.put("pump_recom_survey", pumpHeadSurveyor);
+        hashMap.put("pump_recom_benefits", pumpHeadRecombaneficiary);
         hashMap.put("is_pump_electricity", selectAgPump);
         hashMap.put("is_solar_pump", selectGovt);
         hashMap.put("is_shadow_area", selectShaow);
         hashMap.put("is_mobile_network", networkSelect);
-        hashMap.put("survey_person", checkbox_available_person.toString());
+        hashMap.put("survey_person", availablePerson);
         hashMap.put("remark", binding.edRemark.getText().toString());
         if (pumpPath == null || !pumpPath.isEmpty()) {
             hashMap.put("water_res_image", pumpPath);
@@ -434,13 +431,13 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         hashMap.put("constant_water", binding.edConstantWaterLevel.getText().toString());
         hashMap.put("water_delivery_point", binding.edWaterDeliveryPoint.getText().toString());
         hashMap.put("pump_type", selectedPumpType);
-        hashMap.put("pump_recom_survey", checkbox_pump_surveyor.toString());
-        hashMap.put("pump_recom_benefits", checkbox_pump_beneficiary.toString());
+        hashMap.put("pump_recom_survey", pumpHeadSurveyor);
+        hashMap.put("pump_recom_benefits", pumpHeadRecombaneficiary);
         hashMap.put("is_pump_electricity", selectAgPump);
         hashMap.put("is_solar_pump", selectGovt);
         hashMap.put("is_shadow_area", selectShaow);
         hashMap.put("is_mobile_network", networkSelect);
-        hashMap.put("survey_person", checkbox_available_person.toString());
+        hashMap.put("survey_person", availablePerson);
         hashMap.put("remark", binding.edRemark.getText().toString());
         hashMap.put("water_res_image", pumpPath);
         hashMap.put("landmark_image", landmarkPath);
@@ -507,55 +504,29 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         RadioButton selectNet = findViewById(selectNetwork);
         networkSelect = selectNet.getText().toString();
 
-    }
+        /*---- type of water source ---*/
+        int WaterSourceType = binding.rgTypeOfWaterSource.getCheckedRadioButtonId();
+        RadioButton selectedWaterType = findViewById(WaterSourceType);
+        TypeOfWaterSource = selectedWaterType.getText().toString();
 
-    public void getCheckboxData() {
+        /*---- pump head recommanded by surveyor ---*/
 
-    /*    if (binding.checkboxRiver.isChecked()) {
-            checkbox_typeWaterSource.add(binding.checkboxRiver.getText().toString());
-        }
-        if (binding.checkboxLake.isChecked()) {
-            checkbox_typeWaterSource.add(binding.checkboxLake.getText().toString());
-        }
-        if (binding.checkboxBoreWell.isChecked()) {
-            checkbox_typeWaterSource.add(binding.checkboxBoreWell.getText().toString());
-        }*/
+        int pumpHeadRecomSurveyor = binding.rgPumpHeadRecomSurveyor.getCheckedRadioButtonId();
+        RadioButton selectedPumpHeadSurveyor = findViewById(pumpHeadRecomSurveyor);
+        pumpHeadSurveyor = selectedPumpHeadSurveyor.getText().toString();
 
-        if (binding.cbPumpHead1.isChecked()) {
-            checkbox_pump_surveyor.add(binding.cbPumpHead1.getText().toString());
-        }
-        if (binding.cbPumpHead2.isChecked()) {
-            checkbox_pump_surveyor.add(binding.cbPumpHead2.getText().toString());
-        }
-        if (binding.cbPumpHead3.isChecked()) {
-            checkbox_pump_surveyor.add(binding.cbPumpHead3.getText().toString());
-        }
-        if (binding.cbPumpHead4.isChecked()) {
-            checkbox_pump_surveyor.add(binding.cbPumpHead4.getText().toString());
-        }
+        /*---- pump head recommanded by baneficiary ---*/
 
-        if (binding.cbPumpHeadBeneficiary1.isChecked()) {
-            checkbox_pump_beneficiary.add(binding.cbPumpHeadBeneficiary1.getText().toString());
-        }
-        if (binding.cbPumpHeadBeneficiary2.isChecked()) {
-            checkbox_pump_beneficiary.add(binding.cbPumpHeadBeneficiary2.getText().toString());
-        }
-        if (binding.cbPumpHeadBeneficiary3.isChecked()) {
-            checkbox_pump_beneficiary.add(binding.cbPumpHeadBeneficiary3.getText().toString());
-        }
-        if (binding.cbPumpHeadBeneficiary4.isChecked()) {
-            checkbox_pump_beneficiary.add(binding.cbPumpHeadBeneficiary4.getText().toString());
-        }
+        int pumpHeadRecommandedByBeneficiary = binding.rgPumpHeadRecomBaneficiary.getCheckedRadioButtonId();
+        RadioButton selectedPumpHeadbaneficiary = findViewById(pumpHeadRecommandedByBeneficiary);
+        pumpHeadRecombaneficiary = selectedPumpHeadbaneficiary.getText().toString();
 
-        if (binding.cbFieldEng.isChecked()) {
-            checkbox_available_person.add(binding.cbFieldEng.getText().toString());
-        }
-        if (binding.cbFarmer.isChecked()) {
-            checkbox_available_person.add(binding.cbFarmer.getText().toString());
-        }
-        if (binding.cbGovtFarmer.isChecked()) {
-            checkbox_available_person.add(binding.cbGovtFarmer.getText().toString());
-        }
+        /*---- all available person ---*/
+
+        int allAvailablePerson = binding.rgAvailablePerson.getCheckedRadioButtonId();
+        RadioButton selectAvailablePerson = findViewById(allAvailablePerson);
+        availablePerson = selectAvailablePerson.getText().toString();
+
     }
 
     public void getLocation() {
@@ -572,9 +543,6 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
 
     private void datePick() {
         final Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = sdf.format(c.getTime());
@@ -603,16 +571,16 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (binding.edRemark.getText().toString().isEmpty()) {
             isValid = false;
             binding.edRemark.setError("please enter remark");
-        } /*else if (checkbox_typeWaterSource.isEmpty()) {
+        } else if (TypeOfWaterSource.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
-        }*/ else if (checkbox_pump_surveyor.isEmpty()) {
+        } else if (pumpHeadSurveyor.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select pump head by surveyor", Toast.LENGTH_SHORT).show();
-        } else if (checkbox_available_person.isEmpty()) {
+        } else if (availablePerson.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select available person", Toast.LENGTH_SHORT).show();
-        } else if (checkbox_pump_beneficiary.isEmpty()) {
+        } else if (pumpHeadRecombaneficiary.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select pump head by beneficiary", Toast.LENGTH_SHORT).show();
         } else if (pumpPath == null || pumpPath.isEmpty()) {
@@ -672,16 +640,16 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (binding.edRemark.getText().toString().isEmpty()) {
             isValid = false;
             binding.edRemark.setError("please enter remark");
-        } /*else if (checkbox_typeWaterSource.isEmpty()) {
+        } else if (TypeOfWaterSource.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
-        }*/ else if (checkbox_pump_surveyor.isEmpty()) {
+        } else if (pumpHeadSurveyor.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select pump head by surveyor", Toast.LENGTH_SHORT).show();
-        } else if (checkbox_available_person.isEmpty()) {
+        } else if (availablePerson.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select available person", Toast.LENGTH_SHORT).show();
-        } else if (checkbox_pump_beneficiary.isEmpty()) {
+        } else if (pumpHeadRecombaneficiary.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select pump head by beneficiary", Toast.LENGTH_SHORT).show();
         } else if (selectedWater.isEmpty()) {
@@ -978,7 +946,6 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             showPictureDialog(3);
 
         } else if (id == R.id.llJointSubmit) {
-            getCheckboxData();
             getSelectedRadioButton();
             if (joint_report.equals("0")) {
                 if (validation()) {

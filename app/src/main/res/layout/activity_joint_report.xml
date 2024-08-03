@@ -57,7 +57,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <TextView
@@ -83,7 +82,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -112,7 +110,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -173,8 +170,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -204,8 +201,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/round_background"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -393,6 +390,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/round_background"
                         android:orientation="vertical"
+                        android:paddingBottom="@dimen/_5sdp"
                         android:paddingStart="10dp">
 
                         <TextView
@@ -429,44 +427,55 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/round_background"
-                    android:orientation="vertical"
-                    android:paddingStart="@dimen/_10sdp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Pump head recommanded by surveyor" />
-
-                    <CheckBox
-                        android:id="@+id/cbPumpHead1"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="30"
-                        android:textColor="@color/black" />
+                        android:background="@drawable/round_background"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:paddingStart="10dp">
 
-                    <CheckBox
-                        android:id="@+id/cbPumpHead2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="50"
-                        android:textColor="@color/black" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Pump head recommanded by surveyor" />
 
-                    <CheckBox
-                        android:id="@+id/cbPumpHead3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="70"
-                        android:textColor="@color/black" />
+                        <RadioGroup
+                            android:id="@+id/rgPumpHeadRecomSurveyor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                    <CheckBox
-                        android:id="@+id/cbPumpHead4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="100"
-                        android:textColor="@color/black" />
+                            <RadioButton
+                                android:id="@+id/rbPumpHeadSurveyor30"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30" />
+
+                            <RadioButton
+                                android:id="@+id/rbPumpHeadSurveyor50"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="50" />
+
+                            <RadioButton
+                                android:id="@+id/rbPumpHeadSurveyor70"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="70" />
+
+                            <RadioButton
+                                android:id="@+id/rbPumpHeadSurveyor100"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="100" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -476,6 +485,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/round_background"
                     android:orientation="vertical"
+                    android:paddingBottom="@dimen/_5sdp"
                     android:paddingStart="@dimen/_10sdp">
 
                     <TextView
@@ -485,33 +495,36 @@
                         android:fontFamily="@font/poppins_bold"
                         android:text="Pump head recommanded by Baneficiary" />
 
-                    <CheckBox
-                        android:id="@+id/cbPumpHeadBeneficiary1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="30"
-                        android:textColor="@color/black" />
+                    <RadioGroup
+                        android:id="@+id/rgPumpHeadRecomBaneficiary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-                    <CheckBox
-                        android:id="@+id/cbPumpHeadBeneficiary2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="50"
-                        android:textColor="@color/black" />
+                        <RadioButton
+                            android:id="@+id/rbPumpHeadbaneficiary30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="30" />
 
-                    <CheckBox
-                        android:id="@+id/cbPumpHeadBeneficiary3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="70"
-                        android:textColor="@color/black" />
+                        <RadioButton
+                            android:id="@+id/rbPumpHeadbaneficiary50"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="50" />
 
-                    <CheckBox
-                        android:id="@+id/cbPumpHeadBeneficiary4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="100"
-                        android:textColor="@color/black" />
+                        <RadioButton
+                            android:id="@+id/rbPumpHeadbaneficiary70"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="70" />
+
+                        <RadioButton
+                            android:id="@+id/rbPumpHeadbaneficiary100"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100" />
+
+                    </RadioGroup>
 
                 </LinearLayout>
 
@@ -519,6 +532,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_5sdp"
                     android:background="@drawable/round_background"
                     android:orientation="vertical">
 
@@ -566,6 +580,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_5sdp"
                     android:background="@drawable/round_background"
                     android:orientation="vertical">
 
@@ -613,6 +628,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_5sdp"
                     android:background="@drawable/round_background"
                     android:orientation="vertical">
 
@@ -708,38 +724,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/round_background"
-                    android:orientation="vertical"
-                    android:paddingStart="@dimen/_10sdp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="All Available person" />
-
-                    <CheckBox
-                        android:id="@+id/cbFieldEng"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Field Engineer"
-                        android:textColor="@color/black" />
+                        android:background="@drawable/round_background"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:paddingStart="10dp">
 
-                    <CheckBox
-                        android:id="@+id/cbFarmer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Farmer"
-                        android:textColor="@color/black" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="All Available Person" />
 
-                    <CheckBox
-                        android:id="@+id/cbGovtFarmer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Govt. Farmer"
-                        android:textColor="@color/black" />
+                        <RadioGroup
+                            android:id="@+id/rgAvailablePerson"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
+                            <RadioButton
+                                android:id="@+id/rbFieldEngineer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="FieldEngineer" />
+
+                            <RadioButton
+                                android:id="@+id/rbFarmer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Farmer" />
+
+                            <RadioButton
+                                android:id="@+id/rbGovtFarmer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Govt. Farmer" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

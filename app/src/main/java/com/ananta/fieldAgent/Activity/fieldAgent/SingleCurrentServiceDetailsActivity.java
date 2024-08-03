@@ -12,6 +12,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -50,7 +52,7 @@ import retrofit2.Response;
 public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
 
     ActivitySingleCurrentServiceDetailsBinding binding;
-    String image, farmer_name, request_name, farmer_address, ComplaintId, ID, company_name, reason, description, farmer_ID, pump_report, joint_report;
+    String image, farmer_name, request_name, farmer_address, ComplaintId, ID, company_name, reason, description, farmer_ID, pump_report, joint_report,pumpSurveyor="";
     ApiInterface apiInterface;
     Preference preference;
     EditText etImeiNo, etMotorSerialNumber, etMultiplePanelIds;
@@ -59,8 +61,9 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
     ImageView ivBackPress, ivAddMoreId;
     Response<GetPumpData> pumpDataResponse;
     Dialog dialog;
-    CheckBox cbPumpHead1, cbPumpHead2, cbPumpHead3, cbPumpHead4;
-    ArrayList<String> checkPumpHeadSurveyorArrayList = new ArrayList<>();
+    RadioGroup radioGroupHeadSurveyor;
+    RadioButton rbPumpHeadSurveyor30,rbPumpHeadSurveyor50,rbPumpHeadSurveyor70,rbPumpHeadSurveyor100;
+//    ArrayList<String> checkPumpHeadSurveyorArrayList = new ArrayList<>();
     Chip chip;
     ChipGroup chipGroup;
     ArrayList<String> panelIdList = new ArrayList<>();
@@ -79,7 +82,6 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
 
         binding.ivBackPress.setOnClickListener(v -> {
             onBackPressed();
@@ -135,32 +137,43 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                     etMotorSerialNumber = dialog.findViewById(R.id.etMotorSerialNumber);
                     etMultiplePanelIds = dialog.findViewById(R.id.etMultiplePanelIds);
                     btnUpdate = dialog.findViewById(R.id.btnUpdate);
-
+                    radioGroupHeadSurveyor = dialog.findViewById(R.id.radioGroupHeadSurveyor);
                     ivBackPress = dialog.findViewById(R.id.ivBackPress);
-                    cbPumpHead1 = dialog.findViewById(R.id.cbPumpHead1);
-                    cbPumpHead2 = dialog.findViewById(R.id.cbPumpHead2);
-                    cbPumpHead3 = dialog.findViewById(R.id.cbPumpHead3);
-                    cbPumpHead4 = dialog.findViewById(R.id.cbPumpHead4);
+                    rbPumpHeadSurveyor30 = dialog.findViewById(R.id.rbPumpHeadSurveyor30);
+                    rbPumpHeadSurveyor50 = dialog.findViewById(R.id.rbPumpHeadSurveyor50);
+                    rbPumpHeadSurveyor70 = dialog.findViewById(R.id.rbPumpHeadSurveyor70);
+                    rbPumpHeadSurveyor100 = dialog.findViewById(R.id.rbPumpHeadSurveyor100);
                     chipGroup = dialog.findViewById(R.id.chipGroup);
                     ivAddMoreId = dialog.findViewById(R.id.ivAddMoreId);
 
                     etImeiNo.setText(pumpDataResponse.body().getPumpInstallation().get(0).getImeiNo());
                     etMotorSerialNumber.setText(String.valueOf(pumpDataResponse.body().getPumpInstallation().get(0).getPumpId()));
 
-                    String pumpSurveyor = jointDataResponse.body().getJointServey().get(0).getPump_recom_survey();
+                    /*---- Motor head ---*/
+                    int selectedId = radioGroupHeadSurveyor.getCheckedRadioButtonId();
+                    RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
+                    if (radioButton != null || selectedId != -1){
+                        pumpSurveyor = radioButton.getText().toString();
+                    }else {
+                        Log.d("Joint Get", "===selectedId=else=>" + selectedId);
+                    }
+
+                    Log.d("Joint Get", "===selectedId=>" + selectedId);
+
+                    pumpSurveyor = jointDataResponse.body().getJointServey().get(0).getPump_recom_survey();
 
                     Log.d("Joint Get", "====>" + pumpSurveyor + " " + pumpSurveyor);
                     if (pumpSurveyor.contains("30")) {
-                        cbPumpHead1.setChecked(true);
+                        rbPumpHeadSurveyor30.setChecked(true);
                     }
                     if (pumpSurveyor.contains("50")) {
-                        cbPumpHead2.setChecked(true);
+                        rbPumpHeadSurveyor50.setChecked(true);
                     }
                     if (pumpSurveyor.contains("70")) {
-                        cbPumpHead3.setChecked(true);
+                        rbPumpHeadSurveyor70.setChecked(true);
                     }
                     if (pumpSurveyor.contains("100")) {
-                        cbPumpHead4.setChecked(true);
+                        rbPumpHeadSurveyor100.setChecked(true);
                     }
 
                     ivBackPress.setOnClickListener(v1 -> {
@@ -181,34 +194,18 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
 
-                            binding.pbProgressBar.setVisibility(View.VISIBLE);
-                            if (cbPumpHead1.isChecked()) {
-                                checkPumpHeadSurveyorArrayList.add(cbPumpHead1.getText().toString());
-                            }
-                            if (cbPumpHead2.isChecked()) {
-                                checkPumpHeadSurveyorArrayList.add(cbPumpHead2.getText().toString());
-                            }
-                            if (cbPumpHead3.isChecked()) {
-                                checkPumpHeadSurveyorArrayList.add(cbPumpHead3.getText().toString());
-                            }
-                            if (cbPumpHead4.isChecked()) {
-                                checkPumpHeadSurveyorArrayList.add(cbPumpHead4.getText().toString());
-                            }
-
                             if (countChipsInChipGroup(chipGroup) >= 9) {
                                 updatePumpReport();
                                 updateJointReport();
                             } else {
                                 Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please enter minimum 9 panel ids", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
 
                     /*======= Get All Chips ===========*/
 
                     panelIdList.clear();
-//                        String panel = response.body().getPumpInstallation().get(0).getPanelId();
                     String panel = pumpDataResponse.body().getPumpInstallation().get(0).getPanelId();
 
                     Log.d("panelList===", "get=" + new Gson().toJson(panel));
@@ -245,14 +242,11 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                         });
 
                         chipGroup.addView(chip);
-
                     }
-
                     dialog.show();
 
                 }
             }
-
 
         });
 
@@ -382,11 +376,13 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         hashMap.put("constant_water", jointDataResponse.body().getJointServey().get(0).getConstant_water());
         hashMap.put("water_delivery_point", jointDataResponse.body().getJointServey().get(0).getWater_delivery_point());
         hashMap.put("pump_type", jointDataResponse.body().getJointServey().get(0).getPump_type());
-        if (checkPumpHeadSurveyorArrayList.isEmpty()) {
-            hashMap.put("pump_recom_survey", jointDataResponse.body().getJointServey().get(0).getPump_recom_survey());
-        } else {
-            hashMap.put("pump_recom_survey", checkPumpHeadSurveyorArrayList.toString());
-        }
+//        if (pumpSurveyor.isEmpty()) {
+////            hashMap.put("pump_recom_survey", jointDataResponse.body().getJointServey().get(0).getPump_recom_survey());
+//            hashMap.put("pump_recom_survey",pumpSurveyor);
+            Log.d("pump surveyor==","="+pumpSurveyor);
+//        } else {
+            hashMap.put("pump_recom_survey", pumpSurveyor);
+//        }
         hashMap.put("pump_recom_benefits", jointDataResponse.body().getJointServey().get(0).getPump_recom_benefits());
         hashMap.put("is_pump_electricity", jointDataResponse.body().getJointServey().get(0).getIs_pump_electricity());
         hashMap.put("is_solar_pump", jointDataResponse.body().getJointServey().get(0).getIs_solar_pump());

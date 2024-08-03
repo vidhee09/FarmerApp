@@ -154,7 +154,7 @@
 
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btnOTPVerify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -164,7 +164,9 @@
                     android:includeFontPadding="false"
                     android:paddingVertical="@dimen/_8sdp"
                     android:text="@string/verifyotp"
+                    android:background="@drawable/round_fill_background"
                     android:textAllCaps="false"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp"
                     app:backgroundTint="@color/appColor" />
 

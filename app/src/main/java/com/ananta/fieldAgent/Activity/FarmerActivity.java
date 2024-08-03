@@ -79,6 +79,7 @@ public class FarmerActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void filter(String text) {
@@ -185,5 +186,7 @@ public class FarmerActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
 
