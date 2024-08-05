@@ -84,6 +84,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         preference = Preference.getInstance(this);
 
         binding.rlFarmerName.setVisibility(View.VISIBLE);

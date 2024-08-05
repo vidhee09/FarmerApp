@@ -3,12 +3,15 @@ package com.ananta.fieldAgent.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -25,6 +28,7 @@ import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.Utils.CustomDialogAlert;
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -35,6 +39,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     DrawerLayout drawer_layout;
     Preference preference;
     NavigationView navSideBar;
+    ImageView headerProfileImage;
+    TextView headerAgentName, headerMobileNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,15 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         bindView();
         addListener();
         navSideBar.setNavigationItemSelectedListener(this);
+        View view = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.sidebar_drawer, null);
+        headerProfileImage = view.findViewById(R.id.nav_headerImage);
+        headerAgentName = view.findViewById(R.id.nav_header_agentName);
+        headerMobileNumber = view.findViewById(R.id.nav_mobileNumber);
+        navSideBar.addHeaderView(view);
+
+        headerAgentName.setText(preference.getAgentName());
+        headerMobileNumber.setText(preference.getAgentNumber());
+//        Glide.with(DashboardActivity.this).load();
     }
 
     private void bindView() {
@@ -81,12 +96,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             startActivity(intent);
         });
 
-   /*     ivSignOut.setOnClickListener(v -> {
-            preference.putAgentID("");
-            Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
-            startActivity(intent);
-            finishAffinity();
-        });*/
 
         ivPersonalDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +136,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         if (id == R.id.signOut) {
             Log.d("profile===","=sign="+id);
-
             preference.putAgentID("");
             Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
             startActivity(intent);

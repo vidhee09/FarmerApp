@@ -25,8 +25,7 @@ public class AgentProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityAgentProfileBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
 
         preference = Preference.getInstance(AgentProfileActivity.this);
 
