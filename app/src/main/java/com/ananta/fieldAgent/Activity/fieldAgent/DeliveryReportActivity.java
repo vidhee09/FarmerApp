@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -449,6 +450,9 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 Bitmap bitmap = null;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);
                     binding.ivMaterialPhoto.setImageBitmap(bitmap);
                     uploadImage(contentURI, 1);
                     Log.d("contentURI===>", "=bitmap=" + contentURI);

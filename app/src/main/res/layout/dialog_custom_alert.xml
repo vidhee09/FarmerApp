@@ -38,8 +38,7 @@
         android:text="Are you sure you want to close the application?"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_12ssp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        />
+        android:layout_marginBottom="@dimen/_20sdp" />
 
     <Button
         android:id="@+id/btnDialogAlertRight"

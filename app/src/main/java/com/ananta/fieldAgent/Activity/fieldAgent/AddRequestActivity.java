@@ -7,8 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -37,7 +39,9 @@ import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityAddRequestBinding;
+import com.bumptech.glide.Glide;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -500,10 +504,16 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         uploadImage(contentURI, 1);
+                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                         binding.ivRequestPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         uploadImage(contentURI, 2);
+                        /*bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                         binding.ivInsurancePhoto.setImageBitmap(bitmap);
                     }
 
@@ -513,7 +523,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 }
             }
 
-        } else if (requestCode == TAKE_PHOTO_FROM_CAMERA) {
+        } else if (requestCode == TAKE_PHOTO_FROM_CAMERA){
                 Bitmap myBmp = (Bitmap) data.getExtras().get("data");
                 Uri uri =getImageUri(AddRequestActivity.this, myBmp);
                 if (photos == 1){
@@ -526,23 +536,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 saveImage(myBmp);
             }
         }
-
-            /*if (requestCode == CAMERA) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-            if (photos == 1){
-                uploadImage(tempUri, 1);
-                binding.ivRequestPhoto.setImageBitmap(thumbnail);
-            }else {
-                uploadImage(tempUri, 2);
-                binding.ivRequestPhoto.setImageBitmap(thumbnail);
-
-            }
-            saveImage(thumbnail);
-            Log.d("path===>", "=2=" + tempUri);
-            Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
-        }*/
     }
+
 
     public String saveImage(Bitmap myBitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -626,7 +621,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-                    Toast.makeText(AddRequestActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddRequestActivity.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
 
             }

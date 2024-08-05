@@ -35,7 +35,8 @@ public abstract class CustomDialogAlert extends BottomSheetDialog implements Vie
         btnDialogEditTextRight.setText(titleRightButton);
 
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         setCancelable(false);
     }
 

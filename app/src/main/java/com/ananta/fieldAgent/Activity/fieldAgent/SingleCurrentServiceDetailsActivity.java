@@ -407,5 +407,4 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
         binding.ivBackPress.setClickable(b);
         binding.btnComplete.setClickable(b);
     }
-
 }

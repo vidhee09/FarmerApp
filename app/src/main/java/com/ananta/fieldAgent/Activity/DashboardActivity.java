@@ -1,5 +1,7 @@
 package com.ananta.fieldAgent.Activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
@@ -44,6 +47,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     NavigationView navSideBar;
     ImageView headerProfileImage;
     TextView headerAgentName, headerMobileNumber;
+    private CustomDialogAlert exitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         bindView();
         addListener();
+
         navSideBar.setNavigationItemSelectedListener(this);
         View view = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.sidebar_drawer, null);
         headerProfileImage = view.findViewById(R.id.nav_headerImage);
@@ -111,21 +116,49 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public void onBackPressed() {
+//        openExitDialog();
         super.onBackPressed();
-        CustomDialogAlert customDialogAlert = new CustomDialogAlert(this, this.getResources().getString(R.string.close_application), this.getResources().getString(R.string.close_text), this.getResources().getString(R.string.yes)) {
-            @Override
-            public void onClickLeftButton() {
-                dismiss();
-            }
-
-            @Override
-            public void onClickRightButton() {
-                dismiss();
-                finish();
-            }
-        };
-        customDialogAlert.show();
     }
+
+    protected void openExitDialog() {
+        /*if (exitDialog != null && exitDialog.isShowing()) {
+            return;
+        }else {
+            exitDialog = new CustomDialogAlert(this, this.getResources().getString(R.string.close_application), this.getResources().getString(R.string.close_text), this.getResources().getString(R.string.yes)) {
+                @Override
+                public void onClickLeftButton() {
+                    dismiss();
+                }
+
+                @Override
+                public void onClickRightButton() {
+                    dismiss();
+                    finish();
+                }
+            };
+            exitDialog.show();
+        }
+*/
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+        builder.setView(R.layout.dialog_custom_alert).setTitle("Confirm")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+        AlertDialog  di = builder.create();
+        di.show();
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

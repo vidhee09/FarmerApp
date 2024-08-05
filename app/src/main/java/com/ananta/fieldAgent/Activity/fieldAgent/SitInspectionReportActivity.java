@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
@@ -587,10 +588,16 @@ private void showPictureDialog(int photoImage) {
                         if (photos == 1) {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                             uploadImage(contentURI, 1);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);
                             binding.ivPumpPhoto.setImageBitmap(bitmap);
                         } else {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                             uploadImage(contentURI, 2);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);
                             binding.ivBenificiaryPhoto.setImageBitmap(bitmap);
                         }
 
@@ -604,11 +611,17 @@ private void showPictureDialog(int photoImage) {
                 Bitmap myBmp = (Bitmap) data.getExtras().get("data");
                 Uri uri =getImageUri(SitInspectionReportActivity.this, myBmp);
                 if (photos == 1){
-                    binding.ivPumpPhoto.setImageBitmap(myBmp);
                     uploadImage(uri,1);
+                    myBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    myBmp = BitmapFactory.decodeFile(String.valueOf(myBmp),options);
+                    binding.ivPumpPhoto.setImageBitmap(myBmp);
                 }else {
-                    binding.ivBenificiaryPhoto.setImageBitmap(myBmp);
                     uploadImage(uri,2);
+                    myBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    myBmp = BitmapFactory.decodeFile(String.valueOf(myBmp),options);
+                    binding.ivBenificiaryPhoto.setImageBitmap(myBmp);
                 }
                 saveImage(myBmp);
             }
@@ -765,13 +778,13 @@ private void showPictureDialog(int photoImage) {
                         Log.d("ImageName==", "else" + Imagepath);
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
-                        Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SitInspectionReportActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     Log.d("ImageName==", "else" + Imagepath);
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-                    Toast.makeText(SitInspectionReportActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SitInspectionReportActivity.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
 
             }

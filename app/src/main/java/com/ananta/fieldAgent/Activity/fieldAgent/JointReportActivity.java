@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,10 +83,6 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     double latitude, longitude;
     private FusedLocationProviderClient fusedLocationClient;
     File SignPath, beneficiarySign;
-//    ArrayList<String> checkbox_typeWaterSource = new ArrayList<>();
-//    ArrayList<String> checkbox_pump_surveyor = new ArrayList<>();
-//    ArrayList<String> checkbox_pump_beneficiary = new ArrayList<>();
-//    ArrayList<String> checkbox_available_person = new ArrayList<>();
     Preference preference;
     ArrayAdapter waterSourceAdapter;
 
@@ -857,16 +854,25 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         pumpPath = String.valueOf(contentURI);
                         uploadImage(contentURI, 1);
+                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                         binding.ivWaterPhoto.setImageBitmap(bitmap);
                     } else if (imagePhoto == 2) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         landmarkPath = String.valueOf(contentURI);
                         uploadImage(contentURI, 2);
+                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                         binding.ivLandmarkPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         baneficiarypath = String.valueOf(contentURI);
                         uploadImage(contentURI, 3);
+                      /*  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                         binding.ivBeneficiaryPhotoJoint.setImageBitmap(bitmap);
                     }
 
@@ -1021,7 +1027,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-//                    Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JointReportActivity.this,"The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
 
             }

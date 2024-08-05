@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -399,17 +400,23 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 try {
                     if (imagePhoto == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                        pumpPath = String.valueOf(contentURI);
                         uploadImage(contentURI, 1);
+                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                         binding.ivPhotoInstallPump.setImageBitmap(bitmap);
                     } else if (imagePhoto == 2) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                        baneficiarypath = String.valueOf(contentURI);
+                        /*bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                         uploadImage(contentURI, 2);
                         binding.ivBeneficiaryInstallPump.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                        workingPumpPath = String.valueOf(contentURI);
+                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                         uploadImage(contentURI, 3);
                         binding.ivPumpWorking.setImageBitmap(bitmap);
                     }
@@ -538,7 +545,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         hashMap.put("sign", signatureName);
         hashMap.put("date", binding.tvDatePumpInstall.getText().toString());
 
-
         Call<PumpInstallModel> call = apiInterface.getPumpInstallData(hashMap, "Bearer " + preference.getToken());
 
         call.enqueue(new Callback<PumpInstallModel>() {
@@ -622,8 +628,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     private void addMorePanelId(String txet) {
 
-
-
         if (panelIdList.contains(txet)) {
             Toast.makeText(this, "Panel Id already added", Toast.LENGTH_SHORT).show();
             binding.edPanelId.setText("");
@@ -690,7 +694,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PumpInstallationActivity.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
             }
 

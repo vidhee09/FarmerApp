@@ -3,8 +3,11 @@ package com.ananta.fieldAgent.Activity.farmer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ananta.fieldAgent.Activity.DashboardActivity;
 import com.ananta.fieldAgent.Activity.LoginScreen;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.CurrenRequestFarmerFragment;
@@ -42,6 +46,9 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
     TabFragmentAdapter adapter;
     private Preference preference;
     ApiInterface apiInterface;
+    TextView headerName, headerMobileNumber;
+    ImageView headerProfileImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
@@ -55,6 +62,15 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        View view = LayoutInflater.from(FarmerDashboardActivity.this).inflate(R.layout.sidebar_drawer, null);
+        headerProfileImage = view.findViewById(R.id.nav_headerImage);
+        headerName = view.findViewById(R.id.nav_header_agentName);
+        headerMobileNumber = view.findViewById(R.id.nav_mobileNumber);
+        binding.navSideBar.addHeaderView(view);
+
+        headerName.setText(preference.getFarmerName());
+        headerMobileNumber.setText(preference.getFarmerNum());
 
         binding.navSideBar.setNavigationItemSelectedListener(this);
         binding.tvFarmerName.setText(preference.getFarmerName());
@@ -81,7 +97,6 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
             Intent intent = new Intent(FarmerDashboardActivity.this, AddNewRequestFarmer.class);
             startActivity(intent);
             finish();
-
         });
 
         binding.ivSignOut.setOnClickListener(v -> {
@@ -101,6 +116,8 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
                 binding.myDrawerLayout.openDrawer(binding.navSideBar);
             }
         });
+
+
     }
 
     @Override
@@ -207,7 +224,6 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
             intent = new Intent(FarmerDashboardActivity.this, PastRequestActivity.class);
             startActivity(intent);
         }
-
 
         binding.myDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

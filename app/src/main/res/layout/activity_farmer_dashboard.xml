@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
     <RelativeLayout
         android:id="@+id/rlToolbar"
         android:layout_width="match_parent"
@@ -96,7 +95,6 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:src="@drawable/farmer_new_logo" />
 
-
             <TextView
                 android:id="@+id/tvFarmerName"
                 android:layout_width="match_parent"
@@ -111,7 +109,6 @@
                 android:padding="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
 
             <TextView
                 android:id="@+id/tvFarmerNo"
@@ -128,7 +125,6 @@
                 android:padding="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
@@ -210,8 +206,10 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navSideBar"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:layout_marginTop="@dimen/_30sdp"
         app:menu="@menu/farmer_menu" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

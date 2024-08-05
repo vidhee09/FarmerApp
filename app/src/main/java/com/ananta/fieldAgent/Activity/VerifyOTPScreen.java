@@ -141,7 +141,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         String token = preference.putToken(response.body().getToken());
 //                        ApiClient.setLoginDetail(response.body().getToken());
                         startActivity(intent1);
-                        finish();
+                        finishAffinity();
 
                     } else if (response.body().getType().equals("farmer")) {
                         binding.pbProgressBar.setVisibility(View.GONE);
@@ -158,7 +158,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
 //                        ApiClient.setLoginDetail(response.body().getToken());
                         String token = preference.putToken(response.body().getToken());
                         startActivity(intent3);
-                        finish();
+                        finishAffinity();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.VISIBLE);
