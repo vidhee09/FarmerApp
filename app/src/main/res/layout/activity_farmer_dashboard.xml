@@ -186,7 +186,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_6sdp"
                 android:background="@drawable/round_fill_background"
-                android:text="Submit"
+                android:text="Create New Request"
                 android:visibility="gone"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp"

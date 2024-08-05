@@ -77,7 +77,7 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
             }
         });
 
-        binding.ivAddReqImage.setOnClickListener(v -> {
+        binding.btnCreateRequest.setOnClickListener(v -> {
             Intent intent = new Intent(FarmerDashboardActivity.this, AddNewRequestFarmer.class);
             startActivity(intent);
             finish();
