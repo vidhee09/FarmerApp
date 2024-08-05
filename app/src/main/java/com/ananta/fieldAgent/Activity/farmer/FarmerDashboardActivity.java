@@ -1,51 +1,47 @@
 package com.ananta.fieldAgent.Activity.farmer;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import com.ananta.fieldAgent.Activity.DashboardActivity;
 import com.ananta.fieldAgent.Activity.LoginScreen;
-import com.ananta.fieldAgent.Activity.fieldAgent.AddRequestActivity;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.CurrenRequestFarmerFragment;
 import com.ananta.fieldAgent.Fragments.PastRequestFarmerFragment;
-import com.ananta.fieldAgent.Models.CurrentRequestFarmerModel;
 import com.ananta.fieldAgent.Models.FarmerServiceResponseModel;
+import com.ananta.fieldAgent.Models.PastServiceDatumFarmer;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
 import com.ananta.fieldAgent.Parser.Preference;
-import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
-import com.ananta.fieldAgent.Utils.CustomDialogAlert;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDashboardBinding;
+import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FarmerDashboardActivity extends AppCompatActivity {
+public class FarmerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ActivityFarmerDashboardBinding binding;
     TabFragmentAdapter adapter;
     private Preference preference;
     ApiInterface apiInterface;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
@@ -60,6 +56,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             return insets;
         });
 
+        binding.navSideBar.setNavigationItemSelectedListener(this);
         binding.tvFarmerName.setText(preference.getFarmerName());
         binding.tvFarmerNo.setText(preference.getFarmerNum());
         binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -80,7 +77,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             }
         });
 
-        binding.ivAddReqImage.setOnClickListener(v -> {
+        binding.btnCreateRequest.setOnClickListener(v -> {
             Intent intent = new Intent(FarmerDashboardActivity.this, AddNewRequestFarmer.class);
             startActivity(intent);
             finish();
@@ -97,6 +94,13 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             startActivity(intent);
             finishAffinity();
         });
+
+        binding.ivOpenDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.myDrawerLayout.openDrawer(binding.navSideBar);
+            }
+        });
     }
 
     @Override
@@ -109,6 +113,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
         binding.ivSignOut.setClickable(b);
         binding.ivAddReqImage.setEnabled(b);
+        binding.ivOpenDrawer.setEnabled(b);
     }
 
     public void getFarmerData(String id) {
@@ -127,16 +132,14 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<FarmerServiceResponseModel> call, @NonNull Response<FarmerServiceResponseModel> response) {
 
-                Log.d("farmerData===TOKEN", "dash=" + response.code());
-
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setClickDisable(true);
-
+                        binding.btnCreateRequest.setVisibility(View.VISIBLE);
+                        binding.tvTitle.setVisibility(View.VISIBLE);
                         adapter = new TabFragmentAdapter(getSupportFragmentManager());
                         adapter.addFragment(new CurrenRequestFarmerFragment(response.body().getCurrent_service_data()), "Current Request");
-                        adapter.addFragment(new PastRequestFarmerFragment(response.body().getPast_service_data()), "Past Request");
                         binding.viewPager.setAdapter(adapter);
                         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
@@ -179,4 +182,35 @@ public class FarmerDashboardActivity extends AppCompatActivity {
 
         customDialogAlert.show();*/
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        int id = item.getItemId();
+        if (id == R.id.profile) {
+            intent = new Intent(FarmerDashboardActivity.this, FarmerProfileActivity.class);
+            startActivity(intent);
+        }
+
+        if (id == R.id.logout) {
+            preference.putIsHideWelcomeScreen(false);
+            preference.putFarmerName(null);
+            preference.putFarmerNum(null);
+            preference.putFarmerLoginId(null);
+            preference.putFarmerName(null);
+            intent = new Intent(FarmerDashboardActivity.this, LoginScreen.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+
+        if (id == R.id.pastReq) {
+            intent = new Intent(FarmerDashboardActivity.this, PastRequestActivity.class);
+            startActivity(intent);
+        }
+
+
+        binding.myDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 }

@@ -17,6 +17,8 @@ import com.ananta.fieldAgent.Models.JointSurveyorModel;
 import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Models.OtpResponseModel;
 import com.ananta.fieldAgent.Models.PumpInstallModel;
+import com.ananta.fieldAgent.Models.ServiceRequestGetDataResponseModel;
+import com.ananta.fieldAgent.Models.ServiceRequestUpdateResponseModel;
 import com.ananta.fieldAgent.Models.SiteReportModel;
 import java.util.HashMap;
 import java.util.Map;
@@ -131,4 +133,10 @@ public interface ApiInterface {
     /*--- current past data ---*/
     @POST("farmer-service")
     Call<FarmerServiceResponseModel> getCurrentAndPastData(@Body HashMap<String, String> currentPastData,  @Header("Authorization") String auth);
+
+    @POST("farmer/report-update")
+    Call<ServiceRequestUpdateResponseModel> updateRequest(@Body HashMap<String, String> currentPastData, @Header("Authorization") String auth);
+
+    @POST("farmer/report-data")
+    Call<ServiceRequestGetDataResponseModel> getServiceRequestData(@Body HashMap<String, String> currentPastData, @Header("Authorization") String auth);
 }

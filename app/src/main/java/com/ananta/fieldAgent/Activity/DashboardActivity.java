@@ -2,6 +2,7 @@ package com.ananta.fieldAgent.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -129,13 +132,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         if (id == R.id.profileShow) {
-            Log.d("profile===","=="+id);
             Intent intent = new Intent(DashboardActivity.this, AgentProfileActivity.class);
             startActivity(intent);
         }
 
         if (id == R.id.signOut) {
-            Log.d("profile===","=sign="+id);
             preference.putAgentID("");
             Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
             startActivity(intent);
