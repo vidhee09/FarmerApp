@@ -39,6 +39,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         ServiceModel model = serviceList.get(position);
         holder.tvFarmerName.setText(model.getService_request());
         holder.tvAddressName.setText(model.getDescription());
+//        holder.tvPumpName.setText(model.getDescription());
 
 //   Intent intent = new Intent(context, ServiceActivity.class);
 //   context.startActivity(intent);
@@ -59,7 +60,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             super(itemView);
 
             tvFarmerName = itemView.findViewById(R.id.tvFarmerName);
-            tvPumpName = itemView.findViewById(R.id.tvPumpName);
+            tvPumpName = itemView.findViewById(R.id.tvCompanyNameService);
             tvAddressName = itemView.findViewById(R.id.tvAddressName);
             ivServiceImage = itemView.findViewById(R.id.ivServiceImage);
 

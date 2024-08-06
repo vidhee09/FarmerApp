@@ -49,7 +49,7 @@ public class FarmerDatum {
     private String otpGeneratedAt;
     @SerializedName("company_name")
     @Expose
-    private Object companyName;
+    private String companyName;
     @SerializedName("agent_id")
     @Expose
     private Integer agentId;
@@ -263,15 +263,15 @@ public class FarmerDatum {
         return this;
     }
 
-    public Object getCompanyName() {
+    public String getCompanyName() {
         return companyName;
     }
 
-    public void setCompanyName(Object companyName) {
+    public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
 
-    public FarmerDatum withCompanyName(Object companyName) {
+    public FarmerDatum withCompanyName(String companyName) {
         this.companyName = companyName;
         return this;
     }

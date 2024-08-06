@@ -46,9 +46,9 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FarmAdapter.ViewHolder holder, int position) {
         CurrentServiceDatumFarmer model = farmerList.get(position);
-        holder.tvFarmerName.setText(model.getRequest_type());
-        holder.tvAddressName.setText(model.getDescription());
-        holder.tvPumpName.setText(model.getService_request());
+        holder.tvFarmerName.setText(model.getFarmer_name());
+        holder.tvAddressName.setText(model.getFarmer_address());
+        holder.tvCompanyName.setText(model.getCompany_name());
 
         if (!model.getImage_name().isEmpty()) {
             Glide.with(context).load(Const.IMAGE_URL + model.getImage_name()).into(holder.ivFarmerImage);
@@ -83,14 +83,14 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvFarmerName, tvPumpName, tvAddressName;
+        TextView tvFarmerName, tvCompanyName, tvAddressName;
         ImageView ivFarmerImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvFarmerName = itemView.findViewById(R.id.tvFarmerName);
-            tvPumpName = itemView.findViewById(R.id.tvPumpName);
+            tvCompanyName = itemView.findViewById(R.id.tvCompanyName);
             tvAddressName = itemView.findViewById(R.id.tvAddressName);
             ivFarmerImage = itemView.findViewById(R.id.ivFarmerImage);
         }

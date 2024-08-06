@@ -58,15 +58,15 @@ public class FarmerDetailActivity extends AppCompatActivity {
 
         FarmerPosition = getIntent().getStringExtra("farmer_position");
         FarmerName = getIntent().getStringExtra("FarmerName");
+        CompanyName = getIntent().getStringExtra("Company_name");
         Selected_farmer_id = getIntent().getStringExtra("Selected_farmer_id");
         if (CompanyName.isEmpty()){
-            CompanyName = "CompanyName";
+            binding.tvCompanyNameDetail.setText("CompanyName");
         }else {
-            CompanyName = getIntent().getStringExtra("CompanyName");
+            binding.tvCompanyNameDetail.setText(CompanyName);
         }
 
         binding.tvAgentName.setText(FarmerName);
-        binding.tvCompanyName.setText(CompanyName);
 
         checkReportStatus();
 

@@ -115,6 +115,7 @@ public class Preference {
     public static String AGNET_MobileNo = "mobile_number";
     public static Integer  ID ;
     public static String FARMER_ID = "farmer_id";
+    public static String PROFILE_IMAGE = "image";
 
     public static String AGENT_FARMER_ID = "farmer_id";
 
@@ -175,6 +176,16 @@ public class Preference {
     public void putCompanyName(String companyName) {
         SharedPreferences.Editor edit = app_preferences.edit();
         edit.putString(COMPANY_NAME, companyName);
+        edit.apply();
+    }
+
+    public String getProfileImage(){
+        return app_preferences.getString(PROFILE_IMAGE, "");
+    }
+
+    public void putProfileImage(String image) {
+        SharedPreferences.Editor edit = app_preferences.edit();
+        edit.putString(PROFILE_IMAGE, image);
         edit.apply();
     }
 

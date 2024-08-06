@@ -76,7 +76,7 @@ public class FarmServiceAdapter extends RecyclerView.Adapter<FarmServiceAdapter.
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvServiceName = itemView.findViewById(R.id.tvFarmerName);
-            tvCcomplaintId = itemView.findViewById(R.id.tvPumpName);
+            tvCcomplaintId = itemView.findViewById(R.id.tvCompanyNameService);
             tvDescription = itemView.findViewById(R.id.tvAddressName);
             ivServiceImage = itemView.findViewById(R.id.ivServiceImage);
 

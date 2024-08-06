@@ -47,12 +47,13 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
 
         FarmerDatum model = farmerList.get(position);
         holder.tvFarmerName.setText(model.getName());
+        holder.tvCompanyName.setText(model.getCompanyName());
         holder.tvAddressName.setText(model.getAddress());
         preference = Preference.getInstance(context);
 
         Log.d("idddd=====","=="+model.getId());
 
-        Log.d("farmer address===>","="+model.getAddress());
+        Log.d("farmer address===>","="+model.getCompanyName());
 
 //      holder.tvPumpName.setText(model.getName());
 //      holder.tvAddressName.setText(model.getName());
@@ -67,7 +68,7 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
                 intent.putExtra("Selected_farmer_id",""+model.getId());
                 preference.putAgentFarmerId(String.valueOf(model.getId()));
                 intent.putExtra("FarmerName",model.getName());
-                intent.putExtra("CompanyName",model.getAddress());
+                intent.putExtra("Company_name",model.getCompanyName());
                 context.startActivity(intent);
 
             }
@@ -88,14 +89,14 @@ public class FarmerAdapter extends RecyclerView.Adapter<FarmerAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvFarmerName,tvPumpName,tvAddressName;
+        TextView tvFarmerName,tvCompanyName,tvAddressName;
         ImageView ivFarmerImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvFarmerName = itemView.findViewById(R.id.tvFarmerName);
-            tvPumpName = itemView.findViewById(R.id.tvPumpName);
+            tvCompanyName = itemView.findViewById(R.id.tvCompanyName);
             tvAddressName = itemView.findViewById(R.id.tvAddressName);
             ivFarmerImage = itemView.findViewById(R.id.ivFarmerImage);
 

@@ -75,7 +75,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         headerAgentName.setText(preference.getAgentName());
         headerMobileNumber.setText(preference.getAgentNumber());
-//        Glide.with(DashboardActivity.this).load();
+        if (preference.getProfileImage().isEmpty() || preference.getProfileImage() == null){
+            Log.d("Image==","="+preference.getProfileImage());
+        }else {
+            Glide.with(DashboardActivity.this).load(Const.IMAGE_URL+preference.getProfileImage()).into(headerProfileImage);
+        }
     }
 
     private void bindView() {

@@ -136,6 +136,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         preference.putAgentNumber(response.body().getMobile_number());
                         preference.putToken(response.body().getToken());
                         preference.putCompanyName(response.body().getUser_companyname());
+                        preference.putProfileImage(response.body().getImage());
 //                        preference.putAgentFarmerId(response.body().get);
                         Const.SERVER_TOKEN = response.body().getToken();
                         String token = preference.putToken(response.body().getToken());

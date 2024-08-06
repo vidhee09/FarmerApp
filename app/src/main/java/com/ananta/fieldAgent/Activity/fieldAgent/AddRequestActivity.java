@@ -66,7 +66,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     private static final int TAKE_PHOTO_FROM_CAMERA = 100;
 
     ActivityAddRequestBinding binding;
-    String path = "", claim = "", reason = "", farmer_name = "", farmer_id = "", Imagepath,pump_id;
+    String path = "", claim = "", reason = "", farmer_name = "", farmer_id = "", Imagepath, pump_id;
     ApiInterface apiInterface;
     int photos;
 
@@ -149,11 +149,10 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         getInsuranceReasonData();
         getInsuranceClaim();
         getServiceRequest();
-
     }
 
 
-    public void setAllClicksDisable(boolean b){
+    public void setAllClicksDisable(boolean b) {
         binding.spSpinner.setEnabled(b);
         binding.spFarmerName.setEnabled(b);
         binding.spSpinnerRequest.setEnabled(b);
@@ -269,7 +268,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 }
             } else {
                 if (validation()) {
-                    Log.d("Imagepath==","="+Imagepath);
+                    Log.d("Imagepath==", "=" + Imagepath);
                     getAddRequestData();
                 } else {
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
@@ -293,7 +292,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         } else if (binding.edReqDescription.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
-        }else if (Imagepath == null || Imagepath.isEmpty()) {
+        } else if (Imagepath == null || Imagepath.isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please select Image", Toast.LENGTH_SHORT).show();
         }
@@ -496,42 +495,42 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             return;
         }
         if (resultCode == RESULT_OK && data != null) {
-        if (requestCode == GALLERY) {
-            if (data != null) {
-                Uri contentURI = data.getData();
+            if (requestCode == GALLERY) {
+                if (data != null) {
+                    Uri contentURI = data.getData();
 //                path = String.valueOf(contentURI);
-                try {
-                    if (photos == 1) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        uploadImage(contentURI, 1);
+                    try {
+                        if (photos == 1) {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                            uploadImage(contentURI, 1);
                        /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
-                        binding.ivRequestPhoto.setImageBitmap(bitmap);
-                    } else {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        uploadImage(contentURI, 2);
+                            binding.ivRequestPhoto.setImageBitmap(bitmap);
+                        } else {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                            uploadImage(contentURI, 2);
                         /*bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
-                        binding.ivInsurancePhoto.setImageBitmap(bitmap);
+                            binding.ivInsurancePhoto.setImageBitmap(bitmap);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
                     }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
                 }
-            }
 
-        } else if (requestCode == TAKE_PHOTO_FROM_CAMERA){
+            } else if (requestCode == TAKE_PHOTO_FROM_CAMERA) {
                 Bitmap myBmp = (Bitmap) data.getExtras().get("data");
-                Uri uri =getImageUri(AddRequestActivity.this, myBmp);
-                if (photos == 1){
+                Uri uri = getImageUri(AddRequestActivity.this, myBmp);
+                if (photos == 1) {
                     binding.ivRequestPhoto.setImageBitmap(myBmp);
-                    uploadImage(uri,1);
-                }else {
+                    uploadImage(uri, 1);
+                } else {
                     binding.ivRequestPhoto.setImageBitmap(myBmp);
-                    uploadImage(uri,2);
+                    uploadImage(uri, 2);
                 }
                 saveImage(myBmp);
             }
@@ -586,6 +585,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         File file = new File(uri.getPath());
         Log.w("FilePath", file.getPath());
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -616,7 +616,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
-                        Toast.makeText(AddRequestActivity.this, ""+ response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
@@ -631,7 +631,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 binding.pbProgressBar.setVisibility(View.GONE);
                 setAllClicksDisable(true);
                 Toast.makeText(AddRequestActivity.this, "image not uploaded" + t, Toast.LENGTH_SHORT).show();
-
             }
         });
     }
