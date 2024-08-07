@@ -297,9 +297,6 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
 
     private void datePick() {
         final Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = sdf.format(c.getTime());

@@ -316,22 +316,30 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<CheckStatusModel> call, Response<CheckStatusModel> response) {
 
                 if (response.body() != null) {
-                    binding.pbProgressBar.setVisibility(View.GONE);
-                    setAllClicksDisable(true);
-                    joint_report = String.valueOf(response.body().getReports().getJointReport());
-                    pump_report = String.valueOf(response.body().getReports().getPumpReport());
+                    if (response.body().getSuccess()) {
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        setAllClicksDisable(true);
+                        joint_report = String.valueOf(response.body().getReports().getJointReport());
+                        pump_report = String.valueOf(response.body().getReports().getPumpReport());
 
-                    if (pump_report.equals("1") && joint_report.equals("1")){
-                        getServiceReportData();
+                        if (pump_report.equals("1") && joint_report.equals("1")){
+                            getServiceReportData();
+                        }else {
+                            binding.ivBackPress.setClickable(true);
+                            binding.btnComplete.setClickable(false);
+                            Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please first filled reports", Toast.LENGTH_SHORT).show();
+                        }
                     }else {
-                        setAllClicksDisable(false);
-                        Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please first filled reports", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
+                        binding.ivBackPress.setClickable(true);
+                        binding.btnComplete.setClickable(false);
+                        Toast.makeText(SingleCurrentServiceDetailsActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
-                    setAllClicksDisable(false);
-                    Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Status not match", Toast.LENGTH_SHORT).show();
+                    binding.ivBackPress.setClickable(true);
+                    binding.btnComplete.setClickable(false);
+                    Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please first filled reports", Toast.LENGTH_SHORT).show();
                 }
             }
 

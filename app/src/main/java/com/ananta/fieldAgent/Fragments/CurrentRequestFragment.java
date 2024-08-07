@@ -76,7 +76,6 @@ public class CurrentRequestFragment extends Fragment {
             binding.rcvCurrentReqView.setLayoutManager(manager);
             adapter = new CurrentRequestAdapter(getActivity(), currentReqList);
             binding.rcvCurrentReqView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
         }
 
     }

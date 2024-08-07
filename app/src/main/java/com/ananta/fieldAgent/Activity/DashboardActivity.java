@@ -86,7 +86,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llFarmer = findViewById(R.id.llFarmer);
         llService = findViewById(R.id.llService);
         ivAddReqImage = findViewById(R.id.ivAddReqImage);
-//        ivSignOut = findViewById(R.id.ivSignOut);
+//      ivSignOut = findViewById(R.id.ivSignOut);
         ivPersonalDetail = findViewById(R.id.ivPersonalDetail);
         drawer_layout = findViewById(R.id.drawer_layout);
         navSideBar = findViewById(R.id.navSideBar);

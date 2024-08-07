@@ -50,6 +50,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.farmer.AddNewRequestFarmer"
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:exported="false" />
         <activity
             android:name=".Activity.fieldAgent.ShowComplaintActivity"

@@ -447,14 +447,13 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                 Uri contentURI = data.getData();
                 path = String.valueOf(contentURI);
 
-                Bitmap bitmap = null;
                 try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                    Bitmap  bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    /*bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
                     BitmapFactory.Options options = new BitmapFactory.Options();
-                    bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);
-                    binding.ivMaterialPhoto.setImageBitmap(bitmap);
+                    bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                     uploadImage(contentURI, 1);
+                    binding.ivMaterialPhoto.setImageBitmap(bitmap);
                     Log.d("contentURI===>", "=bitmap=" + contentURI);
                 } catch (IOException e) {
                     throw new RuntimeException(e);

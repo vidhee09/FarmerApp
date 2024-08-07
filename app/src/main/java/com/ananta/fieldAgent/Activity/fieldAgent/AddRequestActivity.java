@@ -40,6 +40,7 @@ import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityAddRequestBinding;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -328,6 +329,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         setAllClicksDisable(false);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("agent_id", preference.getAgentId());
+        Log.d("null response===", "id=" + preference.getAgentId());
 
         Call<AllFarmerModel> call = apiInterface.getAllFarmerData(hashMap, "Bearer " + preference.getToken());
         call.enqueue(new Callback<AllFarmerModel>() {
@@ -335,25 +337,18 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(Call<AllFarmerModel> call, Response<AllFarmerModel> response) {
 
                 if (response.body() != null) {
-                    if (response.body().isSuccess()) {
-                        binding.pbProgressBar.setVisibility(View.GONE);
-                        setAllClicksDisable(true);
-                        allFarmersList.addAll(response.body().getFarmer());
-                        for (int i = 0; i < allFarmersList.size(); i++) {
-                            list.add(allFarmersList.get(i).getName());
-                            ids.add(allFarmersList.get(i).getId());
-                            pumpId.add(allFarmersList.get(i).getPump_id());
-                        }
-                        setFarmerList();
-                    } else {
-                        binding.pbProgressBar.setVisibility(View.GONE);
-                        setAllClicksDisable(true);
-                        Toast.makeText(AddRequestActivity.this, "No farmers found for the given agent ID", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                    setAllClicksDisable(true);
+                    allFarmersList.addAll(response.body().getFarmers());
+                    for (int i = 0; i < allFarmersList.size(); i++) {
+                        list.add(allFarmersList.get(i).getName());
+                        ids.add(allFarmersList.get(i).getId());
+                        pumpId.add(allFarmersList.get(i).getPump_id());
                     }
+                    setFarmerList();
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-
                     Toast.makeText(AddRequestActivity.this, "Farmer not available", Toast.LENGTH_SHORT).show();
                 }
             }

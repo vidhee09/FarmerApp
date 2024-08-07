@@ -568,7 +568,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (binding.edRemark.getText().toString().isEmpty()) {
             isValid = false;
             binding.edRemark.setError("please enter remark");
-        } else if (TypeOfWaterSource.isEmpty()) {
+        } else if ( TypeOfWaterSource.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select water source", Toast.LENGTH_SHORT).show();
         } else if (pumpHeadSurveyor.isEmpty()) {
@@ -577,7 +577,7 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (availablePerson.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select available person", Toast.LENGTH_SHORT).show();
-        } else if (pumpHeadRecombaneficiary.isEmpty()) {
+        } else if (pumpHeadRecombaneficiary== null || pumpHeadRecombaneficiary.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select pump head by beneficiary", Toast.LENGTH_SHORT).show();
         } else if (pumpPath == null || pumpPath.isEmpty()) {
@@ -589,22 +589,22 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else if (landmarkPath == null || landmarkPath.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
-        } else if (selectedWater.isEmpty()) {
+        } else if (selectedWater == null || selectedWater.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select water availability", Toast.LENGTH_SHORT).show();
-        } else if (selectedPumpType.isEmpty()) {
+        } else if ( selectedPumpType == null ||selectedPumpType.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select pump type", Toast.LENGTH_SHORT).show();
-        } else if (selectAgPump.isEmpty()) {
+        } else if (selectAgPump == null || selectAgPump.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select Ag pump availability", Toast.LENGTH_SHORT).show();
-        } else if (selectGovt.isEmpty()) {
+        } else if ( selectGovt == null || selectGovt.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select Govt. scheme", Toast.LENGTH_SHORT).show();
-        } else if (networkSelect.isEmpty()) {
+        } else if (networkSelect== null || networkSelect.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select network availability ", Toast.LENGTH_SHORT).show();
-        } else if (selectShaow.isEmpty()) {
+        } else if ( selectShaow== null ||selectShaow.isEmpty()) {
             isValid = false;
             Toast.makeText(this, "please select available area", Toast.LENGTH_SHORT).show();
         }else if (signatureSurveyor == null || signatureSurveyor.isEmpty()) {
@@ -939,6 +939,42 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         return Uri.parse(path);
     }
 
+    public Boolean checkRadioButtonValidation(){
+        boolean valid = true;
+        if (binding.rgRadioWaterSource.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgPumpHeadRecomSurveyor.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgPumpHeadRecomBaneficiary.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgPumpType.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgAGPumpConnection.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgSolarGovtPump.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgShadowArea.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgNetworkAvailable.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgTypeOfWaterSource.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        } if (binding.rgAvailablePerson.getCheckedRadioButtonId() == -1){
+            valid = false;
+            Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+        }
+        return valid;
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -952,20 +988,25 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
             showPictureDialog(3);
 
         } else if (id == R.id.llJointSubmit) {
-            getSelectedRadioButton();
-            if (joint_report.equals("0")) {
-                if (validation()) {
-                    addJointReportData();
+            if (checkRadioButtonValidation()){
+                getSelectedRadioButton();
+                if (joint_report.equals("0")) {
+                    if (validation()) {
+                        addJointReportData();
+                    } else {
+                        Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                    if (updateValidation()) {
+                        updateReport(reportId);
+                    } else {
+                        Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            } else {
-                if (updateValidation()) {
-                    updateReport(reportId);
-                } else {
-                    Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
-                }
+            }else {
+                Toast.makeText(this, "please check all filled", Toast.LENGTH_SHORT).show();
             }
+
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
         }

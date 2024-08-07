@@ -453,88 +453,7 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         }
         uploadFileImage(fileName);
     }
-/*
-    private void showPictureDialog(int photoImage) {
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select photo from gallery" */
-    /*"Capture photo from camera"*//*};
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary(photoImage);
-                                break;
-                            case 1:
-                                takePhotoFromCamera(photoImage);
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
-    }
 
-    public void choosePhotoFromGallary(int photo) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, GALLERY);
-        photos = photo;
-    }
-
-    private void takePhotoFromCamera(int photo) {
-        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(camera_intent, CAMERA);
-        photos = photo;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_CANCELED) {
-            return;
-        }
-        if (requestCode == GALLERY) {
-            if (data != null) {
-                Uri contentURI = data.getData();
-                Log.d("siteins", "==> Gallery " + contentURI);
-                try {
-                    if (photos == 1) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        uploadImage(contentURI, 1);
-                        binding.ivPumpPhoto.setImageBitmap(bitmap);
-                    } else {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        uploadImage(contentURI, 2);
-                        binding.ivBenificiaryPhoto.setImageBitmap(bitmap);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else if (requestCode == CAMERA) {
-            if (photos == 1) {
-                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-                uploadImage(tempUri, 1);
-                binding.ivPumpPhoto.setImageBitmap(thumbnail);
-                saveImage(thumbnail);
-            } else {
-                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                binding.ivBenificiaryPhoto.setImageBitmap(thumbnail);
-                assert thumbnail != null;
-                Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-                uploadImage(tempUri, 2);
-                saveImage(thumbnail);
-            }
-
-        }
-
-    }*/
 
 private void showPictureDialog(int photoImage) {
     AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -588,16 +507,16 @@ private void showPictureDialog(int photoImage) {
                         if (photos == 1) {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                             uploadImage(contentURI, 1);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                           /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
                             BitmapFactory.Options options = new BitmapFactory.Options();
-                            bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);
+                            bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                             binding.ivPumpPhoto.setImageBitmap(bitmap);
                         } else {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                             uploadImage(contentURI, 2);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                           /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
                             BitmapFactory.Options options = new BitmapFactory.Options();
-                            bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);
+                            bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
                             binding.ivBenificiaryPhoto.setImageBitmap(bitmap);
                         }
 
@@ -612,15 +531,15 @@ private void showPictureDialog(int photoImage) {
                 Uri uri =getImageUri(SitInspectionReportActivity.this, myBmp);
                 if (photos == 1){
                     uploadImage(uri,1);
-                    myBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                   /* myBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
                     BitmapFactory.Options options = new BitmapFactory.Options();
-                    myBmp = BitmapFactory.decodeFile(String.valueOf(myBmp),options);
+                    myBmp = BitmapFactory.decodeFile(String.valueOf(myBmp),options);*/
                     binding.ivPumpPhoto.setImageBitmap(myBmp);
                 }else {
                     uploadImage(uri,2);
-                    myBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                    /*myBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
                     BitmapFactory.Options options = new BitmapFactory.Options();
-                    myBmp = BitmapFactory.decodeFile(String.valueOf(myBmp),options);
+                    myBmp = BitmapFactory.decodeFile(String.valueOf(myBmp),options);*/
                     binding.ivBenificiaryPhoto.setImageBitmap(myBmp);
                 }
                 saveImage(myBmp);
