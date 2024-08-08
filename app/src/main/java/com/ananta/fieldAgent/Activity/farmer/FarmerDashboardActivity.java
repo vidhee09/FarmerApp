@@ -105,6 +105,7 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
             preference.putFarmerNum(null);
             preference.putFarmerLoginId(null);
             preference.putFarmerName(null);
+            preference.putProfileImage(null);
             Intent intent = new Intent(FarmerDashboardActivity.this, LoginScreen.class);
             startActivity(intent);
             finishAffinity();

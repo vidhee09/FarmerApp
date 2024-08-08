@@ -22,6 +22,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.ananta.fieldAgent.Activity.fieldAgent.JointReportActivity;
 import com.ananta.fieldAgent.Models.FarmerServiceModel;
 import com.ananta.fieldAgent.Models.Farmer;
 import com.ananta.fieldAgent.Models.ImageModel;
@@ -149,6 +150,8 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
         binding.ivBackPress.setClickable(b);
         binding.edReqDescriptionFarmer.setClickable(b);
         binding.btnAddReqBtnFarmer.setClickable(b);
+        binding.ivRequestPhotoFarmer.setClickable(b);
+        binding.ivInsurancePhotoFarmer.setClickable(b);
     }
 
     public void getInsuranceReasonData() {
@@ -242,8 +245,9 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
     }
 
     public void clickListener() {
-
         binding.ivReqCameraFarmer.setOnClickListener(this);
+        binding.ivInsurancePhotoFarmer.setOnClickListener(this);
+        binding.ivRequestPhotoFarmer.setOnClickListener(this);
         binding.btnAddReqBtnFarmer.setOnClickListener(this);
         binding.ivInsuranceCameraFarmer.setOnClickListener(this);
 
@@ -266,9 +270,9 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else if (id == R.id.ivReqCameraFarmer) {
+        } else if (id == R.id.ivReqCameraFarmer || id == R.id.ivRequestPhotoFarmer) {
             showPictureDialog(1);
-        } else if (id == R.id.ivInsuranceCameraFarmer) {
+        } else if (id == R.id.ivInsuranceCameraFarmer || id == R.id.ivInsurancePhotoFarmer) {
             showPictureDialog(2);
         }
     }
@@ -284,7 +288,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
         } else if (binding.edReqDescriptionFarmer.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
-        }else if (Imagepath == null || Imagepath.isEmpty()) {
+        } else if (Imagepath == null || Imagepath.isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "please select Image", Toast.LENGTH_SHORT).show();
         }
@@ -306,7 +310,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
         } else if (binding.edInsuranceDescriptionFarmer.getText().toString().isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show();
-        }else if (Imagepath == null || Imagepath.isEmpty()) {
+        } else if (Imagepath == null || Imagepath.isEmpty()) {
             isvalid = false;
             Toast.makeText(this, "Please select Image", Toast.LENGTH_SHORT).show();
         }
@@ -346,18 +350,18 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                     if (response.body().isSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setClickDisable(true);
-                        Intent intent = new Intent(AddNewRequestFarmer.this,FarmerDashboardActivity.class);
+                        Intent intent = new Intent(AddNewRequestFarmer.this, FarmerDashboardActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setClickDisable(true);
-                        Toast.makeText(AddNewRequestFarmer.this,  response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setClickDisable(true);
-                    Toast.makeText(AddNewRequestFarmer.this,  response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -523,12 +527,24 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setClickDisable(true);
-                        Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        if (fromWhere == 1) {
+                            binding.ivRequestPhotoFarmer.setImageResource(R.drawable.ic_farmer);
+                        } else {
+                            binding.ivInsurancePhotoFarmer.setImageResource(R.drawable.ic_farmer);
+                        }
+                        Toast.makeText(AddNewRequestFarmer.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
+
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setClickDisable(true);
-                    Toast.makeText(AddNewRequestFarmer.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    if (fromWhere == 1) {
+                        binding.ivRequestPhotoFarmer.setImageResource(R.drawable.ic_farmer);
+                    } else {
+                        binding.ivInsurancePhotoFarmer.setImageResource(R.drawable.ic_farmer);
+                    }
+                    Toast.makeText(AddNewRequestFarmer.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -536,7 +552,7 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
             public void onFailure(Call<ImageModel> call, Throwable t) {
                 binding.pbProgressBar.setVisibility(View.GONE);
                 setClickDisable(true);
-                Toast.makeText(AddNewRequestFarmer.this,"Image upload failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddNewRequestFarmer.this, "Image upload failed", Toast.LENGTH_SHORT).show();
 
             }
         });

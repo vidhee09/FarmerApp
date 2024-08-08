@@ -163,6 +163,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         binding.ivBackPress.setClickable(b);
         binding.ivReqCamera.setClickable(b);
         binding.btnAddReqest.setClickable(b);
+        binding.ivRequestPhoto.setClickable(b);
+        binding.ivInsurancePhoto.setClickable(b);
     }
 
     public void getInsuranceReasonData() {
@@ -252,9 +254,10 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     public void clickListener() {
         binding.ivReqCamera.setOnClickListener(this);
+        binding.ivRequestPhoto.setOnClickListener(this);
+        binding.ivInsurancePhoto.setOnClickListener(this);
         binding.btnAddReqest.setOnClickListener(this);
         binding.ivInsuranceCamera.setOnClickListener(this);
-
     }
 
     @Override
@@ -275,9 +278,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else if (id == R.id.ivReqCamera) {
+        } else if (id == R.id.ivReqCamera || id == R.id.ivRequestPhoto) {
             showPictureDialog(1);
-        } else if (id == R.id.ivInsuranceCamera) {
+        } else if (id == R.id.ivInsuranceCamera || id == R.id.ivInsurancePhoto) {
             showPictureDialog(2);
         }
     }
@@ -611,11 +614,21 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
+                        if (fromWhere == 1){
+                            binding.ivRequestPhoto.setImageResource(R.drawable.ic_farmer);
+                        }else {
+                            binding.ivInsurancePhoto.setImageResource(R.drawable.ic_farmer);
+                        }
                         Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
+                    if (fromWhere == 1){
+                        binding.ivRequestPhoto.setImageResource(R.drawable.ic_farmer);
+                    }else {
+                        binding.ivInsurancePhoto.setImageResource(R.drawable.ic_farmer);
+                    }
                     Toast.makeText(AddRequestActivity.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
 

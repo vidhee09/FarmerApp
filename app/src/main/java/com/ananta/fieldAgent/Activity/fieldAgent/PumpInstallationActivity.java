@@ -117,9 +117,8 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         call.enqueue(new Callback<GetPumpData>() {
             @Override
             public void onResponse(Call<GetPumpData> call, Response<GetPumpData> response) {
-
+                if (response.body().getSuccess()) {
                 if (response.body() != null) {
-                    if (response.body().getSuccess()) {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
                         binding.edPumpId.setText(response.body().getPumpInstallation().get(0).getPumpId());
@@ -128,7 +127,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                         binding.edControllerId.setText(response.body().getPumpInstallation().get(0).getControllerId());
                         String policyNumber = response.body().getPumpInstallation().get(0).getPolicyNo();
 
-                        if (policyNumber.isEmpty()){
+                        if (policyNumber == null || policyNumber.isEmpty()){
                             binding.edPolicyNumberPumpInstall.setText("");
                         }else {
                             binding.edPolicyNumberPumpInstall.setText(response.body().getPumpInstallation().get(0).getPolicyNo());
@@ -166,9 +165,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                             });
 
                             binding.chipGroup.addView(chip);
-
                         }
-
 
                         reportId = String.valueOf(response.body().getPumpInstallation().get(0).getId());
                         Glide.with(PumpInstallationActivity.this).load(Const.IMAGE_URL + response.body().getPumpInstallation().get(0).getInstallImage()).into(binding.ivPhotoInstallPump);
@@ -183,7 +180,7 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-//                    Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                  Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -307,6 +304,9 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         binding.ivCameraInstallPump.setOnClickListener(this);
         binding.ivBaneficiaryCameraPump.setOnClickListener(this);
         binding.ivWorkingPumpCamera.setOnClickListener(this);
+        binding.ivPhotoInstallPump.setOnClickListener(this);
+        binding.ivBeneficiaryInstallPump.setOnClickListener(this);
+        binding.ivPumpWorking.setOnClickListener(this);
         binding.llSubmitPumpInstall.setOnClickListener(this);
         binding.ivAddMoreId.setOnClickListener(this);
         binding.ivBackPress.setOnClickListener(this);
@@ -449,6 +449,9 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
         binding.ivCameraInstallPump.setClickable(b);
         binding.ivBaneficiaryCameraPump.setClickable(b);
         binding.ivWorkingPumpCamera.setClickable(b);
+        binding.ivPhotoInstallPump.setClickable(b);
+        binding.ivBeneficiaryInstallPump.setClickable(b);
+        binding.ivPumpWorking.setClickable(b);
         binding.btnCompleted.setClickable(b);
         binding.btnClear.setClickable(b);
     }
@@ -579,11 +582,11 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.ivCameraInstallPump) {
+        if (id == R.id.ivCameraInstallPump || id == R.id.ivPhotoInstallPump) {
             showPictureDialog(1);
-        } else if (id == R.id.ivBaneficiaryCameraPump) {
+        } else if (id == R.id.ivBaneficiaryCameraPump || id == R.id.ivBeneficiaryInstallPump) {
             showPictureDialog(2);
-        } else if (id == R.id.ivWorkingPumpCamera) {
+        } else if (id == R.id.ivWorkingPumpCamera || id == R.id.ivPumpWorking) {
             showPictureDialog(3);
         } else if (id == R.id.llSubmitPumpInstall) {
             if (pump_report.equals("0")) {
@@ -686,11 +689,25 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
+                        if (fromWhere==1){
+                            binding.ivPhotoInstallPump.setImageResource(R.drawable.ic_farmer);
+                        } else if (fromWhere == 2) {
+                            binding.ivBeneficiaryInstallPump.setImageResource(R.drawable.ic_farmer);
+                        }else {
+                            binding.ivPumpWorking.setImageResource(R.drawable.ic_farmer);
+                        }
                         Toast.makeText(PumpInstallationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
+                    if (fromWhere==1){
+                        binding.ivPhotoInstallPump.setImageResource(R.drawable.ic_farmer);
+                    } else if (fromWhere == 2) {
+                        binding.ivBeneficiaryInstallPump.setImageResource(R.drawable.ic_farmer);
+                    }else {
+                        binding.ivPumpWorking.setImageResource(R.drawable.ic_farmer);
+                    }
                     Toast.makeText(PumpInstallationActivity.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
             }

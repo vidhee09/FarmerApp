@@ -147,6 +147,9 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         binding.btnClear.setClickable(b);
         binding.ivBackPress.setClickable(b);
         binding.llSiteSubmit.setClickable(b);
+        binding.ivBenificiaryPhoto.setClickable(b);
+        binding.ivPumpPhoto.setClickable(b);
+        binding.llSiteSubmit.setClickable(b);
 
     }
     /*  site report update  */
@@ -321,9 +324,9 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.ivCameraPump) {
+        if (id == R.id.ivCameraPump || id == R.id.ivPumpPhoto) {
             showPictureDialog(1);
-        } else if (id == R.id.ivBenificiaryCameraSite) {
+        } else if (id == R.id.ivBenificiaryCameraSite || id == R.id.ivBenificiaryPhoto) {
             showPictureDialog(2);
         } else if (id == R.id.llSiteSubmit) {
             if (Utils.isInternetAvailable(SitInspectionReportActivity.this)) {
@@ -600,6 +603,8 @@ private void showPictureDialog(int photoImage) {
     public void clickLister() {
         binding.ivCameraPump.setOnClickListener(this);
         binding.llSiteSubmit.setOnClickListener(this);
+        binding.ivPumpPhoto.setOnClickListener(this);
+        binding.ivBenificiaryPhoto.setOnClickListener(this);
         binding.ivBenificiaryCameraSite.setOnClickListener(this);
         binding.tvDateSiteReport.setOnClickListener(this);
         binding.tvAddressSite.setOnClickListener(this);
@@ -697,12 +702,22 @@ private void showPictureDialog(int photoImage) {
                         Log.d("ImageName==", "else" + Imagepath);
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
+                        if (fromWhere == 1) {
+                            binding.ivPumpPhoto.setImageResource(R.drawable.ic_farmer);
+                        }else {
+                            binding.ivBenificiaryPhoto.setImageResource(R.drawable.ic_farmer);
+                        }
                         Toast.makeText(SitInspectionReportActivity.this, ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     Log.d("ImageName==", "else" + Imagepath);
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
+                    if (fromWhere == 1) {
+                        binding.ivPumpPhoto.setImageResource(R.drawable.ic_farmer);
+                    }else {
+                        binding.ivBenificiaryPhoto.setImageResource(R.drawable.ic_farmer);
+                    }
                     Toast.makeText(SitInspectionReportActivity.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
 

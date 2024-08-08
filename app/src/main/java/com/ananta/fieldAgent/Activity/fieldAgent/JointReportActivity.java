@@ -738,6 +738,9 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         binding.ivBeneficiaryCameraJoint.setOnClickListener(this);
         binding.ivLandmarkCamera.setOnClickListener(this);
         binding.ivWaterSourceCamera.setOnClickListener(this);
+        binding.ivBeneficiaryPhotoJoint.setOnClickListener(this);
+        binding.ivLandmarkPhoto.setOnClickListener(this);
+        binding.ivWaterPhoto.setOnClickListener(this);
         binding.llJointSubmit.setOnClickListener(this);
         binding.ivBackPress.setOnClickListener(this);
     }
@@ -978,13 +981,13 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.ivWaterSourceCamera) {
+        if (id == R.id.ivWaterSourceCamera || id == R.id.ivWaterPhoto) {
             showPictureDialog(1);
 
-        } else if (id == R.id.ivLandmarkCamera) {
+        } else if (id == R.id.ivLandmarkCamera || id == R.id.ivLandmarkPhoto) {
             showPictureDialog(2);
 
-        } else if (id == R.id.ivBeneficiaryCameraJoint) {
+        } else if (id == R.id.ivBeneficiaryCameraJoint || id == R.id.ivBeneficiaryPhotoJoint) {
             showPictureDialog(3);
 
         } else if (id == R.id.llJointSubmit) {
@@ -1063,11 +1066,25 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
+                        if (fromWhere == 1){
+                            binding.ivWaterPhoto.setImageResource(R.drawable.ic_farmer);
+                        } else if (fromWhere == 2) {
+                            binding.ivLandmarkPhoto.setImageResource(R.drawable.ic_farmer);
+                        }else {
+                            binding.ivBeneficiaryPhotoJoint.setImageResource(R.drawable.ic_farmer);
+                        }
                         Toast.makeText(JointReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
+                    if (fromWhere == 1){
+                        binding.ivWaterPhoto.setImageResource(R.drawable.ic_farmer);
+                    } else if (fromWhere == 2) {
+                        binding.ivLandmarkPhoto.setImageResource(R.drawable.ic_farmer);
+                    }else {
+                        binding.ivBeneficiaryPhotoJoint.setImageResource(R.drawable.ic_farmer);
+                    }
                     Toast.makeText(JointReportActivity.this,"The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
 

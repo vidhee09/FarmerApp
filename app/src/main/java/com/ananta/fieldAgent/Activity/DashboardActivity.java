@@ -175,6 +175,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         if (id == R.id.signOut) {
             preference.putAgentID("");
+            preference.putProfileImage(null);
             Intent intent = new Intent(DashboardActivity.this, LoginScreen.class);
             startActivity(intent);
             finishAffinity();

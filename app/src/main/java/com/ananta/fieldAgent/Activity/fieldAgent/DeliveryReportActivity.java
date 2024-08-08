@@ -120,6 +120,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         binding.ivBackPress.setClickable(b);
         binding.edPresentPersonNameDelivery.setClickable(b);
         binding.ivMaterialCamera.setClickable(b);
+        binding.ivMaterialPhoto.setClickable(b);
         binding.btnClear.setClickable(b);
         binding.btnCompleted.setClickable(b);
         binding.llDeliverySubmit.setClickable(b);
@@ -170,9 +171,6 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
     private void datePick() {
         final Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = sdf.format(c.getTime());
@@ -389,6 +387,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
     public void clickListener() {
         binding.ivMaterialCamera.setOnClickListener(this);
+        binding.ivMaterialPhoto.setOnClickListener(this);
         binding.llDeliverySubmit.setOnClickListener(this);
         binding.tvAddressDelivery.setOnClickListener(this);
         binding.ivBackPress.setOnClickListener(this);
@@ -512,7 +511,7 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.ivMaterialCamera) {
+        if (id == R.id.ivMaterialCamera || id == R.id.ivMaterialPhoto) {
             showPictureDialog();
         } else if (id == R.id.llDeliverySubmit) {
             if (delivery_report.equals("0")) {
@@ -619,12 +618,14 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
+                        binding.ivMaterialPhoto.setImageResource(R.drawable.ic_farmer);
                         Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-                    Toast.makeText(DeliveryReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.ivMaterialPhoto.setImageResource(R.drawable.ic_farmer);
+                    Toast.makeText(DeliveryReportActivity.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();
                 }
 
             }

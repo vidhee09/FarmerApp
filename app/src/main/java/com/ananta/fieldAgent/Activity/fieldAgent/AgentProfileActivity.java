@@ -14,6 +14,7 @@ import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityAgentProfileBinding;
+import com.bumptech.glide.Glide;
 
 public class AgentProfileActivity extends AppCompatActivity {
 
@@ -39,13 +40,18 @@ public class AgentProfileActivity extends AppCompatActivity {
         binding.tvAgentCompanyName.setText(preference.getCompanyName());
         binding.tvAgentMobileNumber.setText(preference.getAgentNumber());
 
+        if (preference.getProfileImage() == null || preference.getProfileImage().isEmpty()){
+            binding.ivAgentProfilePhoto.setImageResource(R.drawable.ic_farmer);
+        }else {
+            Glide.with(AgentProfileActivity.this).load(Const.IMAGE_URL+preference.getProfileImage()).into(binding.ivAgentProfilePhoto);
+        }
+
         binding.ivBackPress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-
     }
 
     @Override

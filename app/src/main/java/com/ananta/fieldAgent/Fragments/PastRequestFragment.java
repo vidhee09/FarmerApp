@@ -94,7 +94,7 @@ public class PastRequestFragment extends Fragment {
             return;
         }else {
             for (PastServiceDatum item : pastReqModelArrayList) {
-                if (item.getService_request().toLowerCase().contains(text.toLowerCase())) {
+                if (item.getRequestType().toLowerCase().contains(text.toLowerCase())) {
                     filteredlist.add(item);
                 }
             }

@@ -9,9 +9,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.ananta.fieldAgent.Activity.fieldAgent.AgentProfileActivity;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityFarmerProfileBinding;
+import com.bumptech.glide.Glide;
 
 public class FarmerProfileActivity extends AppCompatActivity {
 
@@ -24,6 +27,7 @@ public class FarmerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityFarmerProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         preference = Preference.getInstance(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

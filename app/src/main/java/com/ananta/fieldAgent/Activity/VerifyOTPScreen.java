@@ -156,6 +156,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
                         preference.putFarmerNum(response.body().getMobile_number());
                         Const.SERVER_TOKEN = response.body().getToken();
                         preference.putCompanyName(response.body().getUser_companyname());
+                        preference.putProfileImage(response.body().getImage());
 //                        ApiClient.setLoginDetail(response.body().getToken());
                         String token = preference.putToken(response.body().getToken());
                         startActivity(intent3);
@@ -195,6 +196,7 @@ public class VerifyOTPScreen extends AppCompatActivity {
                 binding.tvSetTime.setVisibility(View.GONE);
                 binding.tvResend.setVisibility(View.VISIBLE);
             }
+
         }.start();
     }
 }

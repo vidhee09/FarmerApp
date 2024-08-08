@@ -110,7 +110,7 @@
                         android:fontFamily="@font/poppins_bold"
                         android:includeFontPadding="false"
                         android:padding="@dimen/_4sdp"
-                        android:text="Didn`t Receive Otp?"
+                        android:text="@string/didn_t_receive_otp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 

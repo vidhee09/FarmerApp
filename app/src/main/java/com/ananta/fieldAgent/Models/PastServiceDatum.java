@@ -5,85 +5,80 @@ import com.google.gson.annotations.SerializedName;
 
 public class PastServiceDatum {
 
-    public int id;
-    public String request_type;
-    public int farmer_id;
-    public String farmer_name;
-    public String farmer_address;
-    public String description;
-    public Object image_name;
-    public String image_url;
-    public String service_request;
-    public String complaint_id;
-    public String reason;
-    public String incident_date;
-    public int agent_id;
-    public int status;
-    public String created_at;
-    public String updated_at;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("request_type")
+    @Expose
+    private String requestType;
+    @SerializedName("farmer_name")
+    @Expose
+    private String farmerName;
+    @SerializedName("farmer_id")
+    @Expose
+    private Integer farmerId;
+    @SerializedName("description")
+    @Expose
+    private String description;
+    @SerializedName("complaint_id")
+    @Expose
+    private String complaintId;
+    @SerializedName("image_name")
+    @Expose
+    private String imageName;
+    @SerializedName("service_request")
+    @Expose
+    private String serviceRequest;
+    @SerializedName("reason")
+    @Expose
+    private String reason;
+    @SerializedName("incident_date")
+    @Expose
+    private String incidentDate;
+    @SerializedName("agent_id")
+    @Expose
+    private Integer agentId;
+    @SerializedName("status")
+    @Expose
+    private Integer status;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
 
-    public String getFarmer_name() {
-        return farmer_name;
-    }
 
-    public void setFarmer_name(String farmer_name) {
-        this.farmer_name = farmer_name;
-    }
-
-    public String getFarmer_address() {
-        return farmer_address;
-    }
-
-    public void setFarmer_address(String farmer_address) {
-        this.farmer_address = farmer_address;
-    }
-
-    public Object getImage_name() {
-        return image_name;
-    }
-
-    public void setImage_name(Object image_name) {
-        this.image_name = image_name;
-    }
-
-    public String getImage_url() {
-        return image_url;
-    }
-
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
-
-    public int getAgent_id() {
-        return agent_id;
-    }
-
-    public void setAgent_id(int agent_id) {
-        this.agent_id = agent_id;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getRequest_type() {
-        return request_type;
+    public String getRequestType() {
+        return requestType;
     }
 
-    public void setRequest_type(String request_type) {
-        this.request_type = request_type;
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
     }
 
-    public int getFarmer_id() {
-        return farmer_id;
+    public String getFarmerName() {
+        return farmerName;
     }
 
-    public void setFarmer_id(int farmer_id) {
-        this.farmer_id = farmer_id;
+    public void setFarmerName(String farmerName) {
+        this.farmerName = farmerName;
+    }
+
+    public Integer getFarmerId() {
+        return farmerId;
+    }
+
+    public void setFarmerId(Integer farmerId) {
+        this.farmerId = farmerId;
     }
 
     public String getDescription() {
@@ -94,13 +89,28 @@ public class PastServiceDatum {
         this.description = description;
     }
 
-
-    public String getService_request() {
-        return service_request;
+    public String getComplaintId() {
+        return complaintId;
     }
 
-    public void setService_request(String service_request) {
-        this.service_request = service_request;
+    public void setComplaintId(String complaintId) {
+        this.complaintId = complaintId;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getServiceRequest() {
+        return serviceRequest;
+    }
+
+    public void setServiceRequest(String serviceRequest) {
+        this.serviceRequest = serviceRequest;
     }
 
     public String getReason() {
@@ -111,43 +121,43 @@ public class PastServiceDatum {
         this.reason = reason;
     }
 
-    public String getComplaint_id() {
-        return complaint_id;
+    public String getIncidentDate() {
+        return incidentDate;
     }
 
-    public void setComplaint_id(String complaint_id) {
-        this.complaint_id = complaint_id;
+    public void setIncidentDate(String incidentDate) {
+        this.incidentDate = incidentDate;
     }
 
-    public String getIncident_date() {
-        return incident_date;
+    public Integer getAgentId() {
+        return agentId;
     }
 
-    public void setIncident_date(String incident_date) {
-        this.incident_date = incident_date;
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
