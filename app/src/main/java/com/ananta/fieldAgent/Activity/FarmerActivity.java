@@ -22,6 +22,7 @@ import com.ananta.fieldAgent.Models.FarmerDatum;
 import com.ananta.fieldAgent.Models.FarmerModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityFarmerBinding;
@@ -74,8 +75,13 @@ public class FarmerActivity extends AppCompatActivity {
         binding.swipeRefreshFarmerDetail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getFarmerData(preference.getAgentId());
-                binding.swipeRefreshFarmerDetail.setRefreshing(false);
+                if (Const.isInternetConnected(FarmerActivity.this)){
+                    getFarmerData(preference.getAgentId());
+                    binding.swipeRefreshFarmerDetail.setRefreshing(false);
+                }else {
+                    binding.swipeRefreshFarmerDetail.setRefreshing(false);
+                    Toast.makeText(FarmerActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -137,7 +143,11 @@ public class FarmerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("Farmer=====","==>"+ preference.getAgentId());
-        getFarmerData(preference.getAgentId());
+        if (Const.isInternetConnected(FarmerActivity.this)){
+            getFarmerData(preference.getAgentId());
+        }else {
+            Toast.makeText(FarmerActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getFarmerData(String agentId) {

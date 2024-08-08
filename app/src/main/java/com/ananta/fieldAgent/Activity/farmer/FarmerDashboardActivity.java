@@ -21,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.ananta.fieldAgent.Activity.DashboardActivity;
 import com.ananta.fieldAgent.Activity.LoginScreen;
+import com.ananta.fieldAgent.Activity.fieldAgent.SitInspectionReportActivity;
 import com.ananta.fieldAgent.Adapters.TabFragmentAdapter;
 import com.ananta.fieldAgent.Fragments.CurrenRequestFarmerFragment;
 import com.ananta.fieldAgent.Fragments.PastRequestFarmerFragment;
@@ -28,6 +29,7 @@ import com.ananta.fieldAgent.Models.FarmerServiceResponseModel;
 import com.ananta.fieldAgent.Models.PastServiceDatumFarmer;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Preference;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityFarmerDashboardBinding;
@@ -123,7 +125,11 @@ public class FarmerDashboardActivity extends AppCompatActivity implements Naviga
 
     @Override
     protected void onResume() {
-        getFarmerData(preference.getFarmerLoginId());
+        if (Const.isInternetConnected(FarmerDashboardActivity.this)){
+            getFarmerData(preference.getFarmerLoginId());
+        }else {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
         super.onResume();
     }
 

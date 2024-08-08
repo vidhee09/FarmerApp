@@ -111,7 +111,11 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
             binding.llDeliverySubmit.setText("Add Report");
         } else {
             binding.llDeliverySubmit.setText("Update Report");
-            getData();
+            if (Const.isInternetConnected(DeliveryReportActivity.this)){
+                getData();
+            }else {
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -347,7 +351,11 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadFileImage(fileName);
+        if (Const.isInternetConnected(DeliveryReportActivity.this)){
+            uploadFileImage(fileName);
+        }else {
+            Toast.makeText(DeliveryReportActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initView() {
@@ -448,10 +456,11 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
 
                 try {
                     Bitmap  bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    /*bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
-                    uploadImage(contentURI, 1);
+                    if (Const.isInternetConnected(DeliveryReportActivity.this)){
+                        uploadImage(contentURI, 1);
+                    }else {
+                        Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
                     binding.ivMaterialPhoto.setImageBitmap(bitmap);
                     Log.d("contentURI===>", "=bitmap=" + contentURI);
                 } catch (IOException e) {
@@ -516,13 +525,21 @@ public class DeliveryReportActivity extends AppCompatActivity implements View.On
         } else if (id == R.id.llDeliverySubmit) {
             if (delivery_report.equals("0")) {
                 if (validation()) {
-                    addDeliveryReportData();
+                    if (Const.isInternetConnected(DeliveryReportActivity.this)){
+                        addDeliveryReportData();
+                    }else {
+                        Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 if (updateValidation()) {
-                    updateSiteReport(reportId);
+                    if (Const.isInternetConnected(DeliveryReportActivity.this)){
+                        updateSiteReport(reportId);
+                    }else {
+                        Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                 }

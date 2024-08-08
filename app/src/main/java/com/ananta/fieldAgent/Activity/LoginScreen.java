@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.ananta.fieldAgent.Models.LoginModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
 import com.ananta.fieldAgent.Parser.ApiInterface;
+import com.ananta.fieldAgent.Parser.Const;
 import com.ananta.fieldAgent.Parser.Utils;
 import com.ananta.fieldAgent.R;
 import com.ananta.fieldAgent.databinding.ActivityLoginScreenBinding;
@@ -50,11 +51,11 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
-                    if (Utils.isInternetAvailable(LoginScreen.this)) {
+                    if (Const.isInternetConnected(LoginScreen.this)) {
                         login();
                     } else {
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(LoginScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
+                        binding.pbProgressBar.setVisibility(View.GONE);
                     }
                 }
             }
@@ -102,7 +103,7 @@ public class LoginScreen extends AppCompatActivity {
 
                     } else {
                         binding.tvErrorMobileNumber.setVisibility(View.VISIBLE);
-                        binding.pbProgressBar.setVisibility(View.VISIBLE);
+                        binding.pbProgressBar.setVisibility(View.GONE);
                         Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
                     }
                  /* if (response.body().getSuccess()) {
@@ -118,17 +119,15 @@ public class LoginScreen extends AppCompatActivity {
                     }*/
 
                 } else {
-                    binding.pbProgressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginScreen.this, "You are not approve by admin", Toast.LENGTH_SHORT).show();
                     binding.pbProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(LoginScreen.this, "You are not approve by admin", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginModel> call, Throwable t) {
-                binding.pbProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
                 binding.pbProgressBar.setVisibility(View.GONE);
+                Toast.makeText(LoginScreen.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
 
             }
 

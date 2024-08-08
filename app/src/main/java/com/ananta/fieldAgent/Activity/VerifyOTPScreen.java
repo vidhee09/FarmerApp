@@ -67,8 +67,15 @@ public class VerifyOTPScreen extends AppCompatActivity {
         binding.btnOTPVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginWithOtp(OTP, binding.pinView);
-                Log.d("Otp===", "=otp==" + OTP);
+                if (Const.isInternetConnected(VerifyOTPScreen.this)){
+                    loginWithOtp(OTP, binding.pinView);
+                    Log.d("Otp===", "=otp==" + OTP);
+                }else {
+                    Toast.makeText(VerifyOTPScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
+                    binding.pbProgressBar.setVisibility(View.GONE);
+                }
+
+
             }
         });
 

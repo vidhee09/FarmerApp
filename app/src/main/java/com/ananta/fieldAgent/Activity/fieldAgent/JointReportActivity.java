@@ -175,7 +175,11 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } else {
             Log.d("get==", "=" + joint_report);
             binding.llJointSubmit.setText("Update Report");
-            getData();
+            if (Const.isInternetConnected(JointReportActivity.this)){
+                getData();
+            }else {
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -777,7 +781,11 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadFileImage(fileName, pos);
+        if (Const.isInternetConnected(JointReportActivity.this)){
+            uploadFileImage(fileName, pos);
+        }else {
+            Toast.makeText(JointReportActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void BitmapIntoCacheDir(Bitmap signatureBitmap, int pos) {
@@ -804,7 +812,11 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadFileImage(fileName, pos);
+        if (Const.isInternetConnected(JointReportActivity.this)){
+            uploadFileImage(fileName, pos);
+        }else {
+            Toast.makeText(JointReportActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showPictureDialog(Integer photo) {
@@ -856,26 +868,29 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                     if (imagePhoto == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         pumpPath = String.valueOf(contentURI);
-                        uploadImage(contentURI, 1);
-                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
+                        if (Const.isInternetConnected(JointReportActivity.this)){
+                            uploadImage(contentURI, 1);
+                        }else {
+                            Toast.makeText(JointReportActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+                        }
                         binding.ivWaterPhoto.setImageBitmap(bitmap);
                     } else if (imagePhoto == 2) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         landmarkPath = String.valueOf(contentURI);
-                        uploadImage(contentURI, 2);
-                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
+                        if (Const.isInternetConnected(JointReportActivity.this)){
+                            uploadImage(contentURI, 2);
+                        }else {
+                            Toast.makeText(JointReportActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+                        }
                         binding.ivLandmarkPhoto.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         baneficiarypath = String.valueOf(contentURI);
-                        uploadImage(contentURI, 3);
-                      /*  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
+                        if (Const.isInternetConnected(JointReportActivity.this)){
+                            uploadImage(contentURI, 3);
+                        }else {
+                            Toast.makeText(JointReportActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+                        }
                         binding.ivBeneficiaryPhotoJoint.setImageBitmap(bitmap);
                     }
 
@@ -995,19 +1010,27 @@ public class JointReportActivity extends AppCompatActivity implements View.OnCli
                 getSelectedRadioButton();
                 if (joint_report.equals("0")) {
                     if (validation()) {
-                        addJointReportData();
+                        if (Const.isInternetConnected(JointReportActivity.this)){
+                            addJointReportData();
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     if (updateValidation()) {
-                        updateReport(reportId);
+                        if (Const.isInternetConnected(JointReportActivity.this)){
+                            updateReport(reportId);
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                     }
                 }
             }else {
-                Toast.makeText(this, "please check all filled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "please check all buttons", Toast.LENGTH_SHORT).show();
             }
 
         } else if (id == R.id.ivBackPress) {

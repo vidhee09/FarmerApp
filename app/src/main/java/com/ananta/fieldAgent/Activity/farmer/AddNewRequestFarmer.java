@@ -23,6 +23,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Activity.fieldAgent.JointReportActivity;
+import com.ananta.fieldAgent.Activity.fieldAgent.SitInspectionReportActivity;
 import com.ananta.fieldAgent.Models.FarmerServiceModel;
 import com.ananta.fieldAgent.Models.Farmer;
 import com.ananta.fieldAgent.Models.ImageModel;
@@ -259,13 +260,21 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
         if (id == R.id.btnAddReqBtnFarmer) {
             if (binding.spSpinnerFarmer.getSelectedItem().toString().equals("Insurance Claim")) {
                 if (validationIns()) {
-                    addRequestDataFarmer();
+                    if (Const.isInternetConnected(AddNewRequestFarmer.this)){
+                        addRequestDataFarmer();
+                    }else {
+                        Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 if (validation()) {
-                    addRequestDataFarmer();
+                    if (Const.isInternetConnected(AddNewRequestFarmer.this)){
+                        addRequestDataFarmer();
+                    }else {
+                        Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
@@ -424,11 +433,19 @@ public class AddNewRequestFarmer extends AppCompatActivity implements View.OnCli
                 try {
                     if (photos == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        farmerUploadImage(contentURI, 1);
+                        if (Const.isInternetConnected(AddNewRequestFarmer.this)){
+                            farmerUploadImage(contentURI, 1);
+                        }else {
+                            Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                        }
                         binding.ivRequestPhotoFarmer.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        farmerUploadImage(contentURI, 2);
+                        if (Const.isInternetConnected(AddNewRequestFarmer.this)){
+                            farmerUploadImage(contentURI, 2);
+                        }else {
+                            Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                        }
                         binding.ivInsurancePhotoFarmer.setImageBitmap(bitmap);
                     }
 

@@ -177,7 +177,11 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                         }
 
                         if (countChipsInChipGroup(chipGroup) >= 9) {
-                            updateRequest();
+                            if (Const.isInternetConnected(SingleCurrentServiceDetailsActivity.this)){
+                                updateRequest();
+                            }else {
+                                Toast.makeText(SingleCurrentServiceDetailsActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(SingleCurrentServiceDetailsActivity.this, "Please enter minimum 9 panel ids", Toast.LENGTH_SHORT).show();
                         }
@@ -323,7 +327,11 @@ public class SingleCurrentServiceDetailsActivity extends AppCompatActivity {
                         pump_report = String.valueOf(response.body().getReports().getPumpReport());
 
                         if (pump_report.equals("1") && joint_report.equals("1")){
-                            getServiceReportData();
+                            if (Const.isInternetConnected(SingleCurrentServiceDetailsActivity.this)){
+                                getServiceReportData();
+                            }else {
+                                Toast.makeText(SingleCurrentServiceDetailsActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                            }
                         }else {
                             binding.ivBackPress.setClickable(true);
                             binding.btnComplete.setClickable(false);

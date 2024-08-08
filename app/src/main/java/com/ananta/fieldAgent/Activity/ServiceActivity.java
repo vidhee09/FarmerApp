@@ -101,7 +101,11 @@ public class ServiceActivity extends AppCompatActivity {
         binding.swipeServiceMain.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getCurrentRequestData();
+                if (Const.isInternetConnected(ServiceActivity.this)){
+                    getCurrentRequestData();
+                }else {
+                    Toast.makeText(ServiceActivity.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -109,7 +113,11 @@ public class ServiceActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getCurrentRequestData();
+        if (Const.isInternetConnected(ServiceActivity.this)){
+            getCurrentRequestData();
+        }else {
+            Toast.makeText(ServiceActivity.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void setAllClicksDisable(boolean b) {

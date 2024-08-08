@@ -27,6 +27,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ananta.fieldAgent.Activity.ServiceActivity;
+import com.ananta.fieldAgent.Activity.farmer.AddNewRequestFarmer;
 import com.ananta.fieldAgent.Models.AddServiceModel;
 import com.ananta.fieldAgent.Models.AllFarmerModel;
 import com.ananta.fieldAgent.Models.Farmer;
@@ -146,7 +147,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 //      Const.AGENT_NAME = preference.getAgentName();
         clickListener();
         datePick();
-        getAllFarmerData();
+        if (Const.isInternetConnected(AddRequestActivity.this)){
+            getAllFarmerData();
+        }else {
+            Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
+        }
         getInsuranceReasonData();
         getInsuranceClaim();
         getServiceRequest();
@@ -266,17 +271,26 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         if (id == R.id.btnAddReqest) {
             if (binding.spSpinner.getSelectedItem().toString().equals("Insurance Claim")) {
                 if (validationIns()) {
-                    getAddRequestData();
+                    if (Const.isInternetConnected(AddRequestActivity.this)) {
+                        getAddRequestData();
+                    } else {
+                        Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                if (validation()) {
-                    Log.d("Imagepath==", "=" + Imagepath);
-                    getAddRequestData();
+                if (Const.isInternetConnected(AddRequestActivity.this)) {
+                    if (validation()) {
+                        Log.d("Imagepath==", "=" + Imagepath);
+                        getAddRequestData();
+                    } else {
+                        Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(this, "Please filled all field and try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
                 }
+
             }
         } else if (id == R.id.ivReqCamera || id == R.id.ivRequestPhoto) {
             showPictureDialog(1);
@@ -500,17 +514,19 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     try {
                         if (photos == 1) {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                            uploadImage(contentURI, 1);
-                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
+                            if (Const.isInternetConnected(AddRequestActivity.this)){
+                                uploadImage(contentURI, 1);
+                            }else {
+                                Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                            }
                             binding.ivRequestPhoto.setImageBitmap(bitmap);
                         } else {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                            uploadImage(contentURI, 2);
-                        /*bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
+                            if (Const.isInternetConnected(AddRequestActivity.this)){
+                                uploadImage(contentURI, 2);
+                            }else {
+                                Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                            }
                             binding.ivInsurancePhoto.setImageBitmap(bitmap);
                         }
 
@@ -525,10 +541,10 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 Uri uri = getImageUri(AddRequestActivity.this, myBmp);
                 if (photos == 1) {
                     binding.ivRequestPhoto.setImageBitmap(myBmp);
-                    uploadImage(uri, 1);
+//                    uploadImage(uri, 1);
                 } else {
                     binding.ivRequestPhoto.setImageBitmap(myBmp);
-                    uploadImage(uri, 2);
+//                    uploadImage(uri, 2);
                 }
                 saveImage(myBmp);
             }
@@ -614,9 +630,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     } else {
                         binding.pbProgressBar.setVisibility(View.GONE);
                         setAllClicksDisable(true);
-                        if (fromWhere == 1){
+                        if (fromWhere == 1) {
                             binding.ivRequestPhoto.setImageResource(R.drawable.ic_farmer);
-                        }else {
+                        } else {
                             binding.ivInsurancePhoto.setImageResource(R.drawable.ic_farmer);
                         }
                         Toast.makeText(AddRequestActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -624,9 +640,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 } else {
                     binding.pbProgressBar.setVisibility(View.GONE);
                     setAllClicksDisable(true);
-                    if (fromWhere == 1){
+                    if (fromWhere == 1) {
                         binding.ivRequestPhoto.setImageResource(R.drawable.ic_farmer);
-                    }else {
+                    } else {
                         binding.ivInsurancePhoto.setImageResource(R.drawable.ic_farmer);
                     }
                     Toast.makeText(AddRequestActivity.this, "The image must not be greater than 2048 kilobytes, please upload again", Toast.LENGTH_SHORT).show();

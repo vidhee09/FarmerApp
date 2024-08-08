@@ -15,6 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.ananta.fieldAgent.Activity.ServiceActivity;
 import com.ananta.fieldAgent.Models.CheckStatusModel;
 import com.ananta.fieldAgent.Models.DetailModel;
 import com.ananta.fieldAgent.Parser.ApiClient;
@@ -171,7 +172,11 @@ public class FarmerDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkReportStatus();
+        if (Const.isInternetConnected(FarmerDetailActivity.this)){
+            checkReportStatus();
+        }else {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

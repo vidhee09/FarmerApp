@@ -134,7 +134,11 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
             binding.llSiteSubmit.setText("Add Report");
         } else {
             binding.llSiteSubmit.setText("Update Report");
-            getData();
+            if (Const.isInternetConnected(SitInspectionReportActivity.this)){
+                getData();
+            }else {
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -329,23 +333,28 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         } else if (id == R.id.ivBenificiaryCameraSite || id == R.id.ivBenificiaryPhoto) {
             showPictureDialog(2);
         } else if (id == R.id.llSiteSubmit) {
-            if (Utils.isInternetAvailable(SitInspectionReportActivity.this)) {
                 if (site_report.equals("0")) {
                     if (validation()) {
-                        addSiteReportData();
+                        if (Const.isInternetConnected(SitInspectionReportActivity.this)){
+                            addSiteReportData();
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(this, "Please fill all details", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     if (updateValidation()) {
-                        updateSiteReport(reportId);
+                        if (Const.isInternetConnected(SitInspectionReportActivity.this)){
+                            updateSiteReport(reportId);
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(this, "Please fill all details", Toast.LENGTH_SHORT).show();
                     }
                 }
-            } else {
-                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
-            }
+
         } else if (id == R.id.ivBackPress) {
             onBackPressed();
         }
@@ -454,7 +463,11 @@ public class SitInspectionReportActivity extends AppCompatActivity implements Vi
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadFileImage(fileName);
+        if (Const.isInternetConnected(SitInspectionReportActivity.this)){
+            uploadFileImage(fileName);
+        }else {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -509,17 +522,19 @@ private void showPictureDialog(int photoImage) {
                     try {
                         if (photos == 1) {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                            uploadImage(contentURI, 1);
-                           /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                            BitmapFactory.Options options = new BitmapFactory.Options();
-                            bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
+                            if (Const.isInternetConnected(SitInspectionReportActivity.this)){
+                                uploadImage(contentURI, 1);
+                            }else {
+                                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                            }
                             binding.ivPumpPhoto.setImageBitmap(bitmap);
                         } else {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                            uploadImage(contentURI, 2);
-                           /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                            BitmapFactory.Options options = new BitmapFactory.Options();
-                            bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
+                            if (Const.isInternetConnected(SitInspectionReportActivity.this)){
+                                uploadImage(contentURI, 2);
+                            }else {
+                                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                            }
                             binding.ivBenificiaryPhoto.setImageBitmap(bitmap);
                         }
 
@@ -533,16 +548,10 @@ private void showPictureDialog(int photoImage) {
                 Bitmap myBmp = (Bitmap) data.getExtras().get("data");
                 Uri uri =getImageUri(SitInspectionReportActivity.this, myBmp);
                 if (photos == 1){
-                    uploadImage(uri,1);
-                   /* myBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    myBmp = BitmapFactory.decodeFile(String.valueOf(myBmp),options);*/
+//                    uploadImage(uri,1);
                     binding.ivPumpPhoto.setImageBitmap(myBmp);
                 }else {
-                    uploadImage(uri,2);
-                    /*myBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    myBmp = BitmapFactory.decodeFile(String.valueOf(myBmp),options);*/
+//                    uploadImage(uri,2);
                     binding.ivBenificiaryPhoto.setImageBitmap(myBmp);
                 }
                 saveImage(myBmp);

@@ -102,7 +102,11 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             binding.llSubmitPumpInstall.setText("Add Report");
         } else {
             binding.llSubmitPumpInstall.setText("Update Report");
-            getData();
+            if (Const.isInternetConnected(PumpInstallationActivity.this)){
+                getData();
+            }else {
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -345,7 +349,11 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             e.printStackTrace();
         }
 
-        uploadFileImage(fileName);
+        if (Const.isInternetConnected(PumpInstallationActivity.this)){
+            uploadFileImage(fileName);
+        }else {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showPictureDialog(Integer photo) {
@@ -397,24 +405,28 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
                 try {
                     if (imagePhoto == 1) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        uploadImage(contentURI, 1);
-                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
+                        if (Const.isInternetConnected(PumpInstallationActivity.this)){
+                            uploadImage(contentURI, 1);
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
+
                         binding.ivPhotoInstallPump.setImageBitmap(bitmap);
                     } else if (imagePhoto == 2) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        /*bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
-                        uploadImage(contentURI, 2);
+                        if (Const.isInternetConnected(PumpInstallationActivity.this)){
+                            uploadImage(contentURI, 2);
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                         binding.ivBeneficiaryInstallPump.setImageBitmap(bitmap);
                     } else {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                       /* bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(String.valueOf(contentURI),options);*/
-                        uploadImage(contentURI, 3);
+                        if (Const.isInternetConnected(PumpInstallationActivity.this)){
+                            uploadImage(contentURI, 3);
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                         binding.ivPumpWorking.setImageBitmap(bitmap);
                     }
 
@@ -592,7 +604,11 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             if (pump_report.equals("0")) {
                 if (countChipsInChipGroup(binding.chipGroup) >= 9) {
                     if (validation()) {
-                        addPumpInstallationData();
+                        if (Const.isInternetConnected(PumpInstallationActivity.this)){
+                            addPumpInstallationData();
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(this, "please filled all details", Toast.LENGTH_SHORT).show();
                     }
@@ -602,7 +618,11 @@ public class PumpInstallationActivity extends AppCompatActivity implements View.
             } else {
                 if (countChipsInChipGroup(binding.chipGroup) >= 9) {
                     if (updateValidation()) {
-                        updatePumpInstallReport(reportId);
+                        if (Const.isInternetConnected(PumpInstallationActivity.this)){
+                            updatePumpInstallReport(reportId);
+                        }else {
+                            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(this, "please fill all filled", Toast.LENGTH_SHORT).show();
                     }
